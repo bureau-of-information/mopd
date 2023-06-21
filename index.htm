@@ -1,0 +1,967 @@
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial;
+      font-size: 10pt;
+    }
+
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    #feedStatus {
+      position: fixed;
+      width: 100%;
+      top: 0px;
+      left: 200px;
+      background-color: #fff;
+      color: #00c;
+      z-index: 10;
+      font-size: 10pt;
+      font-weight: bold;
+      padding-left: 10px;
+      padding-top: 2px;
+    }
+
+    .menuContainer {
+      position: fixed;
+      overflow-y: scroll;
+      top: 0px;
+      left: 0px;
+      width: 200px;
+      height: 100vh;
+    }
+    
+    .byCallType {
+      position: relative;
+      margin-left: 215px;
+      padding-top: 5px;
+      z-index: 1;
+    }
+
+    #feedStatus.error {
+      color: #f00;
+    }
+       
+    .menu {
+      padding: 10px;
+    }
+
+    .callCountsContainer {
+      width: 100%;
+      text-align: center;
+    }
+    .logoBlock {
+      display: inline-block;
+      width: 50px;
+      height: 70px;
+    }
+
+    .callCountBlock {
+      display: inline-block;
+      width: 50px;
+      height: 70px;      
+    }
+
+    .appLogo {
+      width: 50px;
+      height: 40px;
+      font-size: 20pt;
+      font-weight: bold;
+      background-color: #bbb;
+      padding-top: 3px;
+      padding-bottom: 7px;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0px 0px 10px rgba(255,255,255,0.8);
+    }
+
+    .appTitle {
+      width: 50px;
+      text-align: center;
+      font-size:8pt;
+      font-weight: bold;
+    }
+    
+    .callCount {
+      width: 50px;
+      height: 40px;
+      font-size: 20pt;
+      font-weight: bold;
+      background-color: #666;
+      padding-top: 10px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .callCountLabel {
+      width: 50px;
+      text-align: center;
+      font-size:8pt;
+    }
+
+    .menuTopOptions {
+      font-size: 9pt;
+    }
+
+    .menuTopOption {
+      display: inline-block;
+      cursor: pointer;
+      
+    }
+    .menuBlockTitle {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .menuBlock.off .menuBlockTitle {
+      font-weight: normal;
+    }
+    .menuBlock .menuItem {
+      margin-left: 20px;
+    }
+    .menuBlock.off .menuBlockTitle .checkSelector::before {
+      content: "\26aa";
+    }
+
+
+    .checkSelector {
+      opacity: 40%;
+      display: inline-block;
+    }
+    .checkSelector::before {
+      content: "\26ab";
+    }
+
+    .menuItem {
+      font-weight: bold;
+      font-size: 9pt;
+      cursor: pointer;
+    }
+    .menuItem.off {
+      font-weight: normal;
+    }
+    .menuItem.off .checkSelector::before {
+      content: "\26aa";
+    }
+
+    #showRecentOnly { 
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 10pt;
+      padding-bottom: 8px;
+    }
+    #showRecentOnly.off {
+      font-weight: normal;
+    }
+    #showRecentOnly .checkSelector::before {
+      content: "\2612";
+    }
+    #showRecentOnly.off .checkSelector::before {
+      content: "\2610";
+    }
+
+    .block.off {
+      display: none;
+    }
+    #callList .title {
+      display: none;
+    }
+    #callList:not(.showRecentOnly) .title:has(~ .callList .callRow) {
+      display: block;
+    }
+    #callList.showRecentOnly .title:has(~ .callList .callRow.recent) {
+      display: block;
+    }
+      
+    .byCallType .block {
+      margin-top: 10px;
+    }
+
+    .byCallType .title {
+      font-size: 12pt;
+      font-weight: bold;
+      margin-bottom: 5pt;
+    }
+
+    .callRow {
+      margin-top: 2px;
+      width: 720px;
+    }
+    .callRow.recent {
+      color: #a00;
+      animation: recentColorFade 60s;
+      animation-iteration-count: 1;
+    }
+
+    @keyframes recentColorFade {
+      0% { background-color: #9993; }
+      90% { background-color: #9993; }
+      100% { background-color: #9990; }
+    }
+
+    #callList.showRecentOnly .callRow {
+      display: none;
+    }
+    #callList.showRecentOnly .callRow.recent {
+      display: inline-block;
+    }
+    
+    .callCell {
+      display: inline-block;
+      vertical-align: top;
+    }
+ 
+    .callDate { width: 60px; }
+    .callTime { width: 55px; text-align: right; margin-right:15px;}
+    .callID { width: 60px; }
+    .callLocation { width: 275px;}
+    .callDescription { font-size: 8pt; width: 150px; padding-top: 2pt;}
+    .callBeat { font-size: 8pt; width: 30px; padding-top: 2pt;}
+    .callDistrict { font-size: 8pt; width: 20px; padding-top: 2pt;}
+    .callSection { font-size: 8pt; width: 20px; padding-top: 2pt;}
+    .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 2pt;}
+
+
+
+
+  </style>
+
+<script>
+
+const OPD_DATA_FEED_URL = "http://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&where=I_STATUSID%3D%27C%27&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&callback=dojo.io.script.jsonp_dojoIoScript1._jsonpCallback";
+const OPD_ACTIVE_CALL_COUNT_FEED_URL = "http://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27A%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript2._jsonpCallback";
+const OPD_PENDING_CALL_COUNT_FEED_URL = "http://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27P%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript3._jsonpCallback";
+
+const RECENCY_INTERVAL_IN_MINUTES = 120;
+const NORMAL_DATA_REQUEST_INTERVAL = 2 * 60 * 1000;
+const FAST_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
+const CALL_COUNTS_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
+
+const CALL_CODE_MAPPING = {
+  "160B" : "parking",
+  "187" : "homicide",
+  "207" : "kidnapping",
+  "211" : "robbery",
+  "211S" : "robbery",
+  "A211" : "robbery",
+  "212_5" : "robbery",
+  "215" : "carjacking",
+  "240" : "assaultAndBattery",
+  "242" : "assaultAndBattery",
+  "243E" : "assaultAndBattery",
+  "244" : "assaultAndBattery",
+  "245" : "deadlyWeapon",
+  "246" : "deadlyWeapon",
+  "247" : "gunshots",
+  "273_6" : "offenders",
+  "278_5" : "offenders",
+  "311" : "administrative",
+  "314" : "disorderly",
+  "415GS" : "gunshots",
+  "415SS" : "shotSpotter",
+  "415" : "disturbingThePeace",
+  "415A" : "disturbingThePeace",
+  "415BF" : "disturbingThePeace",
+  "415C" : "disturbingThePeace",
+  "415CU" : "disturbingThePeace",
+  "415D" : "disturbingThePeace",
+  "415E" : "disturbingThePeace",
+  "415F" : "disturbingThePeace",
+  "415G" : "disturbingThePeace",
+  "415FC" : "disturbingThePeace",
+  "415GF" : "disturbingThePeace",
+  "415J" : "disturbingThePeace",
+  "415LT" : "disturbingThePeace",
+  "415N" : "disturbingThePeace",
+  "415RM" : "disturbingThePeace",
+  "415TH" : "disturbingThePeace",
+  "415UG" : "disturbingThePeace",
+  "911C" : "administrative",
+  "911H" : "administrative",
+  "911N" : "administrative",
+  "945A" : "ambulance",
+  "374" : "vandalism",
+  "417" : "weapons",
+  "451" : "fire",
+  "459AU" : "autoBurglary",
+  "A459" : "burglary",
+  "459" : "burglary",
+  "484" : "theft",
+  "484LP" : "theft",
+  "487" : "theft",
+  "594" : "vandalism",
+  "597" : "animal",
+  "601R" : "missingPersons",
+  "601PU" : "missingPersons",
+  "602L" : "trespassing",
+  "647" : "disorderly",
+  "647B" : "prostitution",
+  "647F" : "disorderly",
+  "901" : "vehicleCollision",
+  "901A" : "vehicleCollision",
+  "901B" : "vehicleCollision",
+  "901CP" : "vehicleCollision",
+  "901D" : "vehicleCollision",
+  "901H" : "vehicleCollision",
+  "905" : "parking",
+  "906" : "trespassing",
+  "907" : "trespassing",
+  "910" : "suspicious",
+  "912" : "suspicious",
+  "913TH" : "mentallyIll",
+  "913A" : "mentallyIll",
+  "914" : "administrative",
+  "921" : "suspicious",
+  "922" : "disorderly",
+  "922A" : "disorderly",
+  "922B" : "disorderly",
+  "943" : "disorderly",
+  "928" : "fire",
+  "929AU" : "fire",
+  "929" : "fire",
+  "933MA" : "checks",
+  "933R" : "checks",
+  "933S" : "checks",
+  "933T" : "checks",
+  "933AU" : "checks",
+  "933SA" : "checks",
+  "940" : "administrative",
+  "945" : "ambulance",
+  "946" : "traffic",
+  "949" : "suspicious",
+  "953" : "administrative",
+  "955" : "animal",
+  "955A" : "animal",
+  "955E" : "animal",
+  "955F" : "animal",
+  "968" : "animal",
+  "968A" : "animal",
+  "970" : "parking",
+  "970A" : "parking",
+  "970B" : "parking",
+  "970C" : "parking",
+  "973" : "traffic",
+  "976" : "stops",
+  "977" : "stops",
+  "5150" : "mentallyIll",
+  "5150B" : "mentallyIll",
+  "10851" : "stolenVehicle",
+  "10855" : "stolenVehicle",
+  "23103" : "traffic",
+  "23152" : "traffic",
+  "A10851" : "stolenVehicle",
+  "R10851" : "recoveredStolenVehicle",
+  "11350" : "drugs",
+  "11500" : "drugs",
+  "11550" : "drugs",
+  "20001" : "hitAndRunWithInjury",
+  "20002" : "hitAndRun",
+  "23103" : "traffic",
+  "261KIT" : "administrative",
+  "ACU" : "animal", 
+  "AOA" : "administrative",
+  "ASSIST" : "administrative",
+  "BCAST" : "administrative",
+  "BLALRT" : "situations",
+  "BTNFO" : "administrative",
+  "CARWSH" : "administrative",
+  "CCFILE" : "administrative",
+  "CKVEH" : "checks",
+  "CODE7" : "situations",
+  "CODE33" : "situations",
+  "EVAL" : "mentallyIll",
+  "EVID" : "administrative",
+  "FNDJUV" : "missingPersons",
+  "FNDGUN" : "weapons",
+  "FUEL" : "administrative",
+  "GAS" : "fire",
+  "HAZ" : "hazardous",
+  "HYDRNT" : "administrative",
+  "INFO" : "administrative",
+  "MACRO" : "macro",
+  "MFF" : "administrative",
+  "MJ" : "missingPersons",
+  "MP" : "missingPersons",
+  "MPRISK" : "missingPersons",
+  "MSDIAL" : "administrative",
+  "OD": "drugs",
+  "OMC" : "administrative",
+  "RR" : "administrative",
+  "SECCK" : "checks",
+  "SENILE" : "mentallyILl",
+  "SIDESH" : "sideshow",
+  "SMOKE" : "fire",
+  "SPEC" : "administrative",
+  "SPCENF" : "administrative",
+  "STALL" : "traffic",
+  "SUPPL" : "administrative",
+  "SURV" : "administrative",
+  "SUSP" : "offenders",
+  "TEC" : "administrative",
+  "UNSEC" : "checks",
+  "VICTIM" : "victim",
+  "WALKTR" : "checks",
+  "WELCK" : "checks"
+}
+
+
+
+/*
+    result += attributes.OBJECTID + "\t";
+    result += attributes.I_EVENTNUMBER + "\t";
+    result += attributes.CALL_DATE + "\t";
+    result += attributes.TIMEUPDATE + "\t";
+    result += attributes.CALL_DATE_STR + "\t";
+    result += attributes.I_STATUSID + "\t";
+    result += attributes.CALL_ID + "\t";
+    result += attributes.CALL_DESC + "\t";
+    result += attributes.LOCATION + "\t";
+    result += attributes.ILO_BEAT + "\t";
+    result += attributes.I_REPORTINGDISTRICT + "\t";
+    result += attributes.POL_BEAT + "\t";
+    result += attributes.POL_DIST + "\t";
+    result += attributes.POL_SECT + "\t";
+    result += attributes.I_MAPX + "\t";
+    result += attributes.I_MAPY + "\n";
+*/
+
+var setWhetherEventIsRecent = function(callRow) {
+  if (callRow == null) {
+    return;
+  }
+  var tstamp = callRow.dataset.callDate;
+  if (tstamp == null) {
+    return;
+  }
+  var tstampAsNumber = Number(tstamp)/1000;
+
+  var currentTime = new Date().getTime()/1000;
+  var timeDiff = currentTime - tstampAsNumber;
+  if (timeDiff > RECENCY_INTERVAL_IN_MINUTES * 60) {
+    callRow.classList.remove("recent");
+  } else {
+    callRow.classList.add("recent");
+  }
+}
+
+var addColumnToRow = function(row, value, className) {
+  var cell = document.createElement("div");
+  cell.classList.add("callCell");
+  cell.innerHTML = value;
+  cell.classList.add(className);
+  row.appendChild(cell);
+}
+
+var formatDate = function(date) {
+  if (date == null) {
+    return null;
+  }
+  return date.toLocaleString().replace(/:[0-9][0-9] /,"").replace(", ", " ").replace("AM","am").replace("PM","pm");
+}
+
+var outputCall = function(attributes, parent, insertBefore) {
+  var row = document.createElement("div");
+  row.setAttribute("id", attributes.I_EVENTNUMBER);
+  row.classList.add("callRow");
+
+  var testDate = new Date();
+  var callDate = new Date(attributes.CALL_DATE + testDate.getTimezoneOffset() * 60000);
+  row.dataset.callDateTstamp = attributes.CALL_DATE;
+  row.dataset.callDate = callDate.getTime();
+  
+  var formattedDateAndTime = formatDate(callDate);
+  var formattedDate = formattedDateAndTime.substring(0, formattedDateAndTime.indexOf(" "));
+  var formattedTime = formattedDateAndTime.substring(formattedDateAndTime.indexOf(" "));
+  addColumnToRow(row, formattedDate, "callDate");
+  addColumnToRow(row, formattedTime, "callTime");
+//  addColumnToRow(row, attributes.CALL_DATE_STR);
+  addColumnToRow(row, attributes.CALL_ID, "callID");
+
+  var addressLink = "<a href=\"http://maps.google.com/maps?q=" + attributes.LOCATION.replace("&"," and ") + " Oakland, CA\" target=\"opdMap\">" + attributes.LOCATION + "</a>";
+  addColumnToRow(row, addressLink, "callLocation");
+  addColumnToRow(row, attributes.CALL_DESC, "callDescription");
+  addColumnToRow(row, "B" + attributes.ILO_BEAT, "callBeat");
+  addColumnToRow(row, "D" + attributes.POL_DIST, "callDistrict");
+  addColumnToRow(row, "S" + attributes.POL_SECT, "callSection");
+  addColumnToRow(row, attributes.I_REPORTINGDISTRICT, "callCityCouncilDistrict");
+
+  setWhetherEventIsRecent(row);
+  if (insertBefore != null) {
+    parent.insertBefore(row, insertBefore);
+  } else {
+    parent.appendChild(row);
+  }
+}
+
+var updateCallRecency = function() {
+  var recentCalls = document.querySelectorAll(".callRow.recent");
+  for (var i=0; i<recentCalls.length; i++) {
+    setWhetherEventIsRecent(recentCalls[i]);
+  }
+}
+
+var findFirstRowEarlierThan = function(outputDiv, callDate) {
+  if (outputDiv == null || callDate == null || isNaN(callDate)) {
+    return null;
+  }
+
+  for  (var i=0; i<outputDiv.children.length; i++) {
+    var call = outputDiv.children[i];
+    if (call.dataset.callDateTstamp < callDate) {
+      return call;
+    }
+  }
+  return null;
+}
+
+var outputFeature = function(feature) {
+  if (feature == null) {
+    return;
+  }
+  var attributes = feature.attributes;
+  if (attributes == null) {
+    return;
+  }
+  var divMapping = CALL_CODE_MAPPING[attributes.CALL_ID];
+  if (divMapping == null) {
+    divMapping = "other";
+  }
+
+  var outputBlock = document.getElementById(divMapping+"Block");
+  if (outputBlock == null) {
+    return;
+  }
+  var outputDivs = outputBlock.getElementsByClassName("callList");
+  if (outputDivs.length == 0) {
+    return;
+  }
+  var outputDiv = outputDivs[0];
+
+  var insertBefore = findFirstRowEarlierThan(outputDiv, attributes.CALL_DATE);
+  outputCall(attributes,outputDiv,insertBefore);    
+}
+
+var showMenuBlock = function(menuBlock, show) {
+  if (menuBlock == null) {
+    return;
+  }
+  if (show) {
+    menuBlock.classList.remove("off");
+  } else {
+    menuBlock.classList.add("off");
+  }
+  var menuItems = menuBlock.getElementsByClassName("menuItem");
+  for (var i=0; i<menuItems.length; i++) {
+    showMenuItem(menuItems[i], show);
+  }
+}
+
+var allMenuItemsInBlockAreOn = function(menuBlock) {
+  if (menuBlock == null) {
+    return false;
+  }
+  var menuItems = menuBlock.getElementsByClassName("menuItem");
+  for (var i=0; i<menuItems.length; i++) {
+    if (menuItems[i].classList.contains("off")) {
+     return false;
+    }
+  }
+  return true;
+}
+
+
+var toggleMenuBlock = function(menuBlock) {
+  if (menuBlock == null) {
+    return;
+  }
+  var turnOn = !allMenuItemsInBlockAreOn(menuBlock);
+  if (turnOn) {
+    showMenuBlock(menuBlock,true)
+  } else {
+    showMenuBlock(menuBlock,false);
+  }
+  
+}
+
+var showMenuItem = function(menuItem, show) {
+  var blockID = menuItem.id;
+  var block = document.getElementById(blockID + "Block");
+  if (block == null) {
+    return;
+  }
+  if (show) {
+    menuItem.classList.remove("off");
+    block.classList.remove("off");
+  } else {
+    menuItem.classList.add("off");
+    block.classList.add("off");
+  }
+  updateContainingMenuBlock(menuItem);
+}
+
+var toggleMenuItem = function(menuItem) {
+  if (menuItem == null) {
+    return;
+  }
+  var turnOn = menuItem.classList.contains("off");
+  showMenuItem(menuItem, turnOn);
+}
+
+var updateContainingMenuBlock = function(menuItem) {
+  if (menuItem == null) {
+    return;
+  }
+  var menuBlock = menuItem.closest(".menuBlock");
+  if (menuBlock == null) {
+    return;
+  }
+  if(allMenuItemsInBlockAreOn(menuBlock)) {
+    menuBlock.classList.remove("off");
+  } else {
+    menuBlock.classList.add("off");
+  }
+}
+
+var scrollToMenuItem = function(menuItem) {
+  if (menuItem == null) {
+    return;
+  }
+  var blockID = menuItem.id;
+  var block = document.getElementById(blockID + "Block");
+  if (block == null) {
+    return;
+  }
+  block.scrollIntoView({alignToTop: true, behavior: "smooth"});
+}
+
+var scrollToMenuBlock = function(menuBlock) {
+  if (menuBlock == null) {
+    return;
+  }
+  var blockID = menuBlock.id;
+  var block = document.getElementById(blockID + "Block");
+  if (block == null) {
+    return;
+  }
+  block.scrollIntoView({alignToTop: true, behavior: "smooth"});
+}
+
+var setVisibilityOfAllCrimeTypes = function(show) {
+  var menu = document.getElementById("crimeTypeMenu");
+  var menuItems = menu.querySelectorAll(".menuItem");
+  for (var i=0; i<menuItems.length; i++) {
+    var menuItem = menuItems[i];
+    showMenuItem(menuItem, show);
+  }
+}
+
+var toggleShowRecentOnly = function(showRecentOnlyControl) {
+  var callList = document.getElementById("callList");
+  if (showRecentOnlyControl == null || callList == null) {
+    return;
+  }
+  if (showRecentOnlyControl.classList.contains("off")) {
+    showRecentOnlyControl.classList.remove("off");
+    callList.classList.add("showRecentOnly");
+  } else {
+    showRecentOnlyControl.classList.add("off");
+    callList.classList.remove("showRecentOnly");
+  }
+}
+
+var stripDataOutOfResponse = function(response) {
+  var start = response.indexOf("(") + 1;
+  var end = response.lastIndexOf(")");
+  return response.substring(start,end);
+}
+
+var getSourceDataFromURL = function(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'text';
+  xhr.onload = function() {
+    var status = xhr.status;
+    if (status === 200) {
+      callback(null, xhr.response);
+    } else {
+      callback(status, xhr.response);
+    }
+  };
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        // success
+      } else {
+        setStatus(true, "Error requesting feed");
+        setTimerToRequestData(FAST_DATA_REQUEST_INTERVAL);
+      }
+    }
+  }
+  xhr.send();
+}
+
+var setStatus = function(isError, message) {
+  var statusBar = document.getElementById("feedStatus");
+  if (statusBar == null) {
+    return;
+  }
+  if (message == null) {
+    message = "";
+  }
+  statusBar.innerHTML = message;
+  if (isError) {
+    statusBar.classList.add("error");
+  } else {
+    statusBar.classList.remove("error");
+  }
+}
+
+var handleActiveCallCountArrival = function(status, response) {
+  setTimerToRequestCallCounts();
+  var data;
+  try {
+    data = JSON.parse(stripDataOutOfResponse(response));
+  } catch (error) {
+    return;
+  }
+
+  var activeCallsDiv = document.getElementById("activeCalls");
+  if (activeCallsDiv == null) {
+    return;
+  }
+  activeCallsDiv.innerHTML = data.count;
+} 
+
+var handlePendingCallCountArrival = function(status, response) {
+  // only the active call count feed resets the timer for both counts
+  var data;
+  try {
+    data = JSON.parse(stripDataOutOfResponse(response));
+  } catch (error) {
+    return;
+  }
+
+  var pendingCallsDiv = document.getElementById("pendingCalls");
+  if (pendingCallsDiv == null) {
+    return;
+  }
+  pendingCallsDiv.innerHTML = data.count;
+}
+
+
+var handleDataArrival = function(status, response) {
+  if (status != null) {
+    setStatus(true, "Error getting data from feed");
+    setTimerToRequestData(FAST_DATA_REQUEST_INTERVAL);
+    return;
+  }
+
+  var data;
+  try {
+    data = JSON.parse(stripDataOutOfResponse(response));
+  } catch (error) {
+    setStatus(true, "Error parsing data from feed");
+    setTimerToRequestData(FAST_DATA_REQUEST_INTERVAL);
+    return;
+  }
+
+  // setStatus(false, "Processing...");
+
+  for (index in data.features) {
+    var feature = data.features[index];
+    var existingElement = document.getElementById(feature.attributes.I_EVENTNUMBER);
+    if (existingElement == null) {
+      outputFeature(feature);
+    }
+  }
+  setStatus(false);
+  
+  setTimerToRequestData(NORMAL_DATA_REQUEST_INTERVAL);
+}
+
+var setTimerToRequestCallCounts = function() {
+  setTimeout(updateCountsContinuously, CALL_COUNTS_DATA_REQUEST_INTERVAL);
+}
+
+var setTimerToRequestData = function(interval) {
+  setTimeout(updateCallListsContinuously, interval);
+}
+
+var updateCallListsContinuously = function() {
+  setStatus(false,"Updating...");
+  updateCallRecency();
+  getSourceDataFromURL(OPD_DATA_FEED_URL, handleDataArrival);
+}
+
+var updateCountsContinuously = function() {
+  getSourceDataFromURL(OPD_ACTIVE_CALL_COUNT_FEED_URL, handleActiveCallCountArrival);
+  getSourceDataFromURL(OPD_PENDING_CALL_COUNT_FEED_URL, handlePendingCallCountArrival);
+}
+
+var updateDataContinuously = function() {
+  updateCallListsContinuously();
+  updateCountsContinuously();
+}
+</script>
+
+</head>
+<body onload="updateDataContinuously()">
+
+<div id="feedStatus"></div>
+<div class="menuContainer">
+  <div id="crimeTypeMenu" class="menu">
+    <div class="callCountsContainer">
+      <div class="logoBlock">
+        <div class="appLogo">&#128757</div>
+        <div class="appTitle">mOPD</div>
+      </div>
+      <div id="activeCallsBlock" class="callCountBlock">
+        <div id="activeCalls" class="callCount">0</div>
+        <div class="callCountLabel">Active</div>
+      </div>
+      <div id="pendingCallsBlock" class="callCountBlock">
+        <div id="pendingCalls" class="callCount">0</div>
+        <div class="callcountLabel">Pending</div>
+      </div>
+    </div>
+    <div class="menuTopOptions">
+      <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Show recent only</div>
+      <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(true)">Select All</div> - 
+      <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(false)">Clear All</div>
+    </div>
+    <div id="violence" class="menuBlock">
+      <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Violence</div>
+      <div id="situations" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Situations</div>
+      <div id="homicides" class="menuitem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Homicides</div>
+      <div id="kidnapping" class="menuItem" onclick="scrollToMenuItem(this)" ><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Kidnapping</div>
+      <div id="deadlyWeapon" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Deadly Weapon</div>
+      <div id="carjacking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Carjacking</div>
+      <div id="robbery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Robbery</div>
+      <div id="assaultAndBattery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Assault and Battery</div>
+    </div>
+    <div id="shooting" class="menuBlock">
+      <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Shooting</div>
+      <div id="gunshots" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Gunshots</div>
+      <div id="shotSpotter" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> ShotSpotter</div>
+      <div id="weapons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Weapons</div>
+    </div>
+    <div id="stealing" class="menuBlock">
+      <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Stealing</div>
+      <div id="stolenVehicle" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Stolen Vehicle</div>
+      <div id="recoveredStolenVehicle" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Recovered Vehicle</div>
+      <div id="burglary" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Burglary</div>
+      <div id="autoBurglary" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Auto Burglary</div>
+      <div id="theft" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Theft</div>
+    </div>
+    <div id="conduct" class="menuBlock">
+      <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Conduct</div>
+      <div id="drugs" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Drugs</div>
+      <div id="disorderly" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Disorderly</div>
+      <div id="prostitution" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Prostitution</div>
+      <div id="offenders" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Offenders</div>
+      <div id="vandalism" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Vandalism</div>
+      <div id="trespassing" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Trespassing</div>
+      <div id="suspicious" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Suspicious</div>
+      <div id="disturbingThePeace" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Disturbing Peace</div>
+    </div>
+    <div id="motorVehicles" class="menuBlock">
+      <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Motor Vehicles</div>
+      <div id="stops" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Stops</div>
+      <div id="hitAndRunWithInjury" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Injury Hit and Run</div>
+      <div id="hitAndRun" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Hit and Run</div>
+      <div id="traffic" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Traffic</div>
+      <div id="sideshow" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Sideshow</div>
+      <div id="vehicleCollision" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Collisions</div>
+      <div id="parking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Parking</div>
+    </div>
+    <div id="services" class="menuBlock">
+      <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Services</div>
+      <div id="missingPersons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Missing Persons</div>
+      <div id="victim" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Victim</div>
+      <div id="mentallyIll" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Mentally Ill</div>
+      <div id="hazardous" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Hazardous</div>
+      <div id="ambulance" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Ambulance</div>
+      <div id="fire" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Fire</div>
+      <div id="animal" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Animal</div>
+      <div id="macro" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> MACRO</div>
+    </div>
+    <div id="miscellaneous" class="menuBlock">
+      <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Miscellaneous</div>
+      <div id="other" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Other</div>
+      <div id="checks" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Checks</div>
+      <div id="administrative" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Administrative</div>
+    </div>
+  </div>
+</div>
+
+
+
+<div id="callList" class="byCallType">
+  <div id="violenceBlock" class="sectionBlock">
+    <div id="situationsBlock" class="block"><div class="title">Situations</div><div class="callList"></div></div>
+    <div id="homicidesBlock" class="block"><div class="title">Homicides</div><div class="callList"></div></div>
+    <div id="kidnappingBlock" class="block"><div class="title">Kidnapping</div><div class="callList"></div></div>
+    <div id="deadlyWeaponBlock" class="block"><div class="title">Shootings and Assault with Deadly Weapon</div><div class="callList"></div></div>
+    <div id="carjackingBlock" class="block"><div class="title">Carjacking</div><div class="callList"></div></div>
+    <div id="robberyBlock" class="block"><div class="title">Robbery</div><div class="callList"></div></div>
+    <div id="assaultAndBatteryBlock" class="block"><div class="title">Assault and Battery</div><div class="callList"></div></div>
+  </div>
+
+  <div id="shootingBlock" class="sectionBlock">
+    <div id="gunshotsBlock" class="block"><div class="title">Gunshots</div><div class="callList"></div></div>
+    <div id="shotSpotterBlock" class="block"><div class="title">ShotSpotter (Gunshots)</div><div class="callList"></div></div>
+    <div id="weaponsBlock" class="block"><div class="title">Weapons</div><div class="callList"></div></div>
+  </div>
+
+  <div id="stealingBlock" class="sectionBlock">
+    <div id="stolenVehicleBlock" class="block"><div class="title">Stolen Vehicle</div><div class="callList"></div></div>
+    <div id="recoveredStolenVehicleBlock" class="block"><div class="title">Recovered Stolen Vehicle</div><div class="callList"></div></div>
+    <div id="burglaryBlock" class="block"><div class="title">Burglary</div><div class="callList"></div></div>
+    <div id="autoBurglaryBlock" class="block"><div class="title">Auto Burglary</div><div class="callList"></div></div>
+    <div id="theftBlock" class="block"><div class="title">Theft</div><div class="callList"></div></div>
+  </div>
+
+  <div id="conductBlock" class="sectionBlock">
+    <div id="drugsBlock" class="block"><div class="title">Drugs</div><div class="callList"></div></div>
+    <div id="disorderlyBlock" class="block"><div class="title">Disorderly</div><div class="callList"></div></div>
+    <div id="prostitutionBlock" class="block"><div class="title">Prostitution</div><div class="callList"></div></div>
+    <div id="offendersBlock" class="block"><div class="title">Offenders</div><div class="callList"></div></div>
+    <div id="vandalismBlock" class="block"><div class="title">Vandalism</div><div class="callList"></div></div>
+    <div id="trespassingBlock" class="block"><div class="title">Trespassing</div><div class="callList"></div></div>
+
+    <div id="violenceBlock" class="sectionBlock">
+    <div id="suspiciousBlock" class="block"><div class="title">Suspicious Person or Vehicle</div><div class="callList"></div></div>
+    <div id="disturbingThePeaceBlock" class="block"><div class="title">Disturbing the Peace</div><div class="callList"></div></div>
+  </div>
+
+  <div id="motorVehiclesBlock" class="sectionBlock">
+    <div id="stopsBlock" class="block"><div class="title">Stops</div><div class="callList"></div></div>
+    <div id="hitAndRunWithInjuryBlock" class="block"><div class="title">Hit and Run with Injury</div><div class="callList"></div></div>
+    <div id="hitAndRunBlock" class="block"><div class="title">Hit and Run</div><div class="callList"></div></div>
+    <div id="trafficBlock" class="block"><div class="title">Traffic</div><div class="callList"></div></div>
+    <div id="sideshowBlock" class="block"><div class="title">Sideshow</div><div class="callList"></div></div>
+    <div id="vehicleCollisionBlock" class="block"><div class="title">Vehicle Collision</div><div class="callList"></div></div>
+    <div id="parkingBlock" class="block"><div class="title">Parking</div><div class="callList"></div></div>
+  </div>
+
+  <div id="servicesBlock" class="sectionBlock">
+    <div id="missingPersonsBlock" class="block"><div class="title">Missing Persons</div><div class="callList"></div></div>
+    <div id="victimBlock" class="block"><div class="title">Crime Victim at Hospital</div><div class="callList"></div></div>
+    <div id="mentallyIllBlock" class="block"><div class="title">Mentally Ill</div><div class="callList"></div></div>
+    <div id="hazardousBlock" class="block"><div class="title">Hazardous Situation</div><div class="callList"></div></div>
+    <div id="ambulanceBlock" class="block"><div class="title">Ambulance</div><div class="callList"></div></div>
+    <div id="fireBlock" class="block"><div class="title">Fire</div><div class="callList"></div></div>
+    <div id="animalBlock" class="block"><div class="title">Animal</div><div class="callList"></div></div>
+    <div id="macroBlock" class="block"><div class="title">MACRO</div><div class="callList"></div></div>
+  </div>
+
+  <div id="miscellaneousBlock" class="sectionBlock">
+    <div id="otherBlock" class="block"><div class="title">Other</div><div class="callList"></div></div>
+    <div id="checksBlock" class="block"><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
+    <div id="administrativeBlock" class="block"><div class="title">Administrative</div><div class="callList"></div></div>
+  </div>
+  </div>
+</body>
