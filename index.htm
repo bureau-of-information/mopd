@@ -230,9 +230,9 @@
 
 <script>
 
-const OPD_DATA_FEED_URL = "http://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&where=I_STATUSID%3D%27C%27&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&callback=dojo.io.script.jsonp_dojoIoScript1._jsonpCallback";
-const OPD_ACTIVE_CALL_COUNT_FEED_URL = "http://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27A%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript2._jsonpCallback";
-const OPD_PENDING_CALL_COUNT_FEED_URL = "http://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27P%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript3._jsonpCallback";
+const OPD_DATA_FEED_URL = "https://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&where=I_STATUSID%3D%27C%27&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&callback=dojo.io.script.jsonp_dojoIoScript1._jsonpCallback";
+const OPD_ACTIVE_CALL_COUNT_FEED_URL = "https://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27A%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript2._jsonpCallback";
+const OPD_PENDING_CALL_COUNT_FEED_URL = "https://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27P%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript3._jsonpCallback";
 
 const RECENCY_INTERVAL_IN_MINUTES = 120;
 const NORMAL_DATA_REQUEST_INTERVAL = 2 * 60 * 1000;
