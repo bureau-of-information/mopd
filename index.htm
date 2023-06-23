@@ -14,7 +14,7 @@
 
     #feedStatus {
       position: fixed;
-      width: 100%;
+      width: 700px;
       top: 0px;
       left: 200px;
       background-color: #fff;
@@ -24,6 +24,7 @@
       font-weight: bold;
       padding-left: 10px;
       padding-top: 2px;
+      text-align: center;
     }
 
     .menuContainer {
@@ -37,7 +38,7 @@
     
     .byCallType {
       position: relative;
-      margin-left: 215px;
+      margin-left: 210px;
       padding-top: 5px;
       z-index: 1;
     }
@@ -153,6 +154,7 @@
       cursor: pointer;
       font-size: 10pt;
       padding-bottom: 8px;
+      margin-bottom: 5px;
     }
     #showRecentOnly.off {
       font-weight: normal;
@@ -164,19 +166,56 @@
       content: "\2610";
     }
 
+    #locationFilterContainer {
+      height: 30px;
+      margin-bottom: 5px;
+    }
+
+    #locationFilter {
+      font-weight: bold;
+      font-size: 10pt;
+      margin-bottom: 8px;
+      display: inline-block;
+      width: 135px;
+      vertical-align: middle;
+    }
+
+    #locationFilterContainer.off #locationFilter {
+      font-weight: normal;
+    }
+
+    #clearLocationFilterButton {
+      display: inline-block;
+      font-size: 16pt;
+      cursor: pointer;
+    }
+
+    #locationFilterContainer.off #clearLocationFilterButton {
+      visibility: hidden;
+    }
+
+
     .block.off {
       display: none;
     }
+    .block.off .callRow {
+      display: none;
+    }
+
     #callList .title {
       display: none;
     }
-    #callList:not(.showRecentOnly) .title:has(~ .callList .callRow) {
-      display: block;
+
+    #noMatchingCallsIndicator {
+      width: 550px;
+      font-size: 12pt;
+      font-weight: bold;
+      text-align: center;
+      color: #c00;
+      padding-top: 60px;
+      display: none;
     }
-    #callList.showRecentOnly .title:has(~ .callList .callRow.recent) {
-      display: block;
-    }
-      
+
     .byCallType .block {
       margin-top: 10px;
     }
@@ -203,12 +242,84 @@
       100% { background-color: #9990; }
     }
 
-    #callList.showRecentOnly .callRow {
+    #callList.showRecentOnly .callRow:not(.recent) {
       display: none;
     }
-    #callList.showRecentOnly .callRow.recent {
-      display: inline-block;
-    }
+
+    #callList.filterByLocation[data-location-filter = 'B01X'] .callRow:not([data-beat='B01X']),
+    #callList.filterByLocation[data-location-filter = 'B02X'] .callRow:not([data-beat='B02X']),
+    #callList.filterByLocation[data-location-filter = 'B02Y'] .callRow:not([data-beat='B02Y']),
+    #callList.filterByLocation[data-location-filter = 'B03X'] .callRow:not([data-beat='B03X']),
+    #callList.filterByLocation[data-location-filter = 'B03Y'] .callRow:not([data-beat='B03Y']),
+    #callList.filterByLocation[data-location-filter = 'B04X'] .callRow:not([data-beat='B04X']),
+    #callList.filterByLocation[data-location-filter = 'B05X'] .callRow:not([data-beat='B05X']),
+    #callList.filterByLocation[data-location-filter = 'B05Y'] .callRow:not([data-beat='B05Y']),
+    #callList.filterByLocation[data-location-filter = 'B06X'] .callRow:not([data-beat='B06X']),
+    #callList.filterByLocation[data-location-filter = 'B07X'] .callRow:not([data-beat='B07X']),
+    #callList.filterByLocation[data-location-filter = 'B08X'] .callRow:not([data-beat='B08X']),
+    #callList.filterByLocation[data-location-filter = 'B09X'] .callRow:not([data-beat='B09X']),
+    #callList.filterByLocation[data-location-filter = 'B10X'] .callRow:not([data-beat='B10X']),
+    #callList.filterByLocation[data-location-filter = 'B10Y'] .callRow:not([data-beat='B10Y']),
+    #callList.filterByLocation[data-location-filter = 'B11X'] .callRow:not([data-beat='B11X']),
+    #callList.filterByLocation[data-location-filter = 'B12X'] .callRow:not([data-beat='B12X']),
+    #callList.filterByLocation[data-location-filter = 'B13X'] .callRow:not([data-beat='B13X']),
+    #callList.filterByLocation[data-location-filter = 'B13Y'] .callRow:not([data-beat='B13Y']),
+    #callList.filterByLocation[data-location-filter = 'B13Z'] .callRow:not([data-beat='B13Z']),
+    #callList.filterByLocation[data-location-filter = 'B14X'] .callRow:not([data-beat='B14X']),
+    #callList.filterByLocation[data-location-filter = 'B14Y'] .callRow:not([data-beat='B14Y']),
+    #callList.filterByLocation[data-location-filter = 'B15X'] .callRow:not([data-beat='B15X']),
+    #callList.filterByLocation[data-location-filter = 'B16X'] .callRow:not([data-beat='B16X']),
+    #callList.filterByLocation[data-location-filter = 'B16Y'] .callRow:not([data-beat='B16Y']),
+    #callList.filterByLocation[data-location-filter = 'B17X'] .callRow:not([data-beat='B17X']),
+    #callList.filterByLocation[data-location-filter = 'B17Y'] .callRow:not([data-beat='B17Y']),
+    #callList.filterByLocation[data-location-filter = 'B18X'] .callRow:not([data-beat='B18X']),
+    #callList.filterByLocation[data-location-filter = 'B18Y'] .callRow:not([data-beat='B18Y']),
+    #callList.filterByLocation[data-location-filter = 'B19X'] .callRow:not([data-beat='B19X']),
+    #callList.filterByLocation[data-location-filter = 'B20X'] .callRow:not([data-beat='B20X']),
+    #callList.filterByLocation[data-location-filter = 'B21X'] .callRow:not([data-beat='B21X']),
+    #callList.filterByLocation[data-location-filter = 'B21Y'] .callRow:not([data-beat='B21Y']),
+    #callList.filterByLocation[data-location-filter = 'B22X'] .callRow:not([data-beat='B22X']),
+    #callList.filterByLocation[data-location-filter = 'B22Y'] .callRow:not([data-beat='B22Y']),
+    #callList.filterByLocation[data-location-filter = 'B23X'] .callRow:not([data-beat='B23X']),
+    #callList.filterByLocation[data-location-filter = 'B24X'] .callRow:not([data-beat='B24X']),
+    #callList.filterByLocation[data-location-filter = 'B24Y'] .callRow:not([data-beat='B24Y']),
+    #callList.filterByLocation[data-location-filter = 'B25X'] .callRow:not([data-beat='B25X']),
+    #callList.filterByLocation[data-location-filter = 'B25Y'] .callRow:not([data-beat='B25Y']),
+    #callList.filterByLocation[data-location-filter = 'B26X'] .callRow:not([data-beat='B26X']),
+    #callList.filterByLocation[data-location-filter = 'B26Y'] .callRow:not([data-beat='B26Y']),
+    #callList.filterByLocation[data-location-filter = 'B27X'] .callRow:not([data-beat='B27X']),
+    #callList.filterByLocation[data-location-filter = 'B27Y'] .callRow:not([data-beat='B27Y']),
+    #callList.filterByLocation[data-location-filter = 'B28X'] .callRow:not([data-beat='B28X']),
+    #callList.filterByLocation[data-location-filter = 'B29X'] .callRow:not([data-beat='B29X']),
+    #callList.filterByLocation[data-location-filter = 'B30X'] .callRow:not([data-beat='B30X']),
+    #callList.filterByLocation[data-location-filter = 'B30Y'] .callRow:not([data-beat='B30Y']),
+    #callList.filterByLocation[data-location-filter = 'B31X'] .callRow:not([data-beat='B31X']),
+    #callList.filterByLocation[data-location-filter = 'B31Y'] .callRow:not([data-beat='B31Y']),
+    #callList.filterByLocation[data-location-filter = 'B31Z'] .callRow:not([data-beat='B31Z']),
+    #callList.filterByLocation[data-location-filter = 'B32X'] .callRow:not([data-beat='B32X']),
+    #callList.filterByLocation[data-location-filter = 'B33X'] .callRow:not([data-beat='B33X']),
+    #callList.filterByLocation[data-location-filter = 'B34X'] .callRow:not([data-beat='B34X']),
+    #callList.filterByLocation[data-location-filter = 'B35X'] .callRow:not([data-beat='B35X']),
+    #callList.filterByLocation[data-location-filter = 'B35Y'] .callRow:not([data-beat='B35Y']),
+    #callList.filterByLocation[data-location-filter = 'D1'] .callRow:not([data-district='D1']),
+    #callList.filterByLocation[data-location-filter = 'D2'] .callRow:not([data-district='D2']),
+    #callList.filterByLocation[data-location-filter = 'D3'] .callRow:not([data-district='D3']),
+    #callList.filterByLocation[data-location-filter = 'D4'] .callRow:not([data-district='D4']),
+    #callList.filterByLocation[data-location-filter = 'D5'] .callRow:not([data-district='D5']),
+    #callList.filterByLocation[data-location-filter = 'S1'] .callRow:not([data-section='S1']),
+    #callList.filterByLocation[data-location-filter = 'S2'] .callRow:not([data-section='S2']),
+    #callList.filterByLocation[data-location-filter = 'S3'] .callRow:not([data-section='S3']),
+    #callList.filterByLocation[data-location-filter = 'CCD1'] .callRow:not([data-ccd='CCD1']),
+    #callList.filterByLocation[data-location-filter = 'CCD2'] .callRow:not([data-ccd='CCD2']),
+    #callList.filterByLocation[data-location-filter = 'CCD3'] .callRow:not([data-ccd='CCD3']),
+    #callList.filterByLocation[data-location-filter = 'CCD4'] .callRow:not([data-ccd='CCD4']),
+    #callList.filterByLocation[data-location-filter = 'CCD5'] .callRow:not([data-ccd='CCD5']),
+    #callList.filterByLocation[data-location-filter = 'CCD6'] .callRow:not([data-ccd='CCD6']),
+    #callList.filterByLocation[data-location-filter = 'CCD7'] .callRow:not([data-ccd='CCD7'])
+    {
+      display: none;
+    }          
+
     
     .callCell {
       display: inline-block;
@@ -218,12 +329,12 @@
     .callDate { width: 60px; }
     .callTime { width: 55px; text-align: right; margin-right:15px;}
     .callID { width: 60px; }
-    .callLocation { width: 275px;}
+    .callLocation { width: 270px; margin-right: 5px;}
     .callDescription { font-size: 8pt; width: 150px; padding-top: 2pt;}
-    .callBeat { font-size: 8pt; width: 30px; padding-top: 2pt;}
-    .callDistrict { font-size: 8pt; width: 20px; padding-top: 2pt;}
-    .callSection { font-size: 8pt; width: 20px; padding-top: 2pt;}
-    .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 2pt;}
+    .callBeat { font-size: 8pt; width: 30px; padding-top: 2pt; cursor: pointer;}
+    .callDistrict { font-size: 8pt; width: 20px; padding-top: 2pt; cursor: pointer;}
+    .callSection { font-size: 8pt; width: 20px; padding-top: 2pt; cursor: pointer;}
+    .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 2pt; cursor: pointer;}
 
 
 
@@ -455,12 +566,55 @@ var setWhetherEventIsRecent = function(callRow) {
   }
 }
 
-var addColumnToRow = function(row, value, className) {
+var addColumnToRow = function(row, value, className, onclick) {
   var cell = document.createElement("div");
   cell.classList.add("callCell");
   cell.innerHTML = value;
   cell.classList.add(className);
+  if (onclick != null) {
+    cell.onclick = onclick;
+  }
   row.appendChild(cell);
+}
+
+var filterByLocation = function(cell, field) {
+  var call = cell.parentElement;
+  var locationFilter = document.getElementById("locationFilter");
+  var location = call.dataset[field];
+  if (call == null || callList == null || locationFilter == null || location == null) {
+    return;
+  }
+
+  locationFilter.value = location;
+  handleLocationFilterChange();
+}
+
+var clearLocationFilter = function() {
+  var locationFilter = document.getElementById("locationFilter");
+  if (locationFilter == null) {
+    return;
+  }
+  locationFilter.value = "all";
+  handleLocationFilterChange();
+}
+
+var handleLocationFilterChange = function() {
+  var callList = document.getElementById("callList");
+  var locationFilter = document.getElementById("locationFilter");
+  if (locationFilter == null || callList == null) {
+    return;
+  }
+  var location = locationFilter.value;
+  if (location == "all") {
+    callList.classList.remove("filterByLocation");
+    delete callList.dataset.locationFilter;
+    locationFilter.parentElement.classList.add("off");
+  } else {
+    callList.classList.add("filterByLocation");
+    callList.dataset.locationFilter = location;
+    locationFilter.parentElement.classList.remove("off");
+  }
+  showOrHideCallTitles();
 }
 
 var formatDate = function(date) {
@@ -474,6 +628,10 @@ var outputCall = function(attributes, parent, insertBefore) {
   var row = document.createElement("div");
   row.setAttribute("id", attributes.I_EVENTNUMBER);
   row.classList.add("callRow");
+  row.dataset.beat = "B" + attributes.ILO_BEAT;
+  row.dataset.district = "D" + attributes.POL_DIST;
+  row.dataset.section = "S" + attributes.POL_SECT;
+  row.dataset.ccd = attributes.I_REPORTINGDISTRICT;
 
   var testDate = new Date();
   var callDate = new Date(attributes.CALL_DATE + testDate.getTimezoneOffset() * 60000);
@@ -491,10 +649,10 @@ var outputCall = function(attributes, parent, insertBefore) {
   var addressLink = "<a href=\"http://maps.google.com/maps?q=" + attributes.LOCATION.replace("&"," and ") + " Oakland, CA\" target=\"opdMap\">" + attributes.LOCATION + "</a>";
   addColumnToRow(row, addressLink, "callLocation");
   addColumnToRow(row, attributes.CALL_DESC, "callDescription");
-  addColumnToRow(row, "B" + attributes.ILO_BEAT, "callBeat");
-  addColumnToRow(row, "D" + attributes.POL_DIST, "callDistrict");
-  addColumnToRow(row, "S" + attributes.POL_SECT, "callSection");
-  addColumnToRow(row, attributes.I_REPORTINGDISTRICT, "callCityCouncilDistrict");
+  addColumnToRow(row, "B" + attributes.ILO_BEAT, "callBeat", function() { filterByLocation(this,"beat") });
+  addColumnToRow(row, "D" + attributes.POL_DIST, "callDistrict", function() { filterByLocation(this, "district") });
+  addColumnToRow(row, "S" + attributes.POL_SECT, "callSection", function() { filterByLocation(this, "section") });
+  addColumnToRow(row, attributes.I_REPORTINGDISTRICT, "callCityCouncilDistrict", function() { filterByLocation(this, "ccd"); });
 
   setWhetherEventIsRecent(row);
   if (insertBefore != null) {
@@ -509,6 +667,7 @@ var updateCallRecency = function() {
   for (var i=0; i<recentCalls.length; i++) {
     setWhetherEventIsRecent(recentCalls[i]);
   }
+  showOrHideCallTitles();
 }
 
 var findFirstRowEarlierThan = function(outputDiv, callDate) {
@@ -567,6 +726,39 @@ var showMenuBlock = function(menuBlock, show) {
   }
 }
 
+var showOrHideCallTitles = function() {
+  var titles = document.getElementsByClassName("title");
+
+  var atLeastOneTitleShowing = false;
+  var atLeastOneCallLoaded = false;
+  for (var i=0; i<titles.length; i++) {
+    var calls = titles[i].parentElement.querySelectorAll(".callList .callRow");
+    if (calls.length > 0) {
+      atLeastOneCallLoaded = true;
+    }
+    var titleDisplayStyle = "none";
+    for (var j=0; j<calls.length; j++) {
+      var callDisplayStyle = window.getComputedStyle(calls[j]).display; 
+      if (callDisplayStyle != 'none') {
+        titleDisplayStyle = "block";
+        atLeastOneTitleShowing = true;
+        break;
+      }
+    }
+    titles[i].style.display = titleDisplayStyle;
+  }
+
+  var noMatchingCallsIndicator = document.getElementById("noMatchingCallsIndicator");
+  if (noMatchingCallsIndicator == null) {
+    return;
+  }
+  if (atLeastOneTitleShowing || !atLeastOneCallLoaded) {
+    noMatchingCallsIndicator.style.display = "none";
+  } else {
+    noMatchingCallsIndicator.style.display = "block";
+  }
+}
+
 var allMenuItemsInBlockAreOn = function(menuBlock) {
   if (menuBlock == null) {
     return false;
@@ -591,7 +783,7 @@ var toggleMenuBlock = function(menuBlock) {
   } else {
     showMenuBlock(menuBlock,false);
   }
-  
+  showOrHideCallTitles();
 }
 
 var showMenuItem = function(menuItem, show) {
@@ -616,6 +808,7 @@ var toggleMenuItem = function(menuItem) {
   }
   var turnOn = menuItem.classList.contains("off");
   showMenuItem(menuItem, turnOn);
+  showOrHideCallTitles();
 }
 
 var updateContainingMenuBlock = function(menuItem) {
@@ -664,6 +857,7 @@ var setVisibilityOfAllCrimeTypes = function(show) {
     var menuItem = menuItems[i];
     showMenuItem(menuItem, show);
   }
+  showOrHideCallTitles();  
 }
 
 var toggleShowRecentOnly = function(showRecentOnlyControl) {
@@ -678,6 +872,7 @@ var toggleShowRecentOnly = function(showRecentOnlyControl) {
     showRecentOnlyControl.classList.add("off");
     callList.classList.remove("showRecentOnly");
   }
+  showOrHideCallTitles();
 }
 
 var stripDataOutOfResponse = function(response) {
@@ -789,6 +984,7 @@ var handleDataArrival = function(status, response) {
   setStatus(false);
   
   setTimerToRequestData(NORMAL_DATA_REQUEST_INTERVAL);
+  showOrHideCallTitles();
 }
 
 var setTimerToRequestCallCounts = function() {
@@ -837,6 +1033,83 @@ var updateDataContinuously = function() {
       </div>
     </div>
     <div class="menuTopOptions">
+      <div id="locationFilterContainer" class="off">
+        <select name="locationFilter" id="locationFilter" onchange="handleLocationFilterChange()">
+          <option value="all">All of Oakland</option>
+          <option value="CCD1">Council District 1</option>
+          <option value="CCD2">Council District 2</option>
+          <option value="CCD3">Council District 3</option>
+          <option value="CCD4">Council District 4</option>
+          <option value="CCD5">Council District 5</option>
+          <option value="CCD6">Council District 6</option>
+          <option value="CCD7">Council District 7</option>
+          <option value="B01X">Beat 01X</option>
+          <option value="B02X">Beat 02X</option>
+          <option value="B02Y">Beat 02Y</option>
+          <option value="B03X">Beat 03X</option>
+          <option value="B03Y">Beat 03Y</option>
+          <option value="B04X">Beat 04X</option>
+          <option value="B05X">Beat 05X</option>
+          <option value="B05Y">Beat 05Y</option>
+          <option value="B06X">Beat 06X</option>
+          <option value="B07X">Beat 07X</option>
+          <option value="B08X">Beat 08X</option>
+          <option value="B09X">Beat 09X</option>
+          <option value="B10X">Beat 10X</option>
+          <option value="B10Y">Beat 10Y</option>
+          <option value="B11X">Beat 11X</option>
+          <option value="B12X">Beat 12X</option>
+          <option value="B13X">Beat 13X</option>
+          <option value="B13Y">Beat 13Y</option>
+          <option value="B13Z">Beat 13Z</option>
+          <option value="B14X">Beat 14X</option>
+          <option value="B14Y">Beat 14Y</option>
+          <option value="B15X">Beat 15X</option>
+          <option value="B16X">Beat 16X</option>
+          <option value="B16Y">Beat 16Y</option>
+          <option value="B17X">Beat 17X</option>
+          <option value="B17Y">Beat 17Y</option>
+          <option value="B18X">Beat 18X</option>
+          <option value="B18Y">Beat 18Y</option>
+          <option value="B19X">Beat 19X</option>
+          <option value="B20X">Beat 20X</option>
+          <option value="B21X">Beat 21X</option>
+          <option value="B21Y">Beat 21Y</option>
+          <option value="B22X">Beat 22X</option>
+          <option value="B22Y">Beat 22Y</option>
+          <option value="B23X">Beat 23X</option>
+          <option value="B24X">Beat 24X</option>
+          <option value="B24Y">Beat 24Y</option>
+          <option value="B25X">Beat 25X</option>
+          <option value="B25Y">Beat 25Y</option>
+          <option value="B26X">Beat 26X</option>
+          <option value="B26Y">Beat 26Y</option>
+          <option value="B27X">Beat 27X</option>
+          <option value="B27Y">Beat 27Y</option>
+          <option value="B28X">Beat 28X</option>
+          <option value="B29X">Beat 29X</option>
+          <option value="B30X">Beat 30X</option>
+          <option value="B30Y">Beat 30Y</option>
+          <option value="B31X">Beat 31X</option>
+          <option value="B31Y">Beat 31Y</option>
+          <option value="B31Z">Beat 31Z</option>
+          <option value="B32X">Beat 32X</option>
+          <option value="B33X">Beat 33X</option>
+          <option value="B34X">Beat 34X</option>
+          <option value="B35X">Beat 35X</option>
+          <option value="B35Y">Beat 35Y</option>
+          <option value="D1">Police District 1</option>
+          <option value="D2">Police District 2</option>
+          <option value="D3">Police District 3</option>
+          <option value="D4">Police District 4</option>
+          <option value="D5">Police District 5</option>
+          <option value="S1">Police Section 1</option>
+          <option value="S2">Police Section 2</option>
+          <option value="S3">Police Section 3</option>
+        </select>
+        <div id="clearLocationFilterButton" onclick="clearLocationFilter()">&#9447;</div>
+      </div>
+
       <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Show recent only</div>
       <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(true)">Select All</div> - 
       <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(false)">Clear All</div>
@@ -867,7 +1140,7 @@ var updateDataContinuously = function() {
     </div>
     <div id="conduct" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Conduct</div>
-      <div id="drugs" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Drugs</div>
+      <div id="drugs" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Police District rugs</div>
       <div id="disorderly" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Disorderly</div>
       <div id="prostitution" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Prostitution</div>
       <div id="offenders" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Offenders</div>
@@ -906,9 +1179,10 @@ var updateDataContinuously = function() {
   </div>
 </div>
 
-
-
 <div id="callList" class="byCallType">
+  <div id="noMatchingCallsIndicator">
+    No matching calls.<br />&#127849; &#128110;
+  </div>
   <div id="violenceBlock" class="sectionBlock">
     <div id="situationsBlock" class="block"><div class="title">Situations</div><div class="callList"></div></div>
     <div id="homicidesBlock" class="block"><div class="title">Homicides</div><div class="callList"></div></div>
