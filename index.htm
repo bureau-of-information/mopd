@@ -335,8 +335,9 @@
       vertical-align: top;
     }
  
-    .callDate { width: 60px; }
-    .callTime { width: 55px; text-align: right; margin-right:15px;}
+    .callDuration { width: 30px; font-size: 8pt; text-align:right; padding-top: 2pt; margin-right: 10px;}
+    .callDate { width: 30px; }
+    .callTime { width: 55px; text-align: right; margin-right:10px;}
     .callID { width: 60px; }
     .callLocation { width: 270px; margin-right: 5px;}
     .callDescription { font-size: 8pt; width: 150px; padding-top: 2pt;}
@@ -363,6 +364,7 @@ const CALL_COUNTS_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
 
 const CALL_CODE_MAPPING = {
   "160B" : "parking",
+  "166" : "offenders",
   "187" : "homicide",
   "207" : "kidnapping",
   "211" : "robbery",
@@ -423,6 +425,7 @@ const CALL_CODE_MAPPING = {
   "602L" : "trespassing",
   "647" : "disorderly",
   "647B" : "prostitution",
+  "647C" : "disorderly",
   "647F" : "disorderly",
   "901" : "vehicleCollision",
   "901A" : "vehicleCollision",
@@ -506,7 +509,7 @@ const CALL_CODE_MAPPING = {
   "FUEL" : "administrative",
   "GAS" : "fire",
   "HAZ" : "hazardous",
-  "HYDRNT" : "administrative",
+  "HYDRNT" : "fire",
   "INFO" : "administrative",
   "MACRO" : "macro",
   "MFF" : "administrative",
@@ -520,6 +523,7 @@ const CALL_CODE_MAPPING = {
   "SECCK" : "checks",
   "SENILE" : "mentallyILl",
   "SIDESH" : "sideshow",
+  "SIGNAL" : "traffic",
   "SMOKE" : "fire",
   "SPEC" : "administrative",
   "SPCENF" : "administrative",
@@ -633,6 +637,35 @@ var formatDate = function(date) {
   return date.toLocaleString().replace(/:[0-9][0-9] /,"").replace(", ", " ").replace("AM","am").replace("PM","pm");
 }
 
+var tryToMakeAddressSearchable = function(address) {
+  var result;
+  result = address.replace("&"," and ");
+  result = result.replace("WB I580", "580");
+  result = result.replace("EB I580", "580");
+  result = result.replace("SB I880", "880");
+  result = result.replace("NB I880", "880");
+  result = result.replace("SB S13", "13");
+  result = result.replace("NB S13", "13");
+  result = result.replace("EB S24", "24");
+  result = result.replace("WB S24", "24");
+  result = result.replace("OFFRP", "");
+  result = result + " Oakland, CA";
+  return result;
+}
+
+var convertMinutesDurationToString = function(minutes) {
+  var result = "";
+  if (minutes == null || isNaN(minutes) || minutes < 0) {
+    return "";
+  }
+//  if (minutes / 60 >= 1) {
+//    result = Math.floor(minutes / 60) + "h" + Math.floor(minutes - Math.floor(minutes / 60) * 60) + "m";
+//  } else {
+    result = Math.floor(minutes) + "m";
+//  }
+  return result;
+}
+
 var outputCall = function(attributes, parent, insertBefore) {
   var row = document.createElement("div");
   row.setAttribute("id", attributes.I_EVENTNUMBER);
@@ -649,19 +682,30 @@ var outputCall = function(attributes, parent, insertBefore) {
   
   var formattedDateAndTime = formatDate(callDate);
   var formattedDate = formattedDateAndTime.substring(0, formattedDateAndTime.indexOf(" "));
+  formattedDate = formattedDate.slice(0, formattedDate.lastIndexOf("/"));
+
   var formattedTime = formattedDateAndTime.substring(formattedDateAndTime.indexOf(" "));
+  
+  addColumnToRow(row, convertMinutesDurationToString((attributes.TIMEUPDATE - attributes.CALL_DATE)/60000), "callDuration");
   addColumnToRow(row, formattedDate, "callDate");
   addColumnToRow(row, formattedTime, "callTime");
 //  addColumnToRow(row, attributes.CALL_DATE_STR);
   addColumnToRow(row, attributes.CALL_ID, "callID");
 
-  var addressLink = "<a href=\"http://maps.google.com/maps?q=" + attributes.LOCATION.replace("&"," and ") + " Oakland, CA\" target=\"opdMap\">" + attributes.LOCATION + "</a>";
+  var searchableAddress = tryToMakeAddressSearchable(attributes.LOCATION);
+
+  var addressLink = "<a href=\"http://maps.google.com/maps?q=" + searchableAddress + "\" target=\"opdMap\">" + attributes.LOCATION + "</a>";
   addColumnToRow(row, addressLink, "callLocation");
   addColumnToRow(row, attributes.CALL_DESC, "callDescription");
   addColumnToRow(row, "B" + attributes.ILO_BEAT, "callBeat", function() { filterByLocation(this,"beat") });
   addColumnToRow(row, "D" + attributes.POL_DIST, "callDistrict", function() { filterByLocation(this, "district") });
   addColumnToRow(row, "S" + attributes.POL_SECT, "callSection", function() { filterByLocation(this, "section") });
   addColumnToRow(row, attributes.I_REPORTINGDISTRICT, "callCityCouncilDistrict", function() { filterByLocation(this, "ccd"); });
+
+
+  // var updateDate = new Date(attributes.TIMEUPDATE + testDate.getTimezoneOffset() * 60000);
+  // addColumnToRow(row, formatDate(updateDate), "callUpdateDate");
+
 
   setWhetherEventIsRecent(row);
   if (insertBefore != null) {
@@ -1120,8 +1164,8 @@ var updateDataContinuously = function() {
       </div>
 
       <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Show recent only</div>
-      <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(true)">Select All</div> - 
-      <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(false)">Clear All</div>
+      <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(true)">Show All</div> - 
+      <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(false)">Hide All</div>
     </div>
     <div id="violence" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Violence</div>
