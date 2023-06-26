@@ -11,7 +11,7 @@
 
     a {
       text-decoration: none;
-      color: #000;
+      color: inherit;
     }
 
     #feedStatus {
@@ -149,26 +149,38 @@
       content: "\26aa";
     }
 
-    #showRecentOnly { 
+    #showRecentOnly,
+    #showCallUpdateTime { 
       font-weight: bold;
       cursor: pointer;
       font-size: 10pt;
-      margin-top: 10px;
-      margin-bottom: 10px;
       vertical-align: middle;
       color: #a00;
     }
-    #showRecentOnly .checkSelector {
+    #showCallTime {
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    #showCallUpdateTime {
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    #showRecentOnly .checkSelector,
+    #showCallUpdateTime .checkSelector {
       font-size: 12pt;
     }
-    #showRecentOnly.off {
+    #showRecentOnly.off,
+    #showCallUpdateTime.off {
       font-weight: normal;
       color: #000;
     }
-    #showRecentOnly .checkSelector::before {
+    #showRecentOnly .checkSelector::before,
+    #showCallUpdateTime .checkSelector::before {
       content: "\2612";
     }
-    #showRecentOnly.off .checkSelector::before {
+    #showRecentOnly.off .checkSelector::before,
+    #showCallUpdateTime.off .checkSelector::before
+    {
       content: "\2610";
     }
 
@@ -239,11 +251,23 @@
       margin-top: 2px;
       width: 720px;
     }
-    .callRow.recent {
-      color: #a00;
+    .callRow.recentUpdate, .callRow.recentCall {
       animation: recentColorFade 60s;
       animation-iteration-count: 1;
     }
+
+    .callRow.recentUpdate .callUpdateDate,
+    .callRow.recentUpdate .callUpdateTime,
+    .callRow.recentUpdate .callDuration,
+    .callRow.recentCall .callDate,
+    .callRow.recentCall .callTime,
+    .callRow.recentCall .callID,
+    .callRow.recentCall .callLocation,
+    .callRow.recentCall .callDescription
+    {
+      color: #a00;
+    }
+    
 
     @keyframes recentColorFade {
       0% { background-color: #9993; }
@@ -251,7 +275,17 @@
       100% { background-color: #9990; }
     }
 
-    #callList.showRecentOnly .callRow:not(.recent) {
+    #callList.showRecentOnly .callRow:not(.recentUpdate) {
+      display: none;
+    }
+
+    #callList.showCallUpdateTime .callUpdateDate,
+    #callList.showCallUpdateTime .callUpdateTime {
+      display: inline-block;
+    }
+    #callList.showCallUpdateTime .callDate,
+    #callList.showCallUpdateTime .callTime 
+    {
       display: none;
     }
 
@@ -336,18 +370,18 @@
     }
  
     .callDuration { width: 33px; font-size: 8pt; text-align:right; padding-top: 2pt; margin-right: 7px; color: #999;}
-    .callDate { width: 27px; text-align: right; margin-right:3px;}
-    .callTime { width: 55px; text-align: right; margin-right:10px;}
+    .callDate { width: 27px; text-align: right; margin-right:3px; cursor: pointer;}
+    .callTime { width: 55px; text-align: right; margin-right:10px; cursor: pointer;}
+    .callUpdateDate { width: 27px; text-align: right; margin-right:3px; display: none; cursor: pointer;}
+    .callUpdateTime { width: 55px; text-align: right; margin-right:10px; display: none; cursor: pointer;}
+
     .callID { width: 60px; }
-    .callLocation { width: 270px; margin-right: 5px;}
+    .callLocation { width: 270px; margin-right: 5px; }
     .callDescription { font-size: 8pt; width: 150px; padding-top: 2pt;}
     .callBeat { font-size: 8pt; width: 30px; padding-top: 2pt; cursor: pointer; color: #999;}
     .callDistrict { font-size: 8pt; width: 20px; padding-top: 2pt; cursor: pointer; color: #999;}
     .callSection { font-size: 8pt; width: 20px; padding-top: 2pt; cursor: pointer; color: #999;}
     .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 2pt; cursor: pointer; color: #999;}
-
-
-
 
   </style>
 
@@ -357,7 +391,7 @@ const OPD_DATA_FEED_URL = "https://gismaps.oaklandca.gov/oaklandgis/rest/service
 const OPD_ACTIVE_CALL_COUNT_FEED_URL = "https://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27A%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript2._jsonpCallback";
 const OPD_PENDING_CALL_COUNT_FEED_URL = "https://gismaps.oaklandca.gov/oaklandgis/rest/services/callforservice_2015_FC/MapServer/0/query?f=json&returnIdsOnly=true&returnCountOnly=true&where=I_STATUSID%3D%27P%27&returnGeometry=false&spatialRel=esriSpatialRelIntersects&callback=dojo.io.script.jsonp_dojoIoScript3._jsonpCallback";
 
-const RECENCY_INTERVAL_IN_MINUTES = 120;
+const RECENCY_INTERVAL_IN_MINUTES = 60;
 const NORMAL_DATA_REQUEST_INTERVAL = 2 * 60 * 1000;
 const FAST_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
 const CALL_COUNTS_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
@@ -564,18 +598,27 @@ var setWhetherEventIsRecent = function(callRow) {
   if (callRow == null) {
     return;
   }
-  var tstamp = callRow.dataset.callDate;
-  if (tstamp == null) {
+  var updateTstamp = callRow.dataset.callUpdateDate;
+  var callTstamp = callRow.dataset.callDate;
+  if (updateTstamp == null || callTstamp == null) {
     return;
   }
-  var tstampAsNumber = Number(tstamp)/1000;
+  var updateTstampAsNumber = Number(updateTstamp)/1000;
+  var callTstampAsNumber = Number(callTstamp)/1000;
 
   var currentTime = new Date().getTime()/1000;
-  var timeDiff = currentTime - tstampAsNumber;
-  if (timeDiff > RECENCY_INTERVAL_IN_MINUTES * 60) {
-    callRow.classList.remove("recent");
+  var updateTimeDiff = currentTime - updateTstampAsNumber;
+  if (updateTimeDiff > RECENCY_INTERVAL_IN_MINUTES * 60) {
+    callRow.classList.remove("recentUpdate");
   } else {
-    callRow.classList.add("recent");
+    callRow.classList.add("recentUpdate");
+  }
+
+  var callTimeDiff = currentTime - callTstampAsNumber;
+  if (callTimeDiff > RECENCY_INTERVAL_IN_MINUTES * 60) {
+    callRow.classList.remove("recentCall");
+  } else {
+    callRow.classList.add("recentCall");
   }
 }
 
@@ -666,6 +709,32 @@ var convertMinutesDurationToString = function(minutes) {
   return result;
 }
 
+var extractDate = function(date) {
+  if (date == null) {
+    return null;
+  }
+  var formattedDateAndTime = formatDate(date);
+  if (formattedDateAndTime == null) {
+    return null;
+  }
+  var formattedDate = formattedDateAndTime.substring(0, formattedDateAndTime.indexOf(" "));
+  formattedDate = formattedDate.slice(0, formattedDate.lastIndexOf("/"));
+  return formattedDate;
+}
+
+var extractTime = function(date) {
+  if (date == null) {
+    return null;
+  }
+  var formattedDateAndTime = formatDate(date);
+  if (formattedDateAndTime == null) {
+    return null;
+  }
+  var formattedTime = formattedDateAndTime.substring(formattedDateAndTime.indexOf(" "));
+  return formattedTime;
+}
+
+
 var outputCall = function(attributes, parent, insertBefore) {
   var row = document.createElement("div");
   row.setAttribute("id", attributes.I_EVENTNUMBER);
@@ -677,18 +746,26 @@ var outputCall = function(attributes, parent, insertBefore) {
 
   var testDate = new Date();
   var callDate = new Date(attributes.CALL_DATE + testDate.getTimezoneOffset() * 60000);
+  var updateDate = new Date(attributes.TIMEUPDATE + testDate.getTimezoneOffset() * 60000);
+
+
   row.dataset.callDateTstamp = attributes.CALL_DATE;
   row.dataset.callDate = callDate.getTime();
+  row.dataset.callUpdateTstamp = attributes.TIMEUPDATE;
+  row.dataset.callUpdateDate = updateDate.getTime();
   
-  var formattedDateAndTime = formatDate(callDate);
-  var formattedDate = formattedDateAndTime.substring(0, formattedDateAndTime.indexOf(" "));
-  formattedDate = formattedDate.slice(0, formattedDate.lastIndexOf("/"));
-
-  var formattedTime = formattedDateAndTime.substring(formattedDateAndTime.indexOf(" "));
+  var formattedDate = extractDate(callDate);
+  var formattedTime = extractTime(callDate);
+  var formattedUpdateDate = extractDate(updateDate);
+  var formattedUpdateTime = extractTime(updateDate);
   
   addColumnToRow(row, convertMinutesDurationToString((attributes.TIMEUPDATE - attributes.CALL_DATE)/60000), "callDuration");
-  addColumnToRow(row, formattedDate, "callDate");
-  addColumnToRow(row, formattedTime, "callTime");
+  addColumnToRow(row, formattedDate, "callDate", toggleShowCallUpdateTime);
+  addColumnToRow(row, formattedTime, "callTime", toggleShowCallUpdateTime);
+
+  addColumnToRow(row, formattedUpdateDate, "callUpdateDate", toggleShowCallUpdateTime);
+  addColumnToRow(row, formattedUpdateTime, "callUpdateTime", toggleShowCallUpdateTime);
+
 //  addColumnToRow(row, attributes.CALL_DATE_STR);
   addColumnToRow(row, attributes.CALL_ID, "callID");
 
@@ -716,7 +793,7 @@ var outputCall = function(attributes, parent, insertBefore) {
 }
 
 var updateCallRecency = function() {
-  var recentCalls = document.querySelectorAll(".callRow.recent");
+  var recentCalls = document.querySelectorAll(".callRow.recentUpdate, .callRow.recentCall");
   for (var i=0; i<recentCalls.length; i++) {
     setWhetherEventIsRecent(recentCalls[i]);
   }
@@ -926,6 +1003,22 @@ var toggleShowRecentOnly = function(showRecentOnlyControl) {
     callList.classList.remove("showRecentOnly");
   }
   showOrHideCallTitles();
+}
+
+var toggleShowCallUpdateTime = function() {
+  var showCallUpdateTimeControl = document.getElementById("showCallUpdateTime");
+  var callList = document.getElementById("callList");
+  if (showCallUpdateTimeControl == null || callList == null) {
+    return;
+  }
+
+  if (showCallUpdateTimeControl.classList.contains("off")) {
+    showCallUpdateTimeControl.classList.remove("off");
+    callList.classList.add("showCallUpdateTime");
+  } else {
+    showCallUpdateTimeControl.classList.add("off");
+    callList.classList.remove("showCallUpdateTime");
+  }
 }
 
 var stripDataOutOfResponse = function(response) {
@@ -1163,7 +1256,8 @@ var updateDataContinuously = function() {
         <div id="clearLocationFilterButton" onclick="clearLocationFilter()">&#9447;</div>
       </div>
 
-      <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Show recent only</div>
+      <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Recently closed only</div>
+      <div id="showCallUpdateTime" class="off" onclick="toggleShowCallUpdateTime()"><div class="checkSelector off"></div> Show closure times</div>
       <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(true)">Show All</div> - 
       <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(false)">Hide All</div>
     </div>
