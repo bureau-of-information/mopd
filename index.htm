@@ -395,6 +395,7 @@ const RECENCY_INTERVAL_IN_MINUTES = 60;
 const NORMAL_DATA_REQUEST_INTERVAL = 2 * 60 * 1000;
 const FAST_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
 const CALL_COUNTS_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
+const GOOGLE_MAPS_ZOOM_LEVEL = 17;
 
 const CALL_CODE_MAPPING = {
   "160B" : "parking",
@@ -595,6 +596,52 @@ const CALL_CODE_MAPPING = {
     result += attributes.I_MAPY + "\n";
 */
 
+var getGoogleMapsLatLonQuery = function(x,y) {
+  if (isNaN(x) || isNaN(y)) {
+    return "";
+  }
+/* Computed values */
+/*  const xScale = 286389.346316317;
+  const yScale = 371160.805418948;
+  const xOffset = -143.39931;
+  const yOffset = 32.092; */
+/* Hacked values */
+  const xScale = 286389.346316317;
+  const yScale = 371160.805418948;
+  const xOffset = -143.3972;
+  const yOffset = 32.092;
+  return "maps/@" + (y/yScale + yOffset) + "," + (x/xScale + xOffset) + "," + GOOGLE_MAPS_ZOOM_LEVEL + "z";
+}
+
+
+var containsFreeway = function(address) {
+  return (address.includes("WB I580") ||
+          address.includes("EB I580") ||
+          address.includes("SB I880") ||
+          address.includes("NB I880") ||
+          address.includes("SB S13") ||
+          address.includes("NB S13") ||
+          address.includes("EB S24") ||
+          address.includes("WB S24") ||
+          address.includes("OFFRP"));
+}
+
+var getGoogleMapsAddressQuery = function(address) {
+  var result;
+  result = address.replace("&"," and ");
+  result = result + ", Oakland, CA";
+  result = "maps?q=" + result + "&z=" + GOOGLE_MAPS_ZOOM_LEVEL;
+  return result;
+}
+
+var convertLocationDataToGoogleQuery = function(x,y,location) {
+  if (!containsFreeway(location)) {
+    return getGoogleMapsAddressQuery(location);
+  } else {
+    return getGoogleMapsLatLonQuery(x,y);
+  }
+}
+
 var setWhetherEventIsRecent = function(callRow) {
   if (callRow == null) {
     return;
@@ -681,22 +728,6 @@ var formatDate = function(date) {
   return date.toLocaleString().replace(/:[0-9][0-9] /,"").replace(", ", " ").replace("AM","am").replace("PM","pm");
 }
 
-var tryToMakeAddressSearchable = function(address) {
-  var result;
-  result = address.replace("&"," and ");
-  result = result.replace("WB I580", "580");
-  result = result.replace("EB I580", "580");
-  result = result.replace("SB I880", "880");
-  result = result.replace("NB I880", "880");
-  result = result.replace("SB S13", "13");
-  result = result.replace("NB S13", "13");
-  result = result.replace("EB S24", "24");
-  result = result.replace("WB S24", "24");
-  result = result.replace("OFFRP", "");
-  result = result + " Oakland, CA";
-  return result;
-}
-
 var convertMinutesDurationToString = function(minutes) {
   var result = "";
   if (minutes == null || isNaN(minutes) || minutes < 0) {
@@ -770,9 +801,7 @@ var outputCall = function(attributes, parent, insertBefore) {
 //  addColumnToRow(row, attributes.CALL_DATE_STR);
   addColumnToRow(row, attributes.CALL_ID, "callID");
 
-  var searchableAddress = tryToMakeAddressSearchable(attributes.LOCATION);
-
-  var addressLink = "<a href=\"http://maps.google.com/maps?q=" + searchableAddress + "\" target=\"opdMap\">" + attributes.LOCATION + "</a>";
+  var addressLink = "<a href=\"http://maps.google.com/" + convertLocationDataToGoogleQuery(attributes.I_MAPX,attributes.I_MAPY,attributes.LOCATION) + "\" target=\"opdMap\">" + attributes.LOCATION + "</a>";
   addColumnToRow(row, addressLink, "callLocation");
   addColumnToRow(row, attributes.CALL_DESC, "callDescription");
   addColumnToRow(row, "B" + attributes.ILO_BEAT, "callBeat", function() { filterByLocation(this,"beat") });
