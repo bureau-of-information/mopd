@@ -461,8 +461,8 @@ const CALL_CODE_MAPPING = {
   "415RM" : "disturbingThePeace",
   "415TH" : "disturbingThePeace",
   "415UG" : "disturbingThePeace",
-  "911C" : "administrative",
-  "911H" : "administrative",
+  "911C" : "misdials",
+  "911H" : "misdials",
   "911N" : "administrative",
   "945A" : "ambulance",
   "374" : "vandalism",
@@ -579,7 +579,7 @@ const CALL_CODE_MAPPING = {
   "MJ" : "missingPersons",
   "MP" : "missingPersons",
   "MPRISK" : "missingPersons",
-  "MSDIAL" : "administrative",
+  "MSDIAL" : "misdials",
   "OD": "drugs",
   "OMC" : "administrative",
   "RR" : "administrative",
@@ -6707,6 +6707,7 @@ var updateDataContinuously = function() {
       <div id="other" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Other</div>
       <div id="checks" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Checks</div>
       <div id="administrative" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Administrative</div>
+      <div id="misdials" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Misdials</div>
     </div>
   </div>
 </div>
@@ -6777,6 +6778,7 @@ var updateDataContinuously = function() {
     <div id="otherBlock" class="block"><div class="title">Other</div><div class="callList"></div></div>
     <div id="checksBlock" class="block"><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
     <div id="administrativeBlock" class="block"><div class="title">Administrative</div><div class="callList"></div></div>
+    <div id="misdialsBlock" class="block"><div class="title">Misdials</div><div class="callList"></div></div>
   </div>
   </div>
 </body>
