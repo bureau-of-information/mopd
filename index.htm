@@ -208,13 +208,18 @@
       color: #000;
     }
 
+    #locationFilterNavigationButtons {
+      float: right;
+      padding-top: 8pt;
+    }
+
     #nextLocationFilterButton, #prevLocationFilterButton {
       display: block;
       font-size: 14pt;
       line-height: 14pt;
       cursor: pointer;
-      width: 16pt;
-      height: 16pt;
+      width: 20pt;
+      height: 20pt;
       text-align: center;
       v-align: middle;
     }
@@ -224,22 +229,17 @@
 
     #clearLocationFilterButton {
       display: block;
-      font-size: 12pt;
-      line-height: 12pt;
+      font-size: 14pt;
+      line-height: 14pt;
       cursor: pointer;
-      line-height: 16pt;
-      width: 16pt;
-      height: 16pt;
+      width: 20pt;
+      height: 20pt;
       text-align: center;
       v-align: middle;
     }
 
     #clearLocationFilterButton.off {
       opacity: 0.2;
-    }
-    #locationFilterNavigationButtons {
-      float: right;
-      padding-top: 11pt;
     }
 
 
@@ -6131,7 +6131,6 @@ var selectNextLocationFilter = function() {
     locationFilter.selectedIndex++;
     handleLocationFilterChange();
   }
-  locationFilter.focus();
 }
 
 var selectPrevLocationFilter = function() {
@@ -6143,7 +6142,6 @@ var selectPrevLocationFilter = function() {
     locationFilter.selectedIndex--;
     handleLocationFilterChange();
   }
-  locationFilter.focus();
 }
 
 
