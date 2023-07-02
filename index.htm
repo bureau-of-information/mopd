@@ -191,13 +191,12 @@
 
     #locationFilterContainer {
       height: 30px;
-      margin-bottom: 10px;
     }
 
     #locationFilter {
       font-weight: bold;
       font-size: 10pt;
-      margin-bottom: 8px;
+      margin-bottom: 2px;
       display: inline-block;
       vertical-align: middle;
       width: 155px;
@@ -209,15 +208,38 @@
       color: #000;
     }
 
-    #clearLocationFilterButton {
-      display: inline-block;
-      font-size: 16pt;
+    #nextLocationFilterButton, #prevLocationFilterButton {
+      display: block;
+      font-size: 14pt;
+      line-height: 14pt;
       cursor: pointer;
-      margin-left: 1px;
+      width: 16pt;
+      height: 16pt;
+      text-align: center;
+      v-align: middle;
+    }
+    #prevLocationFilterButton.off, #nextLocationFilterButton.off {
+      opacity: 0.2;
     }
 
-    #locationFilterContainer.off #clearLocationFilterButton {
-      visibility: hidden;
+    #clearLocationFilterButton {
+      display: block;
+      font-size: 12pt;
+      line-height: 12pt;
+      cursor: pointer;
+      line-height: 16pt;
+      width: 16pt;
+      height: 16pt;
+      text-align: center;
+      v-align: middle;
+    }
+
+    #clearLocationFilterButton.off {
+      opacity: 0.2;
+    }
+    #locationFilterNavigationButtons {
+      float: right;
+      padding-top: 11pt;
     }
 
 
@@ -637,7 +659,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "11000 SAN LEANDRO ST" : "OAKLAND BURGERS",
   "111 GRAND AV" : "THE BIG APPLE",
   "1111 BROADWAY" : "HIGHWIRE COFFEE ROASTERS",
-  "1111 FRANKLIN ST" : "HIGH XII CAFE",
   "1116 FRANKLIN ST" : "NATURE VEGETARIAN RESTAURANT",
   "1120 BROADWAY" : "THE CAFFE BY MR. ESPRESSO ",
   "1140 66TH ST" : "FRATELLANZA CLUB",
@@ -4630,12 +4651,13 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "644 40TH ST UNIT 306" : "DAKOTA BLUE HAIR",
   "644 40TH ST UNIT 306" : "VIOLET FURY",
   "6470 MORAGA AV" : "TOP NAIL SPA",
-  "6536 TELEGRAPH AVE" : "HAPPY HEALTHY HAIR",
+  "6536 TELEGRAPH AV" : "HAPPY HEALTHY HAIR",
   "6536 TELEGRAPH AVE STE 202A" : "BODY SPECIFIC",
   "6536 TELEGRAPH AVE STE B102" : "VANITY LOUNGE HAIR",
   "6536 TELEGRAPH AVE STE B202" : "ATOMIC OWL",
   "655 E 12TH ST" : "HANG LUONG",
   "6609 FLORA ST" : "JOEY STEVENSON",
+  "6613 TELEGRAPH AV" : "WHITE HORSE LIQUORS",
   "6609 TELEGRAPH AV" : "HAIR BY LISA EVE/THE REFLECTION STUDIO",
   "6631 BANCROFT AV" : "OMARS HAIR DESIGN",
   "6632 TELEGRAPH AV" : "A ROYAL NAIL SPA",
@@ -5484,6 +5506,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   /* BART Stations */
   "555 40TH ST" : "MACARTHUR BART STATION",
   "800 OAK ST" : "LAKE MERRITT BART STATION",
+  "1327 BROADWAY" : "13TH STREET BART ENTRANCE",
   "1245 BROADWAY" : "12TH ST BART STATION",
   "1451 7TH ST" : "WEST OAKLAND BART STATION",
   "1900 BROADWAY" : "19TH ST BART STATION",
@@ -5495,6 +5518,16 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "7000 COLISEUM WY" : "OAKLAND COLISEUM",
   "1 AIRPORT DR" : "OAKLAND AIRPORT",
   "11 LAKE MERRITT BLVD" : "OAKLAND ARENA",
+  "521 19TH ST" : "FOX THEATER",
+  "10 10TH ST" : "HENRY J KAISER CONVENTION CENTER",
+
+  /* Parking */
+  "274 12TH ST" : "HARRISON STREET PARKING GARAGE",
+  "1523 HARRISON ST" : "DOUGLAS PARKING (HARRISON)",
+  "1434 HARRISON ST" : "LAZ/DOUGLAS PARKING",
+  "1309 MADISON ST" : "DOUGLAS PARKING (MADISON)",
+  "165 13TH ST" : "ALCOPARK GARAGE",
+  
 
   /* Government Buildings */
   "1301 CLAY ST" : "RONALD V DELLUMS FEDERAL BUILDING",
@@ -5502,6 +5535,26 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "455 7TH ST" : "POLICE ADMINISTRATION BUILDING",
   "300 FRANK H OGAWA PLZ" : "ROTUNDA BUILDING",
   // "300 FRANK H OGAWA PLZ 155" : "SPOILED BOUTIQUE",
+  "540 17TH ST" : "OAKLAND ICE CENTER",
+  "1260 MARTIN LUTHER KING JR WY" : "CITY CENTER WEST PUBLIC GARAGE",
+  "1111 FRANKLIN ST" : "FRANKLIN BUILDING (UC OFFICE OF THE PRESIDENT, HIGH XII CAFE)",
+  // "1111 FRANKLIN ST" : "HIGH XII CAFE",
+  "524 16TH ST" : "ROTUNDA GARAGE",
+  "1221 OAK ST" : "ALAMEDA COUNTY ADMINISTRATION BUILDING",
+  "1225 FALLON ST" : "RENÉ C. DAVIDSON COURTHOUSE",
+  "661 WASHINGTON ST" : "WILEY W. MANUEL COURTHOUSE",
+  "2651 73RD AV" : "OAKLAND POLICE TRAFFIC DIVISION",
+  "800 MADISON ST" : "BART POLICE DEPARTMENT",
+  "333 E 8TH ST" : "PERALTA POLICE SERVICES",
+  "1180 25TH AV" : "OAKLAND HOUSING AUTHORITY",
+  "8980 EARHART RD" : "ALAMEDA COUNTY SHERIFF",
+  "2425 E 12TH ST" : "ALAMEDA COUNTY SHERIFF'S OFFICE",
+  "1401 LAKESIDE DR" : "ALAMEDA COUNTY SHERIFF'S OFFICE",
+  "550 6TH ST" : "ALAMEDA COUNTY JAIL",
+  "5300 CLAREMONT AV" : "OAKLAND DMV",
+  "501 85TH AV" : "OAKLAND COLISEUM DMV",
+  
+  
 
   /* Office Buildings */
   "610 16TH ST" : "PACIFIC BUILDING",
@@ -5595,7 +5648,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   // "344 THOMAS L BERKLEY WY" : "CVS PHARMACY",
   // "344 THOMAS L BERKLEY WY" : "HAPPY SOUL CANDLES",
   // "344 THOMAS L BERKLEY WAY STE 310" : "LA HUERTA TACOS",
-  "388 9TH ST" : "PACIFIC RENAISSANCE PLAZA (BANK OF AMERICA, T-MOBILE, SOBO, SAKURA)",
+  "388 9TH ST" : "PACIFIC RENAISSANCE PLAZA (BANK OF AMERICA, T-MOBILE, SOBO, SAKURA, LIBRARY)",
   // "388 9TH ST 186" : "SOBO RAMEN",
   // "388 9TH ST 268" : "SAKURA BISTRO",
   // "388 9TH ST STE 125A" : "OAKLAND I-TEA",
@@ -5764,8 +5817,34 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2629 HARRISON ST" : "WESTLAKE MIDDLE SCHOOL",
   "915 54TH ST" : "YOUNG ADULT PROGRAM",
 
+  /* Fire Stations */
+  "1603 MARTIN LUTHER KING JR WY" : "OAKLAND FIRE STATION NO. 1",
+  "47 CLAY ST" : "OAKLAND FIRE STATION NO. 2",
+  "1445 14TH ST" : "OAKLAND FIRE STATION NO. 3",
+  "1235 INTERNATIONAL BLVD" : "OAKLAND FIRE STATION NO. 4",
+  "934 34TH ST" : "OAKLAND FIRE STATION NO. 5",
+  "7080 COLTON BLVD" : "OAKLAND FIRE STATION NO. 6",
+  "463 51ST ST" : "OAKLAND FIRE STATION NO. 8",
+  "172 SANTA CLARA AV" : "OAKLAND FIRE STATION NO. 10",
+  "822 ALICE ST" : "OAKLAND FIRE STATION NO. 12",
+  "1225 DERBY AV" : "OAKLAND FIRE STATION NO. 13",
+  "455 27TH ST" : "OAKLAND FIRE STATION NO. 15",
+  "3600 13TH AV" : "OAKLAND FIRE STATION NO. 16",
+  "3344 HIGH ST" : "OAKLAND FIRE STATION NO. 17",
+  "5008 BANCROFT AV" : "OAKLAND FIRE STATION NO. 18",
+  "5776 MILES AV" : "OAKLAND FIRE STATION NO. 19",
+  "1401 98TH AV" : "OAKLAND FIRE STATION NO. 20",
+  "13150 SKYLINE BLVD" : "OAKLAND FIRE STATION NO. 21",
+  "751 AIR CARGO RD" : "OAKLAND FIRE STATION NO. 22",
+  "7100 FOOTHILL BLVD" : "OAKLAND FIRE STATION NO. 23",
+  "5900 SHEPHERD CANYON RD" : "OAKLAND FIRE STATION NO. 24",
+  "2795 BUTTERS DR" : "OAKLAND FIRE STATION NO. 25",
+  "2611 98TH AV" : "OAKLAND FIRE STATION NO. 26",
+  "8501 PARDEE DR" : "OAKLAND FIRE STATION NO. 27",
+  "4615 GRASS VALLEY RD" : "OAKLAND FIRE STATION NO. 28",
+  "1016 66TH AV" : "OAKLAND FIRE STATION NO. 29",
 
-  /* Parks */
+  /* Parks and Recreation Centers */
   "25TH ST&MARTIN LUTHER KING JR WY" : "25TH ST MINI PARK",
   "1712 85TH AV" : "85TH AV MINI PARK",
   "1722 88TH AV" : "88TH AV MINI PARK",
@@ -5897,7 +5976,8 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   /* Libraries */
   "1021 81ST AV" : "OAKLAND LIBRARY - 81ST AVENUE BRANCH",
   "659 14TH ST" : "AFRICAN AMERICAN MUSEUM AND LIBRARY",
-  "388 9TH ST" : "OAKLAND LIBRARY - ASIAN BRANCH",
+  // Listed as part of Pacific Renaissance Plaza
+  // "388 9TH ST" : "OAKLAND LIBRARY - ASIAN BRANCH", 
   "9255 EDES AV" : "OAKLAND LIBRARY - BROOKFIELD BRANCH",
   "3301 E 12TH ST" : "OAKLAND LIBRARY - CÉSAR E. CHÁVEZ BRANCH",
   "3565 FRUITVALE AV" : "OAKLAND LIBRARY - DIMOND BRANCH",
@@ -6042,9 +6122,38 @@ var clearLocationFilter = function() {
   handleLocationFilterChange();
 }
 
+var selectNextLocationFilter = function() {
+  var locationFilter = document.getElementById("locationFilter");
+  if (locationFilter == null) {
+    return;
+  }
+  if (locationFilter.selectedIndex < locationFilter.options.length) {
+    locationFilter.selectedIndex++;
+    handleLocationFilterChange();
+  }
+  locationFilter.focus();
+}
+
+var selectPrevLocationFilter = function() {
+  var locationFilter = document.getElementById("locationFilter");
+  if (locationFilter == null) {
+    return;
+  }
+  if (locationFilter.selectedIndex > 0) {
+    locationFilter.selectedIndex--;
+    handleLocationFilterChange();
+  }
+  locationFilter.focus();
+}
+
+
 var handleLocationFilterChange = function() {
   var callList = document.getElementById("callList");
   var locationFilter = document.getElementById("locationFilter");
+  var prevLocationFilterButton = document.getElementById("prevLocationFilterButton");
+  var nextLocationFilterButton = document.getElementById("nextLocationFilterButton");
+  var clearLocationFilterButton = document.getElementById("clearLocationFilterButton");
+
   if (locationFilter == null || callList == null) {
     return;
   }
@@ -6058,6 +6167,23 @@ var handleLocationFilterChange = function() {
     callList.dataset.locationFilter = location;
     locationFilter.parentElement.classList.remove("off");
   }
+
+  if (prevLocationFilterButton != null && locationFilter.selectedIndex == 0) {
+    prevLocationFilterButton.classList.add("off");
+  } else {
+    prevLocationFilterButton.classList.remove("off");
+  }
+  if (nextLocationFilterButton != null && locationFilter.selectedIndex == locationFilter.options.length - 1) {
+    nextLocationFilterButton.classList.add("off");
+  } else {
+    nextLocationFilterButton.classList.remove("off");
+  }
+  if (clearLocationFilterButton != null && locationFilter.value == "all") {
+    clearLocationFilterButton.classList.add("off");
+  } else {
+    clearLocationFilterButton.classList.remove("off");
+  }
+
   showOrHideCallTitles();
 }
 
@@ -6564,6 +6690,13 @@ var updateDataContinuously = function() {
       </div>
     </div>
     <div class="menuTopOptions">
+      <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Recently closed only</div>
+      <div id="locationFilterNavigationButtons">
+        <div id="prevLocationFilterButton" onclick="selectPrevLocationFilter()" class="off">&#x2B06;</div>
+        <div id="clearLocationFilterButton" onclick="clearLocationFilter()" class="off">&#10006;&#65039;</div>
+        <div id="nextLocationFilterButton" onclick="selectNextLocationFilter()">&#x2B07;</div>
+      </div>
+      <div id="showCallUpdateTime" class="off" onclick="toggleShowCallUpdateTime()"><div class="checkSelector off"></div> Show closure times</div>
       <div id="locationFilterContainer" class="off">
         <select name="locationFilter" id="locationFilter" onchange="handleLocationFilterChange()">
           <option value="all">All of Oakland</option>
@@ -6638,11 +6771,8 @@ var updateDataContinuously = function() {
           <option value="S2">Police Section 2</option>
           <option value="S3">Police Section 3</option>
         </select>
-        <div id="clearLocationFilterButton" onclick="clearLocationFilter()">&#9447;</div>
       </div>
 
-      <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Recently closed only</div>
-      <div id="showCallUpdateTime" class="off" onclick="toggleShowCallUpdateTime()"><div class="checkSelector off"></div> Show closure times</div>
       <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(true)">Show All</div> - 
       <div class="menuTopOption" onclick="setVisibilityOfAllCrimeTypes(false)">Hide All</div>
     </div>
