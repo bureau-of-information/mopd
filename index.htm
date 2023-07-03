@@ -40,7 +40,7 @@
       z-index: 2;
     }
     
-    .byCallType {
+    .callsContainer {
       position: relative;
       width: 960px;
       padding-top: 5px;
@@ -90,7 +90,7 @@
       font-weight: bold;
     }
     
-    .callCount {
+    .totalCallCount {
       width: 50px;
       height: 40px;
       font-size: 20pt;
@@ -101,7 +101,7 @@
       text-align: center;
     }
 
-    .callCountLabel {
+    .totalCallCountLabel {
       width: 50px;
       text-align: center;
       font-size:8pt;
@@ -149,11 +149,27 @@
     .menuItem.off {
       font-weight: normal;
     }
+    .menuItem .checkSelector {
+      display: inline-block;
+    }
     .menuItem.off .checkSelector::before {
       content: "\2b55";
       font-weight: bold;
       color: #a00;
     }
+    .menuItem .checkSelector {
+      width: 20px;
+    }
+    .menuItem .title {
+      display: inline-block;
+      width: 110px;
+    }
+    .menuItem .callCount {
+      display: inline-block;
+      text-align: right;
+      width: 30px;
+    }
+
 
     #showRecentOnly,
     #showCallUpdateTime { 
@@ -284,14 +300,14 @@
     }
 
 
-    .block.off {
+    .callBlock.off {
       display: none;
     }
-    .block.off .callRow {
+    .callBlock.off .callRow {
       display: none;
     }
 
-    #callList .title {
+    #callsContainer .title {
       display: none;
     }
 
@@ -305,16 +321,26 @@
       display: none;
     }
 
-    .byCallType .block {
+    .callsContainer .callBlock {
       margin-top: 10px;
     }
 
-    .byCallType .title {
-      font-size: 12pt;
+    .callsContainer .title {
+      font-size: 11pt;
       font-weight: bold;
       margin-bottom: 5pt;
-      padding-left: 230px;
-      margin-left: 0px;
+      margin-left: 5px;
+    }
+
+
+    .callCount {
+      color: #999;
+    }
+    .callBlock .callCount {
+      padding-left: 210px;
+      width: 30px;
+      text-align: right;
+      display: inline-block;
     }
 
     .callRow {
@@ -352,96 +378,96 @@
       100% { background-color: #9990; }
     }
 
-    #callList.showRecentOnly .callRow:not(.recentUpdate) {
+    #callsContainer.showRecentOnly .callRow:not(.recentUpdate) {
       display: none;
     }
-    #callList.showTodayOnly .callRow:not(.today) {
+    #callsContainer.showTodayOnly .callRow:not(.today) {
       display: none;
     }
-    #callList.showYesterdayOnly .callRow:not(.yesterday) {
+    #callsContainer.showYesterdayOnly .callRow:not(.yesterday) {
       display: none;
     }
 
-    #callList.showCallUpdateTime .callUpdateDate,
-    #callList.showCallUpdateTime .callUpdateTime {
+    #callsContainer.showCallUpdateTime .callUpdateDate,
+    #callsContainer.showCallUpdateTime .callUpdateTime {
       display: inline-block;
     }
-    #callList.showCallUpdateTime .callDate,
-    #callList.showCallUpdateTime .callTime 
+    #callsContainer.showCallUpdateTime .callDate,
+    #callsContainer.showCallUpdateTime .callTime 
     {
       display: none;
     }
 
-    #callList.filterByLocation[data-location-filter = 'B01X'] .callRow:not([data-beat='B01X']),
-    #callList.filterByLocation[data-location-filter = 'B02X'] .callRow:not([data-beat='B02X']),
-    #callList.filterByLocation[data-location-filter = 'B02Y'] .callRow:not([data-beat='B02Y']),
-    #callList.filterByLocation[data-location-filter = 'B03X'] .callRow:not([data-beat='B03X']),
-    #callList.filterByLocation[data-location-filter = 'B03Y'] .callRow:not([data-beat='B03Y']),
-    #callList.filterByLocation[data-location-filter = 'B04X'] .callRow:not([data-beat='B04X']),
-    #callList.filterByLocation[data-location-filter = 'B05X'] .callRow:not([data-beat='B05X']),
-    #callList.filterByLocation[data-location-filter = 'B05Y'] .callRow:not([data-beat='B05Y']),
-    #callList.filterByLocation[data-location-filter = 'B06X'] .callRow:not([data-beat='B06X']),
-    #callList.filterByLocation[data-location-filter = 'B07X'] .callRow:not([data-beat='B07X']),
-    #callList.filterByLocation[data-location-filter = 'B08X'] .callRow:not([data-beat='B08X']),
-    #callList.filterByLocation[data-location-filter = 'B09X'] .callRow:not([data-beat='B09X']),
-    #callList.filterByLocation[data-location-filter = 'B10X'] .callRow:not([data-beat='B10X']),
-    #callList.filterByLocation[data-location-filter = 'B10Y'] .callRow:not([data-beat='B10Y']),
-    #callList.filterByLocation[data-location-filter = 'B11X'] .callRow:not([data-beat='B11X']),
-    #callList.filterByLocation[data-location-filter = 'B12X'] .callRow:not([data-beat='B12X']),
-    #callList.filterByLocation[data-location-filter = 'B13X'] .callRow:not([data-beat='B13X']),
-    #callList.filterByLocation[data-location-filter = 'B13Y'] .callRow:not([data-beat='B13Y']),
-    #callList.filterByLocation[data-location-filter = 'B13Z'] .callRow:not([data-beat='B13Z']),
-    #callList.filterByLocation[data-location-filter = 'B14X'] .callRow:not([data-beat='B14X']),
-    #callList.filterByLocation[data-location-filter = 'B14Y'] .callRow:not([data-beat='B14Y']),
-    #callList.filterByLocation[data-location-filter = 'B15X'] .callRow:not([data-beat='B15X']),
-    #callList.filterByLocation[data-location-filter = 'B16X'] .callRow:not([data-beat='B16X']),
-    #callList.filterByLocation[data-location-filter = 'B16Y'] .callRow:not([data-beat='B16Y']),
-    #callList.filterByLocation[data-location-filter = 'B17X'] .callRow:not([data-beat='B17X']),
-    #callList.filterByLocation[data-location-filter = 'B17Y'] .callRow:not([data-beat='B17Y']),
-    #callList.filterByLocation[data-location-filter = 'B18X'] .callRow:not([data-beat='B18X']),
-    #callList.filterByLocation[data-location-filter = 'B18Y'] .callRow:not([data-beat='B18Y']),
-    #callList.filterByLocation[data-location-filter = 'B19X'] .callRow:not([data-beat='B19X']),
-    #callList.filterByLocation[data-location-filter = 'B20X'] .callRow:not([data-beat='B20X']),
-    #callList.filterByLocation[data-location-filter = 'B21X'] .callRow:not([data-beat='B21X']),
-    #callList.filterByLocation[data-location-filter = 'B21Y'] .callRow:not([data-beat='B21Y']),
-    #callList.filterByLocation[data-location-filter = 'B22X'] .callRow:not([data-beat='B22X']),
-    #callList.filterByLocation[data-location-filter = 'B22Y'] .callRow:not([data-beat='B22Y']),
-    #callList.filterByLocation[data-location-filter = 'B23X'] .callRow:not([data-beat='B23X']),
-    #callList.filterByLocation[data-location-filter = 'B24X'] .callRow:not([data-beat='B24X']),
-    #callList.filterByLocation[data-location-filter = 'B24Y'] .callRow:not([data-beat='B24Y']),
-    #callList.filterByLocation[data-location-filter = 'B25X'] .callRow:not([data-beat='B25X']),
-    #callList.filterByLocation[data-location-filter = 'B25Y'] .callRow:not([data-beat='B25Y']),
-    #callList.filterByLocation[data-location-filter = 'B26X'] .callRow:not([data-beat='B26X']),
-    #callList.filterByLocation[data-location-filter = 'B26Y'] .callRow:not([data-beat='B26Y']),
-    #callList.filterByLocation[data-location-filter = 'B27X'] .callRow:not([data-beat='B27X']),
-    #callList.filterByLocation[data-location-filter = 'B27Y'] .callRow:not([data-beat='B27Y']),
-    #callList.filterByLocation[data-location-filter = 'B28X'] .callRow:not([data-beat='B28X']),
-    #callList.filterByLocation[data-location-filter = 'B29X'] .callRow:not([data-beat='B29X']),
-    #callList.filterByLocation[data-location-filter = 'B30X'] .callRow:not([data-beat='B30X']),
-    #callList.filterByLocation[data-location-filter = 'B30Y'] .callRow:not([data-beat='B30Y']),
-    #callList.filterByLocation[data-location-filter = 'B31X'] .callRow:not([data-beat='B31X']),
-    #callList.filterByLocation[data-location-filter = 'B31Y'] .callRow:not([data-beat='B31Y']),
-    #callList.filterByLocation[data-location-filter = 'B31Z'] .callRow:not([data-beat='B31Z']),
-    #callList.filterByLocation[data-location-filter = 'B32X'] .callRow:not([data-beat='B32X']),
-    #callList.filterByLocation[data-location-filter = 'B33X'] .callRow:not([data-beat='B33X']),
-    #callList.filterByLocation[data-location-filter = 'B34X'] .callRow:not([data-beat='B34X']),
-    #callList.filterByLocation[data-location-filter = 'B35X'] .callRow:not([data-beat='B35X']),
-    #callList.filterByLocation[data-location-filter = 'B35Y'] .callRow:not([data-beat='B35Y']),
-    #callList.filterByLocation[data-location-filter = 'D1'] .callRow:not([data-district='D1']),
-    #callList.filterByLocation[data-location-filter = 'D2'] .callRow:not([data-district='D2']),
-    #callList.filterByLocation[data-location-filter = 'D3'] .callRow:not([data-district='D3']),
-    #callList.filterByLocation[data-location-filter = 'D4'] .callRow:not([data-district='D4']),
-    #callList.filterByLocation[data-location-filter = 'D5'] .callRow:not([data-district='D5']),
-    #callList.filterByLocation[data-location-filter = 'S1'] .callRow:not([data-section='S1']),
-    #callList.filterByLocation[data-location-filter = 'S2'] .callRow:not([data-section='S2']),
-    #callList.filterByLocation[data-location-filter = 'S3'] .callRow:not([data-section='S3']),
-    #callList.filterByLocation[data-location-filter = 'CCD1'] .callRow:not([data-ccd='CCD1']),
-    #callList.filterByLocation[data-location-filter = 'CCD2'] .callRow:not([data-ccd='CCD2']),
-    #callList.filterByLocation[data-location-filter = 'CCD3'] .callRow:not([data-ccd='CCD3']),
-    #callList.filterByLocation[data-location-filter = 'CCD4'] .callRow:not([data-ccd='CCD4']),
-    #callList.filterByLocation[data-location-filter = 'CCD5'] .callRow:not([data-ccd='CCD5']),
-    #callList.filterByLocation[data-location-filter = 'CCD6'] .callRow:not([data-ccd='CCD6']),
-    #callList.filterByLocation[data-location-filter = 'CCD7'] .callRow:not([data-ccd='CCD7'])
+    #callsContainer.filterByLocation[data-location-filter = 'B01X'] .callRow:not([data-beat='B01X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B02X'] .callRow:not([data-beat='B02X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B02Y'] .callRow:not([data-beat='B02Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B03X'] .callRow:not([data-beat='B03X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B03Y'] .callRow:not([data-beat='B03Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B04X'] .callRow:not([data-beat='B04X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B05X'] .callRow:not([data-beat='B05X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B05Y'] .callRow:not([data-beat='B05Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B06X'] .callRow:not([data-beat='B06X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B07X'] .callRow:not([data-beat='B07X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B08X'] .callRow:not([data-beat='B08X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B09X'] .callRow:not([data-beat='B09X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B10X'] .callRow:not([data-beat='B10X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B10Y'] .callRow:not([data-beat='B10Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B11X'] .callRow:not([data-beat='B11X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B12X'] .callRow:not([data-beat='B12X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B13X'] .callRow:not([data-beat='B13X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B13Y'] .callRow:not([data-beat='B13Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B13Z'] .callRow:not([data-beat='B13Z']),
+    #callsContainer.filterByLocation[data-location-filter = 'B14X'] .callRow:not([data-beat='B14X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B14Y'] .callRow:not([data-beat='B14Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B15X'] .callRow:not([data-beat='B15X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B16X'] .callRow:not([data-beat='B16X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B16Y'] .callRow:not([data-beat='B16Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B17X'] .callRow:not([data-beat='B17X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B17Y'] .callRow:not([data-beat='B17Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B18X'] .callRow:not([data-beat='B18X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B18Y'] .callRow:not([data-beat='B18Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B19X'] .callRow:not([data-beat='B19X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B20X'] .callRow:not([data-beat='B20X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B21X'] .callRow:not([data-beat='B21X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B21Y'] .callRow:not([data-beat='B21Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B22X'] .callRow:not([data-beat='B22X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B22Y'] .callRow:not([data-beat='B22Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B23X'] .callRow:not([data-beat='B23X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B24X'] .callRow:not([data-beat='B24X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B24Y'] .callRow:not([data-beat='B24Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B25X'] .callRow:not([data-beat='B25X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B25Y'] .callRow:not([data-beat='B25Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B26X'] .callRow:not([data-beat='B26X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B26Y'] .callRow:not([data-beat='B26Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B27X'] .callRow:not([data-beat='B27X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B27Y'] .callRow:not([data-beat='B27Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B28X'] .callRow:not([data-beat='B28X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B29X'] .callRow:not([data-beat='B29X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B30X'] .callRow:not([data-beat='B30X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B30Y'] .callRow:not([data-beat='B30Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B31X'] .callRow:not([data-beat='B31X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B31Y'] .callRow:not([data-beat='B31Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'B31Z'] .callRow:not([data-beat='B31Z']),
+    #callsContainer.filterByLocation[data-location-filter = 'B32X'] .callRow:not([data-beat='B32X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B33X'] .callRow:not([data-beat='B33X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B34X'] .callRow:not([data-beat='B34X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B35X'] .callRow:not([data-beat='B35X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B35Y'] .callRow:not([data-beat='B35Y']),
+    #callsContainer.filterByLocation[data-location-filter = 'D1'] .callRow:not([data-district='D1']),
+    #callsContainer.filterByLocation[data-location-filter = 'D2'] .callRow:not([data-district='D2']),
+    #callsContainer.filterByLocation[data-location-filter = 'D3'] .callRow:not([data-district='D3']),
+    #callsContainer.filterByLocation[data-location-filter = 'D4'] .callRow:not([data-district='D4']),
+    #callsContainer.filterByLocation[data-location-filter = 'D5'] .callRow:not([data-district='D5']),
+    #callsContainer.filterByLocation[data-location-filter = 'S1'] .callRow:not([data-section='S1']),
+    #callsContainer.filterByLocation[data-location-filter = 'S2'] .callRow:not([data-section='S2']),
+    #callsContainer.filterByLocation[data-location-filter = 'S3'] .callRow:not([data-section='S3']),
+    #callsContainer.filterByLocation[data-location-filter = 'CCD1'] .callRow:not([data-ccd='CCD1']),
+    #callsContainer.filterByLocation[data-location-filter = 'CCD2'] .callRow:not([data-ccd='CCD2']),
+    #callsContainer.filterByLocation[data-location-filter = 'CCD3'] .callRow:not([data-ccd='CCD3']),
+    #callsContainer.filterByLocation[data-location-filter = 'CCD4'] .callRow:not([data-ccd='CCD4']),
+    #callsContainer.filterByLocation[data-location-filter = 'CCD5'] .callRow:not([data-ccd='CCD5']),
+    #callsContainer.filterByLocation[data-location-filter = 'CCD6'] .callRow:not([data-ccd='CCD6']),
+    #callsContainer.filterByLocation[data-location-filter = 'CCD7'] .callRow:not([data-ccd='CCD7'])
     {
       display: none;
     }          
@@ -452,7 +478,7 @@
       vertical-align: top;
     }
  
-    .callSpacer { width: 230px; }
+    .callSpacer { width: 240px; }
     .callDuration { width: 33px; font-size: 8pt; text-align:right; padding-top: 1pt; margin-right: 7px; color: #999;}
     .callDate { width: 27px; text-align: right; margin-right:3px; cursor: pointer;}
     .callTime { width: 55px; text-align: right; margin-right:10px; cursor: pointer;}
@@ -460,7 +486,7 @@
     .callUpdateTime { width: 55px; text-align: right; margin-right:10px; display: none; cursor: pointer;}
 
     .callID { width: 60px; }
-    .callLocation { width: 270px; margin-right: 5px; }
+    .callLocation { width: 260px; margin-right: 5px; }
     .callLocation .addressOfPointOfInterest { }
     .isPointOfInterest .callLocation { }
     .callLocation .pointOfInterest { font-size: 8pt; font-weight: bold;}
@@ -573,6 +599,7 @@ const CALL_CODE_MAPPING = {
   "922B" : "disorderly",
   "943" : "disorderly",
   "928" : "fire",
+  "928C" : "fire",
   "928P" : "fire",
   "929AU" : "fire",
   "929" : "fire",
@@ -586,7 +613,7 @@ const CALL_CODE_MAPPING = {
   "945" : "ambulance",
   "946" : "traffic",
   "949" : "suspicious",
-  "953" : "administrative",
+  "953" : "other",
   "955" : "animal",
   "955A" : "animal",
   "955B" : "animal",
@@ -668,6 +695,160 @@ const CALL_CODE_MAPPING = {
   "WELCK" : "checks"
 }
 
+const CALL_CODE_TO_DESCRIPTION_MAPPING = {
+  "160B" : "Vehicle Parked in Signed",
+  "207" : "Kidnapping",
+  "211" : "Robbery",
+  "211S" : "Silent Robbery Alarm",
+  "212_5" : "Robbery, First Degree",
+  "215" : "Carjacking",
+  "236" : "False Imprisonment",
+  "240" : "Assault",
+  "242" : "Battery",
+  "244" : "Assault w/ Caustic Chemicals",
+  "245" : "Assault w/ Deadly Weapon",
+  "243E" : "Battery on Cohabitant",
+  "246" : "Shooting at Occup Home/Veh",
+  "247" : "Shooting at Unocc Home/Veh",
+  "273_6" : "Violation of Court Order",
+  "311" : "Non-Police/Law Related",
+  "314" : "Indecent Exposure",
+  "374" : "Illegal Dumping of Waste",
+  "415" : "Disturbing the Peace",
+  "415A" : "Disturbance - Auto",
+  "415BF" : "Disturbance - Boyfriend",
+  "415C" : "Disturbance - Unknown",
+  "415CU" : "Disturbance - Customer",
+  "415D" : "Disturbance - Drinkers",
+  "415E" : "Disturbance - Loud Music",
+  "415F" : "Disturbance - Family",
+  "415FC" : "Disturbance - Fireworks",
+  "415GF" : "Disturbance - Girlfriend",
+  "415GS" : "Disturbance - Gunshots",
+  "415J" : "Disturbance - Juveniles",
+  "415LT" : "Disturbance - Landlord/Tenant",
+  "415N" : "Disturbance - Neighbor",
+  "415RM" : "Disturbance - Roommates",
+  "415SS" : "Shot Spotter Gunshots",
+  "415TH" : "Disturbance - Threats",
+  "415UG" : "Disturbance - Unwanted Guest",
+  "417" : "Brandishing a Weapon",
+  "451" : "Arson",
+  "459" : "Burglary",
+  "A459" : "Attempted Burglary",
+  "459AU" : "Auto Burglary",
+  "484" : "Theft",
+  "484LP" : "Stolen License Plate",
+  "487" : "Grand Theft",
+  "530" : "Identity Theft",
+  "594" : "Vandalism",
+  "597" : "Cruelty to Animal",
+  "601R" : "Runaway",
+  "602L" : "Trespassing",
+  "647B" : "Prostitution",
+  "647C" : "Panhandling",
+  "647F" : "Drunk in Public",
+  "900" : "Miscellaneous/Unknown",
+  "901" : "Collision (No injuries)",
+  "901A" : "Collision (Injuries)",
+  "901B" : "Collision (Unknown if Injuries)",
+  "901CP" : "Collision (City Property)",
+  "905" : "Abandoned Auto",
+  "906" : "Forced Entry in Progress", 
+  "911C" : "911 Hang Up From CP",
+  "911H" : "911 Hang Up",
+  "911N" : "Police Related Matter",
+  "912" : "Suspicious Person",
+  "913" : "Suicide",
+  "913A" : "Attempted Suicide",
+  "913TH" : "Suicide Threats",
+  "914" : "Make a Phone Call",
+  "918" : "Person Screaming",
+  "921" : "Car Prowler",
+  "928" : "Explosion",
+  "928C" : "Possible Incendiary Device",
+  "929" : "Fire",
+  "929AU" : "Auto on Fire",
+  "933MA" : "Alarm - Manually Activated",
+  "933R" : "Alarm - Ringer",
+  "933S" : "Alarm - Silent",
+  "933AU" : "Auto Alarm",
+  "940A" : "Cover the Officer",
+  "943" : "Fight",
+  "945" : "Ambulance Follow Up",
+  "945A" : "Ambulance Requested",
+  "946" : "Tow Requested",
+  "949" : "Suspicious Vehicle",
+  "950" : "Investigate Report from Citizen",
+  "953" : "Person Down on Street",
+  "955" : "Stray Animal",
+  "955A" : "Vicious Animal",
+  "955B" : "Barking Dog",
+  "955E" : "Animal Bite",
+  "955F" : "Injured Animal",
+  "968" : "Dead Animal Pick Up",
+  "968A" : "Live Animal Pick Up",
+  "970" : "Auto Improperly Parked",
+  "970B" : "Auto Blocking Driveway",
+  "973" : "Traffic Control Post",
+  "975" : "Stand By/Preserve the Peace",
+  "976" : "Car Stop",
+  "5150" : "Mentally Ill",
+  "10851" : "Stolen Vehicle",
+  "10852" : "Vehicle Tampering",
+  "11500" : "Drug Dealing",
+  "11550" : "Use/Under Influence Of Drugs",
+  "A10851" : "Attempted Auto Theft",
+  "R10851" : "Recovered Stolen Vehicle",
+  "20001" : "Hit & Run w/ Injury",
+  "20002" : "Hit & Run w/ Property Damage",
+  "23103" : "Reckless Driving",
+  "23152" : "DUI Alcohol or Drugs",
+  "5150B" : "Violent Mentally Ill",
+  "ACU" : "Animal Control Unit",
+  "AOA" : "Assist Outside Agency",
+  "ASSIST" : "Assist",
+  "BCAST" : "Broadcast",
+  "BOARD" : "Boardup",
+  "BTNFO" : "Beat Information",
+  "CCFILE" : "Chronic Caller",
+  "CHASE" : "Pursuit",
+  "CKVEH" : "Check Vehicle",
+  "CODE7" : "Subject Armed with a Gun",
+  "CODE33" : "Emergency Radio Traffic",
+  "ENCMP" : "Encampment",
+  "EVAL" : "Evaluation",
+  "EVID" : "Evidence",
+  "FLOOD" : "Flood",
+  "FNDPRO" : "Found Property",
+  "FUEL" : "Fuel Vehicle",
+  "GAS" : "Gas Leak",
+  "HAZ" : "Hazardous Situation",
+  "INFO" : "Beat Information",
+  "MACRO" : "MACRO Team Response",
+  "MFF" : "Mobile Field Force",
+  "MJ" : "Missing Juvenile",
+  "MP" : "Missing Person",
+  "MPRISK" : "Missing Person at Risk",
+  "MSDIAL" : "Misdial",
+  "OD" : "Overdose",
+  "OMC" : "OAKLAND MUNICIPAL CO",
+  "PDOA" : "Possible Dead Person",
+  "RR" : "Report Review",
+  "SECCK" : "Security Check",
+  "SIDESH" : "Sideshow",
+  "SIGNAL" : "Signals Malfunctioning",
+  "SLEEP" : "Sleeper",
+  "SMOKE" : "Smoke",
+  "SPEC" : "Special Assignment",
+  "STALL" : "Stalled Vehicle",
+  "SUPPL" : "Supplement",
+  "TEC" : "TEC Call",
+  "TXT911" : "Text 911",
+  "UNSEC" : "Unsecured Premises",
+  "WELCK" : "Welfare Check"
+}
+  
 const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "400 HIGH ST" : "Restaurant Depot", 
   "10 HEGENBERGER RD" : "Diamond Banquet Hall & Catering",
@@ -1734,7 +1915,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3820 SAN LEANDRO ST" : "All Star Gas",
   "398 W MACARTHUR BLVD" : "A & P Service Center",
   "409 WASHINGTON ST" : "Evgo",
-  "421 23RD AV" : "Eastgate Petroleum Llc - Oakland",
+  "421 23RD AV" : "Sinclair Dino Mart",
   "4251 INTERNATIONAL BLVD" : "Bass Gas And Mart",
   "4265 FOOTHILL BLVD" : "Ng Grewal",
   "4265 FOOTHILL BLVD" : "Chevron",
@@ -3962,6 +4143,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3352 GRAND AV" : "Michael's Chocolates",
   "3355 FOOTHILL BLVD" : "Penas Bakery",
   "3367 JORDAN RD" : "Eddie Maes Bakery",
+  "3411 FRUITVALE AV" : "La Farine Bakery",
   "3460 INTERNATIONAL BLVD" : "Delicias Bakery",
   "3494 DAVIS ST" : "Bay Empanadas",
   "3504 WILSON AVE" : "Dipped Etc",
@@ -5133,8 +5315,8 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "709 MANDANA BLVD" : "Nest Floral",
   "7219 INTERNATIONAL BLVD" : "Marietta Florist Wholesale",
   "7223 INTERNATIONAL BLVD" : "Daily Fresh Roses Shop",
-  "821 JEFFERSON ST" : "Floral Republic",
-  "821 JEFFERSON ST" : "Piazza Wholesale",
+  "821 JEFFERSON ST" : "Oakland Flower Market",
+  // "821 JEFFERSON ST" : "Piazza Wholesale",
   "8265 SKYLINE CIR" : "Ada Wong Design",
   "877 19TH ST" : "Deanna Morgan",
   "9133 INTERNATIONAL BLVD" : "Rosys Flowers & Gifts",
@@ -5387,6 +5569,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "6405 SHATTUCK AV" : "Oakland Organics (Cannabis)",
 
   /* Churches */
+  "3300 SCHOOL ST" : "Shiloh Mercy Ministries",
   "1034 66TH AV" : "Acts Full Gospel Church",
   "528 33RD ST" : "Abyssinian Missionary Baptist",
   "8501 INTERNATIONAL BLVD" : "Allen Temple Baptist Church",
@@ -6241,7 +6424,7 @@ var selectPrevLocationFilter = function() {
 
 var clearDateFilter = function() {
   var dateFilterDiv = document.getElementById("dateFilter");
-  var callList = document.getElementById("callList");
+  var callList = document.getElementById("callsContainer");
   var clearDateFilterButton = document.getElementById("clearDateFilterButton");
   if (dateFilterDiv == null || callList == null || clearDateFilterButton == null) {
     return;
@@ -6255,12 +6438,12 @@ var clearDateFilter = function() {
   callList.classList.add("showAllDates");
 
   clearDateFilterButton.classList.add("off");
-  showOrHideCallTitles();
+  updateCallTitles();
 }
   
 var rotateDateFilter = function() {
   var dateFilterDiv = document.getElementById("dateFilter");
-  var callList = document.getElementById("callList");
+  var callList = document.getElementById("callsContainer");
   var clearDateFilterButton = document.getElementById("clearDateFilterButton");
    
   if (dateFilterDiv == null || callList == null || clearDateFilterButton == null) {
@@ -6286,11 +6469,11 @@ var rotateDateFilter = function() {
     clearDateFilterButton.classList.add("off");
   }
 
-  showOrHideCallTitles();
+  updateCallTitles();
 }
 
 var handleLocationFilterChange = function() {
-  var callList = document.getElementById("callList");
+  var callList = document.getElementById("callsContainer");
   var locationFilter = document.getElementById("locationFilter");
   var prevLocationFilterButton = document.getElementById("prevLocationFilterButton");
   var nextLocationFilterButton = document.getElementById("nextLocationFilterButton");
@@ -6326,7 +6509,7 @@ var handleLocationFilterChange = function() {
     clearLocationFilterButton.classList.remove("off");
   }
 
-  showOrHideCallTitles();
+  updateCallTitles();
 }
 
 var formatDate = function(date) {
@@ -6381,6 +6564,15 @@ var mapAddressToPointOfInterest = function(location) {
   return ADDRESS_TO_POINT_OF_INTEREST_MAPPING[location];  
 }
 
+var mapCallCode = function(code, originalDescription) {
+  var mappedDescription = CALL_CODE_TO_DESCRIPTION_MAPPING[code];
+  if (mappedDescription != null) {
+    return mappedDescription;
+  } else {
+    return originalDescription;
+  }
+}
+
 var outputCall = function(attributes, parent, insertBefore) {
   var row = document.createElement("div");
   row.setAttribute("id", attributes.I_EVENTNUMBER);
@@ -6426,7 +6618,7 @@ var outputCall = function(attributes, parent, insertBefore) {
     row.classList.add("isPointOfInterest");
   }
 
-  addColumnToRow(row, attributes.CALL_DESC, "callDescription");
+  addColumnToRow(row, mapCallCode(attributes.CALL_ID, attributes.CALL_DESC), "callDescription");
   addColumnToRow(row, "B" + attributes.ILO_BEAT, "callBeat", function() { filterByLocation(this,"beat") });
   addColumnToRow(row, "D" + attributes.POL_DIST, "callDistrict", function() { filterByLocation(this, "district") });
   addColumnToRow(row, "S" + attributes.POL_SECT, "callSection", function() { filterByLocation(this, "section") });
@@ -6452,7 +6644,7 @@ var updateCallRecency = function() {
     setWhetherEventIsRecent(recentCalls[i]);
     setWhetherEventIsTodayOrYesterday(recentCalls[i]);
   }
-  showOrHideCallTitles();
+  updateCallTitles();
 }
 
 var findFirstRowEarlierThan = function(outputDiv, callDate) {
@@ -6511,26 +6703,53 @@ var showMenuBlock = function(menuBlock, show) {
   }
 }
 
-var showOrHideCallTitles = function() {
-  var titles = document.getElementsByClassName("title");
+var updateCallCount = function(callBlock, count) {
+  if (callBlock == null) {
+    return;
+  }
+  var title = callBlock.querySelector(".title");
+  var titleCount = callBlock.querySelector('.callCount');
+  var callType = callBlock.id.slice(0, callBlock.id.lastIndexOf("Block"));
+  var correspondingMenu = document.getElementById(callType);
+  var correspondingMenuCountDiv = correspondingMenu.querySelector(".callCount");
+
+  if (count == 0) {
+    title.style.display = "none";
+    titleCount.style.display = "none";
+  } else {
+    title.style.display = "inline-block";
+    titleCount.style.display = "inline-block";
+  }
+
+  if (count == 0) {
+    titleCount.innerHTML = "";
+    correspondingMenuCountDiv.innerHTML = "";
+  } else {
+    titleCount.innerHTML = count;
+    correspondingMenuCountDiv.innerHTML = count;
+  }
+}
+
+var updateCallTitles = function() {
+  var blocks = document.getElementsByClassName("callBlock");
 
   var atLeastOneTitleShowing = false;
   var atLeastOneCallLoaded = false;
-  for (var i=0; i<titles.length; i++) {
-    var calls = titles[i].parentElement.querySelectorAll(".callList .callRow");
+
+  for (var i=0; i<blocks.length; i++) {
+    var displayedCallsCount = 0;
+    var calls = blocks[i].querySelectorAll(".callList .callRow");
     if (calls.length > 0) {
       atLeastOneCallLoaded = true;
     }
-    var titleDisplayStyle = "none";
     for (var j=0; j<calls.length; j++) {
       var callDisplayStyle = window.getComputedStyle(calls[j]).display; 
       if (callDisplayStyle != 'none') {
-        titleDisplayStyle = "block";
         atLeastOneTitleShowing = true;
-        break;
+        displayedCallsCount++;
       }
     }
-    titles[i].style.display = titleDisplayStyle;
+    updateCallCount(blocks[i], displayedCallsCount);
   }
 
   var noMatchingCallsIndicator = document.getElementById("noMatchingCallsIndicator");
@@ -6568,7 +6787,7 @@ var toggleMenuBlock = function(menuBlock) {
   } else {
     showMenuBlock(menuBlock,false);
   }
-  showOrHideCallTitles();
+  updateCallTitles();
 }
 
 var showMenuItem = function(menuItem, show) {
@@ -6593,7 +6812,7 @@ var toggleMenuItem = function(menuItem) {
   }
   var turnOn = menuItem.classList.contains("off");
   showMenuItem(menuItem, turnOn);
-  showOrHideCallTitles();
+  updateCallTitles();
 }
 
 var updateContainingMenuBlock = function(menuItem) {
@@ -6642,11 +6861,11 @@ var setVisibilityOfAllCrimeTypes = function(show) {
     var menuItem = menuItems[i];
     showMenuItem(menuItem, show);
   }
-  showOrHideCallTitles();  
+  updateCallTitles();  
 }
 
 var toggleShowRecentOnly = function(showRecentOnlyControl) {
-  var callList = document.getElementById("callList");
+  var callList = document.getElementById("callsContainer");
   if (showRecentOnlyControl == null || callList == null) {
     return;
   }
@@ -6657,12 +6876,12 @@ var toggleShowRecentOnly = function(showRecentOnlyControl) {
     showRecentOnlyControl.classList.add("off");
     callList.classList.remove("showRecentOnly");
   }
-  showOrHideCallTitles();
+  updateCallTitles();
 }
 
 var toggleShowCallUpdateTime = function() {
   var showCallUpdateTimeControl = document.getElementById("showCallUpdateTime");
-  var callList = document.getElementById("callList");
+  var callList = document.getElementById("callsContainer");
   if (showCallUpdateTimeControl == null || callList == null) {
     return;
   }
@@ -6785,7 +7004,7 @@ var handleDataArrival = function(status, response) {
   setStatus(false);
   
   setTimerToRequestData(NORMAL_DATA_REQUEST_INTERVAL);
-  showOrHideCallTitles();
+  updateCallTitles();
 }
 
 var setTimerToRequestCallCounts = function() {
@@ -6825,12 +7044,12 @@ var updateDataContinuously = function() {
         <div class="appTitle">mOPD</div>
       </div>
       <div id="activeCallsBlock" class="callCountBlock">
-        <div id="activeCalls" class="callCount">0</div>
-        <div class="callCountLabel">Active</div>
+        <div id="activeCalls" class="totalCallCount">0</div>
+        <div class="totalCallCountLabel">Active</div>
       </div>
       <div id="pendingCallsBlock" class="callCountBlock">
-        <div id="pendingCalls" class="callCount">0</div>
-        <div class="callcountLabel">Pending</div>
+        <div id="pendingCalls" class="totalCallCount">0</div>
+        <div class="totalCallCountLabel">Pending</div>
       </div>
     </div>
     <div class="menuTopOptions">
@@ -6924,137 +7143,136 @@ var updateDataContinuously = function() {
     </div>
     <div id="violence" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Violence</div>
-      <div id="situations" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Situations</div>
-      <div id="homicides" class="menuitem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Homicides</div>
-      <div id="kidnapping" class="menuItem" onclick="scrollToMenuItem(this)" ><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Kidnapping</div>
-      <div id="deadlyWeapon" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Deadly Weapon</div>
-      <div id="carjacking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Carjacking</div>
-      <div id="robbery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Robbery</div>
-      <div id="assaultAndBattery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Assault and Battery</div>
+      <div id="situations" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Situations</div><div class="callCount"></div></div>
+      <div id="homicides" class="menuitem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Homicides</div><div class="callCount"></div></div>
+      <div id="kidnapping" class="menuItem" onclick="scrollToMenuItem(this)" ><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Kidnapping</div><div class="callCount"></div></div>
+      <div id="deadlyWeapon" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Deadly Weapon</div><div class="callCount"></div></div>
+      <div id="carjacking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Carjacking</div><div class="callCount"></div></div>
+      <div id="robbery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Robbery</div><div class="callCount"></div></div>
+      <div id="assaultAndBattery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Assault &amp; Battery</div><div class="callCount"></div></div>
     </div>
     <div id="shooting" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Shooting</div>
-      <div id="gunshots" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Gunshots</div>
-      <div id="shotSpotter" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> ShotSpotter</div>
-      <div id="weapons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Weapons</div>
+      <div id="gunshots" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Gunshots</div><div class="callCount"></div></div>
+      <div id="shotSpotter" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">ShotSpotter</div><div class="callCount"></div></div>
+      <div id="weapons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Weapons</div><div class="callCount"></div></div>
     </div>
     <div id="stealing" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Stealing</div>
-      <div id="stolenVehicle" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Stolen Vehicle</div>
-      <div id="recoveredStolenVehicle" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Recovered Vehicle</div>
-      <div id="burglary" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Burglary</div>
-      <div id="autoBurglary" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Auto Burglary</div>
-      <div id="theft" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Theft</div>
+      <div id="stolenVehicle" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Stolen Vehicle</div><div class="callCount"></div></div>
+      <div id="recoveredStolenVehicle" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Recovered Vehicle</div><div class="callCount"></div></div>
+      <div id="burglary" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Burglary</div><div class="callCount"></div></div>
+      <div id="autoBurglary" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Auto Burglary</div><div class="callCount"></div></div>
+      <div id="theft" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Theft</div><div class="callCount"></div></div>
     </div>
     <div id="conduct" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Conduct</div>
-      <div id="drugs" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Drugs</div>
-      <div id="disorderly" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Disorderly</div>
-      <div id="prostitution" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Prostitution</div>
-      <div id="offenders" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Offenders</div>
-      <div id="vandalism" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Vandalism</div>
-      <div id="trespassing" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Trespassing</div>
-      <div id="suspicious" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Suspicious</div>
-      <div id="disturbingThePeace" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Disturbing Peace</div>
+      <div id="drugs" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Drugs</div><div class="callCount"></div></div>
+      <div id="disorderly" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Disorderly</div><div class="callCount"></div></div>
+      <div id="prostitution" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Prostitution</div><div class="callCount"></div></div>
+      <div id="offenders" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Offenders</div><div class="callCount"></div></div>
+      <div id="vandalism" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Vandalism</div><div class="callCount"></div></div>
+      <div id="trespassing" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Trespassing</div><div class="callCount"></div></div>
+      <div id="suspicious" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Suspicious</div><div class="callCount"></div></div>
+      <div id="disturbingThePeace" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Disturbing Peace</div><div class="callCount"></div></div>
     </div>
     <div id="motorVehicles" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Motor Vehicles</div>
-      <div id="stops" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Stops</div>
-      <div id="hitAndRunWithInjury" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Injury Hit and Run</div>
-      <div id="hitAndRun" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Hit and Run</div>
-      <div id="traffic" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Traffic</div>
-      <div id="sideshow" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Sideshow</div>
-      <div id="vehicleCollision" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Collisions</div>
-      <div id="parking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Parking</div>
-    </div>
-    <div id="services" class="menuBlock">
+      <div id="stops" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Stops</div><div class="callCount"></div></div>
+      <div id="hitAndRunWithInjury" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Injury Hit and Run</div><div class="callCount"></div></div>
+      <div id="hitAndRun" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Hit and Run</div><div class="callCount"></div></div>
+      <div id="traffic" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Traffic</div><div class="callCount"></div></div>
+      <div id="sideshow" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Sideshow</div><div class="callCount"></div></div>
+      <div id="vehicleCollision" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Collisions</div><div class="callCount"></div></div>
+      <div id="parking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Parking</div><div class="callCount"></div></div>
+    </div><div id="services" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Services</div>
-      <div id="missingPersons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Missing Persons</div>
-      <div id="victim" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Victim</div>
-      <div id="mentallyIll" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Mentally Ill</div>
-      <div id="hazardous" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Hazardous</div>
-      <div id="ambulance" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Ambulance</div>
-      <div id="fire" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Fire</div>
-      <div id="animal" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Animal</div>
-      <div id="macro" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> MACRO</div>
+      <div id="missingPersons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Missing Persons</div><div class="callCount"></div></div>
+      <div id="victim" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Victim</div><div class="callCount"></div></div>
+      <div id="mentallyIll" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Mentally Ill</div><div class="callCount"></div></div>
+      <div id="hazardous" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Hazardous</div><div class="callCount"></div></div>
+      <div id="ambulance" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Ambulance</div><div class="callCount"></div></div>
+      <div id="fire" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Fire</div><div class="callCount"></div></div>
+      <div id="animal" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Animal</div><div class="callCount"></div></div>
+      <div id="macro" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">MACRO</div><div class="callCount"></div></div>
     </div>
     <div id="miscellaneous" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Miscellaneous</div>
-      <div id="other" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Other</div>
-      <div id="checks" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Checks</div>
-      <div id="administrative" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Administrative</div>
-      <div id="misdials" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div> Misdials</div>
+      <div id="other" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Other</div><div class="callCount"></div></div>
+      <div id="checks" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Checks</div><div class="callCount"></div></div>
+      <div id="administrative" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Administrative</div><div class="callCount"></div></div>
+      <div id="misdials" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Misdials</div><div class="callCount"></div></div>
     </div>
   </div>
 </div>
 
-<div id="callList" class="byCallType showAllDates">
+<div id="callsContainer" class="callsContainer showAllDates">
   <div id="noMatchingCallsIndicator">
     No matching calls.<br />&#127849; &#128110;
   </div>
   <div id="violenceBlock" class="sectionBlock">
-    <div id="situationsBlock" class="block"><div class="title">Situations</div><div class="callList"></div></div>
-    <div id="homicidesBlock" class="block"><div class="title">Homicides</div><div class="callList"></div></div>
-    <div id="kidnappingBlock" class="block"><div class="title">Kidnapping</div><div class="callList"></div></div>
-    <div id="deadlyWeaponBlock" class="block"><div class="title">Shootings and Assault with Deadly Weapon</div><div class="callList"></div></div>
-    <div id="carjackingBlock" class="block"><div class="title">Carjacking</div><div class="callList"></div></div>
-    <div id="robberyBlock" class="block"><div class="title">Robbery</div><div class="callList"></div></div>
-    <div id="assaultAndBatteryBlock" class="block"><div class="title">Assault and Battery</div><div class="callList"></div></div>
+    <div id="situationsBlock" class="callBlock"><div class="callCount"></div><div class="title">Situations</div><div class="callList"></div></div>
+    <div id="homicidesBlock" class="callBlock"><div class="callCount"></div><div class="title">Homicides</div><div class="callList"></div></div>
+    <div id="kidnappingBlock" class="callBlock"><div class="callCount"></div><div class="title">Kidnapping</div><div class="callList"></div></div>
+    <div id="deadlyWeaponBlock" class="callBlock"><div class="callCount"></div><div class="title">Shootings and Assault with Deadly Weapon</div><div class="callList"></div></div>
+    <div id="carjackingBlock" class="callBlock"><div class="callCount"></div><div class="title">Carjacking</div><div class="callList"></div></div>
+    <div id="robberyBlock" class="callBlock"><div class="callCount"></div><div class="title">Robbery</div><div class="callList"></div></div>
+    <div id="assaultAndBatteryBlock" class="callBlock"><div class="callCount"></div><div class="title">Assault and Battery</div><div class="callList"></div></div>
   </div>
 
   <div id="shootingBlock" class="sectionBlock">
-    <div id="gunshotsBlock" class="block"><div class="title">Gunshots</div><div class="callList"></div></div>
-    <div id="shotSpotterBlock" class="block"><div class="title">ShotSpotter (Gunshots)</div><div class="callList"></div></div>
-    <div id="weaponsBlock" class="block"><div class="title">Weapons</div><div class="callList"></div></div>
+    <div id="gunshotsBlock" class="callBlock"><div class="callCount"></div><div class="title">Gunshots</div><div class="callList"></div></div>
+    <div id="shotSpotterBlock" class="callBlock"><div class="callCount"></div><div class="title">ShotSpotter (Gunshots)</div><div class="callList"></div></div>
+    <div id="weaponsBlock" class="callBlock"><div class="callCount"></div><div class="title">Weapons</div><div class="callList"></div></div>
   </div>
 
   <div id="stealingBlock" class="sectionBlock">
-    <div id="stolenVehicleBlock" class="block"><div class="title">Stolen Vehicle</div><div class="callList"></div></div>
-    <div id="recoveredStolenVehicleBlock" class="block"><div class="title">Recovered Stolen Vehicle</div><div class="callList"></div></div>
-    <div id="burglaryBlock" class="block"><div class="title">Burglary</div><div class="callList"></div></div>
-    <div id="autoBurglaryBlock" class="block"><div class="title">Auto Burglary</div><div class="callList"></div></div>
-    <div id="theftBlock" class="block"><div class="title">Theft</div><div class="callList"></div></div>
+    <div id="stolenVehicleBlock" class="callBlock"><div class="callCount"></div><div class="title">Stolen Vehicle</div><div class="callList"></div></div>
+    <div id="recoveredStolenVehicleBlock" class="callBlock"><div class="callCount"></div><div class="title">Recovered Stolen Vehicle</div><div class="callList"></div></div>
+    <div id="burglaryBlock" class="callBlock"><div class="callCount"></div><div class="title">Burglary</div><div class="callList"></div></div>
+    <div id="autoBurglaryBlock" class="callBlock"><div class="callCount"></div><div class="title">Auto Burglary</div><div class="callList"></div></div>
+    <div id="theftBlock" class="callBlock"><div class="callCount"></div><div class="title">Theft</div><div class="callList"></div></div>
   </div>
 
   <div id="conductBlock" class="sectionBlock">
-    <div id="drugsBlock" class="block"><div class="title">Drugs</div><div class="callList"></div></div>
-    <div id="disorderlyBlock" class="block"><div class="title">Disorderly</div><div class="callList"></div></div>
-    <div id="prostitutionBlock" class="block"><div class="title">Prostitution</div><div class="callList"></div></div>
-    <div id="offendersBlock" class="block"><div class="title">Offenders</div><div class="callList"></div></div>
-    <div id="vandalismBlock" class="block"><div class="title">Vandalism</div><div class="callList"></div></div>
-    <div id="trespassingBlock" class="block"><div class="title">Trespassing</div><div class="callList"></div></div>
+    <div id="drugsBlock" class="callBlock"><div class="callCount"></div><div class="title">Drugs</div><div class="callList"></div></div>
+    <div id="disorderlyBlock" class="callBlock"><div class="callCount"></div><div class="title">Disorderly</div><div class="callList"></div></div>
+    <div id="prostitutionBlock" class="callBlock"><div class="callCount"></div><div class="title">Prostitution</div><div class="callList"></div></div>
+    <div id="offendersBlock" class="callBlock"><div class="callCount"></div><div class="title">Offenders</div><div class="callList"></div></div>
+    <div id="vandalismBlock" class="callBlock"><div class="callCount"></div><div class="title">Vandalism</div><div class="callList"></div></div>
+    <div id="trespassingBlock" class="callBlock"><div class="callCount"></div><div class="title">Trespassing</div><div class="callList"></div></div>
 
     <div id="violenceBlock" class="sectionBlock">
-    <div id="suspiciousBlock" class="block"><div class="title">Suspicious Person or Vehicle</div><div class="callList"></div></div>
-    <div id="disturbingThePeaceBlock" class="block"><div class="title">Disturbing the Peace</div><div class="callList"></div></div>
+    <div id="suspiciousBlock" class="callBlock"><div class="callCount"></div><div class="title">Suspicious Person or Vehicle</div><div class="callList"></div></div>
+    <div id="disturbingThePeaceBlock" class="callBlock"><div class="callCount"></div><div class="title">Disturbing the Peace</div><div class="callList"></div></div>
   </div>
 
   <div id="motorVehiclesBlock" class="sectionBlock">
-    <div id="stopsBlock" class="block"><div class="title">Stops</div><div class="callList"></div></div>
-    <div id="hitAndRunWithInjuryBlock" class="block"><div class="title">Hit and Run with Injury</div><div class="callList"></div></div>
-    <div id="hitAndRunBlock" class="block"><div class="title">Hit and Run</div><div class="callList"></div></div>
-    <div id="trafficBlock" class="block"><div class="title">Traffic</div><div class="callList"></div></div>
-    <div id="sideshowBlock" class="block"><div class="title">Sideshow</div><div class="callList"></div></div>
-    <div id="vehicleCollisionBlock" class="block"><div class="title">Vehicle Collision</div><div class="callList"></div></div>
-    <div id="parkingBlock" class="block"><div class="title">Parking</div><div class="callList"></div></div>
+    <div id="stopsBlock" class="callBlock"><div class="callCount"></div><div class="title">Stops</div><div class="callList"></div></div>
+    <div id="hitAndRunWithInjuryBlock" class="callBlock"><div class="callCount"></div><div class="title">Hit and Run with Injury</div><div class="callList"></div></div>
+    <div id="hitAndRunBlock" class="callBlock"><div class="callCount"></div><div class="title">Hit and Run</div><div class="callList"></div></div>
+    <div id="trafficBlock" class="callBlock"><div class="callCount"></div><div class="title">Traffic</div><div class="callList"></div></div>
+    <div id="sideshowBlock" class="callBlock"><div class="callCount"></div><div class="title">Sideshow</div><div class="callList"></div></div>
+    <div id="vehicleCollisionBlock" class="callBlock"><div class="callCount"></div><div class="title">Vehicle Collision</div><div class="callList"></div></div>
+    <div id="parkingBlock" class="callBlock"><div class="callCount"></div><div class="title">Parking</div><div class="callList"></div></div>
   </div>
 
   <div id="servicesBlock" class="sectionBlock">
-    <div id="missingPersonsBlock" class="block"><div class="title">Missing Persons</div><div class="callList"></div></div>
-    <div id="victimBlock" class="block"><div class="title">Crime Victim at Hospital</div><div class="callList"></div></div>
-    <div id="mentallyIllBlock" class="block"><div class="title">Mentally Ill</div><div class="callList"></div></div>
-    <div id="hazardousBlock" class="block"><div class="title">Hazardous Situation</div><div class="callList"></div></div>
-    <div id="ambulanceBlock" class="block"><div class="title">Ambulance</div><div class="callList"></div></div>
-    <div id="fireBlock" class="block"><div class="title">Fire</div><div class="callList"></div></div>
-    <div id="animalBlock" class="block"><div class="title">Animal</div><div class="callList"></div></div>
-    <div id="macroBlock" class="block"><div class="title">MACRO</div><div class="callList"></div></div>
+    <div id="missingPersonsBlock" class="callBlock"><div class="callCount"></div><div class="title">Missing Persons</div><div class="callList"></div></div>
+    <div id="victimBlock" class="callBlock"><div class="callCount"></div><div class="title">Crime Victim at Hospital</div><div class="callList"></div></div>
+    <div id="mentallyIllBlock" class="callBlock"><div class="callCount"></div><div class="title">Mentally Ill</div><div class="callList"></div></div>
+    <div id="hazardousBlock" class="callBlock"><div class="callCount"></div><div class="title">Hazardous Situation</div><div class="callList"></div></div>
+    <div id="ambulanceBlock" class="callBlock"><div class="callCount"></div><div class="title">Ambulance</div><div class="callList"></div></div>
+    <div id="fireBlock" class="callBlock"><div class="callCount"></div><div class="title">Fire</div><div class="callList"></div></div>
+    <div id="animalBlock" class="callBlock"><div class="callCount"></div><div class="title">Animal</div><div class="callList"></div></div>
+    <div id="macroBlock" class="callBlock"><div class="callCount"></div><div class="title">MACRO</div><div class="callList"></div></div>
   </div>
 
   <div id="miscellaneousBlock" class="sectionBlock">
-    <div id="otherBlock" class="block"><div class="title">Other</div><div class="callList"></div></div>
-    <div id="checksBlock" class="block"><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
-    <div id="administrativeBlock" class="block"><div class="title">Administrative</div><div class="callList"></div></div>
-    <div id="misdialsBlock" class="block"><div class="title">Misdials</div><div class="callList"></div></div>
+    <div id="otherBlock" class="callBlock"><div class="callCount"></div><div class="title">Other</div><div class="callList"></div></div>
+    <div id="checksBlock" class="callBlock"><div class="callCount"></div><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
+    <div id="administrativeBlock" class="callBlock"><div class="callCount"></div><div class="title">Administrative</div><div class="callList"></div></div>
+    <div id="misdialsBlock" class="callBlock"><div class="callCount"></div><div class="title">Misdials</div><div class="callList"></div></div>
   </div>
   </div>
 </body>
