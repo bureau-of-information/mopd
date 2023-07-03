@@ -6432,7 +6432,7 @@ var updateCallRecency = function() {
   var recentCalls = document.querySelectorAll(".callRow.recentUpdate, .callRow.recentCall");
   for (var i=0; i<recentCalls.length; i++) {
     setWhetherEventIsRecent(recentCalls[i]);
-    setWhetherEventIsTodayOrYesterday(row);
+    setWhetherEventIsTodayOrYesterday(recentCalls[i]);
   }
   showOrHideCallTitles();
 }
