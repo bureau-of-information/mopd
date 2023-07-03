@@ -190,9 +190,48 @@
       content: "\2610";
     }
 
+    #dateFilter {
+      display: inline-block;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border: 1px solid #000;
+      border-radius: 6px;
+      padding: 2px; 
+      width: 120px;
+      text-align: center;
+    }
+    #clearDateFilterButton {
+      display: inline-block;
+      font-size: 14pt;
+      line-height: 14pt;
+      cursor: pointer;
+      width: 20pt;
+      height: 16pt;
+      text-align: center;
+      vertical-align: middle;
+      margin-left: 5px;
+    }     
+    #clearDateFilterButton.off {
+      display: none;
+    }
+
+    #dateFilter.showAllDates::before  {
+      content: "All Dates";
+    }
+    #dateFilter.showTodayOnly::before  {
+      content: "Today Only";
+      font-weight: bold;
+      color: #a00;
+    }
+    #dateFilter.showYesterdayOnly::before  {
+      content: "Yesterday Only";
+      font-weight: bold;
+      color: #a00;
+    }
+
     #locationFilterContainer {
       height: 30px;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
     }
 
     #locationFilter {
@@ -316,6 +355,12 @@
     #callList.showRecentOnly .callRow:not(.recentUpdate) {
       display: none;
     }
+    #callList.showTodayOnly .callRow:not(.today) {
+      display: none;
+    }
+    #callList.showYesterdayOnly .callRow:not(.yesterday) {
+      display: none;
+    }
 
     #callList.showCallUpdateTime .callUpdateDate,
     #callList.showCallUpdateTime .callUpdateTime {
@@ -425,9 +470,6 @@
     .callDistrict { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999;}
     .callSection { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999;}
     .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #fff;}
-
-
-
   </style>
 
 <script>
@@ -1045,7 +1087,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3851 INTERNATIONAL BLVD" : "Tamales Lander",
   "3859 PIEDMONT AV" : "Commis",
   "386 60TH ST" : "Yolky Friends",
-  "3860 MARTIN LUTHER KING JR WY" : "Mlk Cafe",
+  "3860 MARTIN LUTHER KING JR WY" : "MLK Cafe",
   "387 9TH ST" : "A & Y Food Market",
   "3872 INTERNATIONAL BLVD" : "Otaez Mexicatessen",
   "388 GRAND AV" : "Mama Oakland",
@@ -1312,7 +1354,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "5941 MACARTHUR BLVD" : "Charlies Las Palmas",
   "5942 MACARTHUR BLVD" : "Loards Ice Cream & Candy",
   "600 E 15TH ST" : "Ken S Sio",
-  "6001 MACARTHUR BLVD" : "Jj Fish & Chicken",
+  "6001 MACARTHUR BLVD" : "JJ Fish & Chicken",
   "601 HEGENBERGER RD" : "Denny's",
   "6018 MACARTHUR BLVD" : "Bojax Kitchen",
   "6018 MACARTHUR BLVD" : "Tos Enterprise",
@@ -1566,7 +1608,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "907 WASHINGTON ST # D" : "La Guerrera's Kitchen",
   "920 WEBSTER ST" : "Cam Anh",
   "940 WEBSTER ST" : "Ming's Tasty Restaurant",
-  "941 W GRAND AV" : "Jj Fish & Chicken",
+  "941 W GRAND AV" : "JJ Fish & Chicken",
   "9773 GOLF LINKS RD" : "Service Systems Associates",
   "10 HEGENBERGER RD" : "New Lazeeza",
   "100 GRAND AVE" : "Alamar",
@@ -1700,7 +1742,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "421 23RD AV" : "Eastgate Petroleum Llc - Oakland",
   "4251 INTERNATIONAL BLVD" : "Bass Gas And Mart",
   "4265 FOOTHILL BLVD" : "Ng Grewal",
-  "4265 FOOTHILL BLVD" : "Chevron Usa 0019",
+  "4265 FOOTHILL BLVD" : "Chevron",
   "4276 MACARTHUR BLVD" : "Mac Arthur 76",
   "4280 FOOTHILL BLVD" : "Pious Petroleum",
   "4301 SAN LEANDRO ST" : "Eagle Gas & Mini Mart",
@@ -1709,12 +1751,12 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "451 HEGENBERGER RD" : "451 Hegenberger Gas",
   "5131 SHATTUCK AV" : "Shattuck Fuel",
   "540 HEGENBERGER RD" : "Coliseum Shell",
-  "5425 MARTIN LUTHER KING JR WY" : "Tqs Gas & Repair",
+  "5425 MARTIN LUTHER KING JR WY" : "Mobil",
   "5509 MARTIN LUTHER KING JR WY" : "As Convenience & Energy",
-  "566 HEGENBERGER RD" : "Arco",
+  "566 HEGENBERGER RD" : "ARCO",
   "5725 THORNHILL DR" : "Montclair Gas & Autocare",
   "5755 BROADWAY" : "Broadway Shell",
-  "6407 TELEGRAPH AV" : "Arco / Ampm",
+  "6407 TELEGRAPH AV" : "ARCO / ampm",
   "720 HIGH ST" : "Go! Gas & Food",
   "7225 BANCROFT AV" : "Bancroft Gas Corporation",
   "731 W MACARTHUR BLVD" : "Westco Gas & Food",
@@ -1826,7 +1868,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2350 HARRISON ST" : "7-Eleven Inc Store 20009d",
   "2350 HARRISON ST" : "7-Eleven Inc Store 20009d",
   "2370 TELEGRAPH AV" : "Koreana Plaza Market Oakland",
-  "2400 MARKET ST" : "Usa Food Mart",
+  "2400 MARKET ST" : "USA Food Mart",
   "241 10TH ST" : "Hometown Grocery",
   "2411 MACARTHUR BLVD" : "Diamond Vicinity Corp 18216e",
   "2429 TELEGRAPH AV" : "Telegraph Quality Market",
@@ -2154,7 +2196,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3505 BROADWAY" : "Kaiser Foundation Hospitals",
   "3510 BROADWAY" : "Kaiser Foundation Hospitals",
   "370 34TH ST" : "Alta Bates Summit Medical Center",
-  "370 4TH ST" : "Maisons Marquest & Domaines Usa",
+  "370 4TH ST" : "Maisons Marquest & Domaines USA",
   "3709 GRAND AV" : "Douglas Parking",
   "3770 PIEDMONT AV" : "Piedmont Lot",
   "378 11TH ST" : "Douglas Parking",
@@ -2486,7 +2528,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "4174 35TH AV" : "Wellness & Releaf",
   "4200 PARK BLVD" : "Opaque Eyewear",
   "4200 PARK BLVD" : "Artkivez",
-  "4240 LAKESHORE AV" : "The Bunny's Revenge",
   "4244 E 12TH ST" : "Al Sur Del Sur",
   "4266 PIEDMONT AV" : "Maple Street Denim",
   "4320 HARBORD DR" : "Austin Below",
@@ -3061,9 +3102,9 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "4100 REDWOOD RD" : "Safeway",
   "4101 FOOTHILL BLVD" : "Phoenix Candles Shop",
   "4105 MONTGOMERY ST" : "Greetings From Oga",
-  "4106 INTERNATIONAL BLVD" : "2020 Mobile Corp",
-  "4106 INTERNATIONAL BLVD" : "Sprint 4750",
-  "4106 INTERNATIONAL BLVD" : "T-Mobile Financial",
+  // "4106 INTERNATIONAL BLVD" : "2020 Mobile Corp",
+  // "4106 INTERNATIONAL BLVD" : "Sprint 4750",
+  "4106 INTERNATIONAL BLVD" : "T-Mobile",
   "411 9TH ST" : "Wong Kau Company",
   "411 W MACARTHUR BLVD" : "A&P Auto Detail",
   "4121 PIEDMONT AV" : "The Sunshine Prophecy",
@@ -3187,10 +3228,9 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "512 E 12TH ST" : "Hang Thai",
   "5130 BROADWAY" : "Safeway",
   "5134 CAMDEN ST" : "D' Che Designs",
-  "515 INDEPENDENT RD" : "Usa Metals",
+  "515 INDEPENDENT RD" : "USA Metals",
   "5160 CLAREMONT AVE" : "Feloved",
   "518 MIDCREST RD" : "Luxury Costs Less",
-  "519 18TH ST" : "Aramark Sports And Entertainment Services",
   "5200 ADELINE ST" : "Cone Shape Top",
   "5219 FOOTHILL BLVD" : "Uniforms Outlet",
   "522 ZORAH ST" : "Ballard Craftworks",
@@ -3469,7 +3509,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "866 WALKER AV" : "Project Pet",
   "868 WEBSTER ST" : "Y & D Produce",
   "8708 SENECA ST" : "Tipy Toe Productions",
-  "872 27TH ST" : "Uc Bikes",
+  "872 27TH ST" : "UC Bikes",
   "8731 SENECA ST" : "The Fashionable Fashionaires Bk2020",
   "8740 INTERNATIONAL BLVD" : "Guatelinda Wholesale",
   "876 MEAD AV" : "Kmc Beauty",
@@ -3525,7 +3565,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1020 E 8TH" : "Solartree Delivery",
   "1021 45TH AV" : "Happy Family Farm",
   "1021 45TH AVE" : "Jw Investment Firm Inc.",
-  "1033 44TH AV" : "Hammerjack Usa",
+  "1033 44TH AV" : "Hammerjack USA",
   "1035 22ND AVE" : "Bloomco",
   "1035 22ND AVE" : "Bam Distribution",
   "1035 22ND AVE" : "Pro Genitor",
@@ -3727,7 +3767,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1818 79TH AV" : "Moneyman's Car Wash & Car Sales",
   "2000 MARITIME ST" : "Shift",
   "2001 96TH AV" : "Muaad Nasher",
-  "2221 103RD AV" : "Senowu-Ajirenike Usa",
+  "2221 103RD AV" : "Senowu-Ajirenike USA",
   "2272 HIGH ST" : "Jorges Auto",
   "2327 UNION ST" : "California Motor Car Company",
   "2416 88TH AVE 5" : "Billy Destiny Auto",
@@ -3871,7 +3911,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "631 85TH AVE" : "Atc Colors",
   "6658 BANCROFT AV" : "Trajes Tipicos Guatemalteca Elizabeth",
   "6681 FOOTHILL BLVD" : "Dependable Janitorial Service & Supply",
-  "680 4TH ST" : "Usa Marketing",
+  "680 4TH ST" : "USA Marketing",
   "6800 BROADWAY TER" : "Cup And Dagger/Cup & Dagger/Shiddy Coffee",
   "7016 INTERNATIONAL BLVD" : "Rn Parts",
   "716 ARIMO AV" : "Appearances",
@@ -3889,7 +3929,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "900 FALLON ST" : "Tan Tan",
   "910 89TH AV" : "Jy Metals",
   "9218 WALTER AV" : "Chris Macewan Enterprises",
-  "922 88TH AV" : "Universal Trading Center ( Usa )",
+  "922 88TH AV" : "Universal Trading Center ( USA )",
   "938 44TH ST" : "Kingdom Auto",
   "1005 70TH AV" : "Rosa Virginia Lopez Carcamo",
   "1005 83RD AV" : "Smoky Indulgence",
@@ -4733,7 +4773,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "69 HAMILTON PL" : "Las Brujas",
   "707 WILLOW ST" : "State Market Liquor",
   "7101 INTERNATIONAL BLVD" : "Tolins Liquor",
-  "7307 EDGEWATER DR" : "Jj Buckley",
+  "7307 EDGEWATER DR" : "JJ Buckley",
   "739 E 12TH ST" : "Jacksons Liquor",
   "7717 BANCROFT AV" : "L T Liquor & Grocery",
   "7940 INTERNATIONAL BLVD" : "Star Liquors",
@@ -4748,8 +4788,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "9818 INTERNATIONAL BLVD" : "Moneygram Check Cashing",
   "10440 MACARTHUR BLVD" : "Sports Page",
   "1068 WEBSTER ST" : "T4 Cj",
-  "1100 FRANKLIN ST" : "Lux",
-  "1100 FRANKLIN ST" : "Lux.",
+  "1100 FRANKLIN ST" : "Lux Pub and Club",
   "1220 BROADWAY" : "Ceremony",
   "132 14TH ST" : "The Ruby Room",
   "135 12TH ST" : "Mad Oak",
@@ -4978,7 +5017,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3831 MACARTHUR BLVD" : "Jcreation Fitness",
   "3831 MACARTHUR BLVD" : "Tmn Enterprises/Body Mechanixs Fitness Cooperative",
   "3925 PIEDMONT AV" : "Flex Fitness",
-  "3950 ALAMEDA AV" : "24 Hour Fitness Usa",
+  "3950 ALAMEDA AV" : "24 Hour Fitness USA",
   "4055 MACARTHUR BLVD" : "Planet Fitness",
   "41 TUNNEL RD" : "Claremont Hotel Club & Spa",
   "4118 MACARTHUR BLVD" : "Supreme Mma",
@@ -5186,7 +5225,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2119 E 25TH ST" : "Sebastian A. Ita",
   "2143 E 28TH ST" : "Lemonplum Consulting",
   "2200 MACARTHUR BLVD" : "Sprint",
-  "2221 INTERNATIONAL BLVD" : "Sound Source Usa",
+  "2221 INTERNATIONAL BLVD" : "Sound Source USA",
   "2248 E 17TH ST" : "Leonardo Nicolas Huerta",
   "2280 106TH AV" : "Poppy Haus",
   "2323 BROADWAY" : "Fortuna Commerce",
@@ -5212,22 +5251,18 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3092 MIDDLETON ST" : "Living Intentionally",
   "3093 BROADWAY" : "Andrew Logan",
   "311 MANDALAY RD" : "Ben Stiegler",
-  "311 OAK ST" : "Transceiver Usa",
+  "311 OAK ST" : "Transceiver USA",
   "3136 CALIFORNIA ST" : "New Queens Hapenny Cons0rt",
   "316 15TH ST" : "Primer",
   "320 10TH ST" : "Aty Computer",
-  "3201 LAKESHORE AV" : "T-Mobile Financial",
-  "3201 LAKESHORE AV" : "T-Mobile Leasing",
-  "3201 LAKESHORE AV" : "T-Mobile West",
+  "3201 LAKESHORE AV" : "T-Mobile",
   "3226 GRAND AV" : "General Computer Systems",
   "3237 FOOTHILL BLVD" : "Bay Area Wireless",
   "3264 GRAND AV" : "Respect The Root",
   "3276 INTERNATIONAL BLVD" : "La Guatemalteca",
   "3301 E 12TH ST" : "Origen 32",
   "3422 WEST ST" : "Blackchristmas365",
-  "3509 INTERNATIONAL BLVD" : "T-Mobile Financial",
-  "3509 INTERNATIONAL BLVD" : "T-Mobile Leasing",
-  "3509 INTERNATIONAL BLVD" : "T-Mobile West",
+  "3509 INTERNATIONAL BLVD" : "T-Mobile",
   "352 INTERNATIONAL BLVD" : "Hoa Ngo",
   "3657 GRAND AV" : "Western Integrated Systems (Sales)",
   "3700 MANDELA PKWY" : "Magnolia Design Center",
@@ -5248,9 +5283,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "4706 VIRGINIA AV" : "Sauce - Boss Beauty",
   "475 14TH ST" : "Eqecat",
   "490 43RD ST" : "Pixelcut Inc.",
-  "4937 TELEGRAPH AVE" : "T-Mobile Financial",
-  "4937 TELEGRAPH AVE" : "T-Mobile Leasing",
-  "4937 TELEGRAPH AVE" : "T-Mobile West",
+  "4937 TELEGRAPH AVE" : "T-Mobile",
   "4989 MACARTHUR BLVD" : "V-Store",
   "5131 TELEGRAPH AV" : "Digicom",
   "5241 COLLEGE AV" : "Revamp Amplifier Service",
@@ -5289,8 +5322,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "821 LONGRIDGE RD" : "Dreyer Electronics",
   "823 INTERNATIONAL BLVD" : "Bao Wireless",
   "84 WILDING LN" : "Duncan & Associates",
-  "8460 EDGEWATER DR" : "T-Mobile Financial",
-  "8460 EDGEWATER DR" : "T-Mobile Leasing",
+  "8460 EDGEWATER DR" : "T-Mobile",
   "1741 MARKET ST" : "Millenium Market",
   "1250 7TH AV" : "Canton Chinese Drug Store",
   "1333 BROADWAY" : "Walgreens",
@@ -5475,15 +5507,15 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1700 47th AV" : "Masjidul Waritheen School",
 
   /* BART Stations */
-  "555 40TH ST" : "Macarthur Bart Station",
-  "800 OAK ST" : "Lake Merritt Bart Station",
-  "1327 BROADWAY" : "13th Street Bart Entrance",
-  "1245 BROADWAY" : "12th St Bart Station",
-  "1451 7TH ST" : "West Oakland Bart Station",
-  "1900 BROADWAY" : "19th St Bart Station",
-  "5660 COLLEGE AV" : "Rockridge Bart Station",
-  "7200 SAN LEANDRO ST" : "Coliseum Bart Station",
-  "3401 E 12TH ST" : "Fruitvale Bart Station",
+  "555 40TH ST" : "Macarthur BART Station",
+  "800 OAK ST" : "Lake Merritt BART Station",
+  "1327 BROADWAY" : "13th Street BART Entrance",
+  "1245 BROADWAY" : "12th St BART Station",
+  "1451 7TH ST" : "West Oakland BART Station",
+  "1900 BROADWAY" : "19th St BART Station",
+  "5660 COLLEGE AV" : "Rockridge BART Station",
+  "7200 SAN LEANDRO ST" : "Coliseum BART Station",
+  "3401 E 12TH ST" : "Fruitvale BART Station",
 
   /* Major Facilities */
   "7000 COLISEUM WY" : "Oakland Coliseum",
@@ -5507,15 +5539,16 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "300 FRANK H OGAWA PLZ" : "Rotunda Building",
   // "300 FRANK H OGAWA PLZ 155" : "Spoiled Boutique",
   "540 17TH ST" : "Oakland Ice Center",
+  "519 18TH ST" : "Oakland Ice Center",
   "1260 MARTIN LUTHER KING JR WY" : "City Center West Public Garage",
-  "1111 FRANKLIN ST" : "Franklin Building (Uc Office Of The President, High Xii Cafe)",
-  // "1111 FRANKLIN ST" : "High Xii Cafe",
+  "1111 FRANKLIN ST" : "Franklin Building (UC Office Of The President, High Xii Cafe)",
+  // "1111 FRANKLIN ST" : "High XII Cafe",
   "524 16TH ST" : "Rotunda Garage",
   "1221 OAK ST" : "Alameda County Administration Building",
   "1225 FALLON ST" : "René C. Davidson Courthouse",
   "661 WASHINGTON ST" : "Wiley W. Manuel Courthouse",
   "2651 73RD AV" : "Oakland Police Eastmont Substation",
-  "800 MADISON ST" : "Bart Police Department",
+  "800 MADISON ST" : "BART Police Department",
   "333 E 8TH ST" : "Peralta Police Services",
   "1180 25TH AV" : "Oakland Housing Authority",
   "8980 EARHART RD" : "Alameda County Sheriff",
@@ -5527,6 +5560,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   
   /* Apartment Buildings */
   "1200 LAKESHORE AV" : "1200 Lakeshore Apartments",  
+  "1428 105TH AV" : "Oakland Station Senior Age 62+",
 
   /* Office Buildings */
   "333 HEGENBERGER RD" : "Oakland Airport Plaza",
@@ -5666,7 +5700,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   // "388 9TH ST 186" : "Sobo Ramen",
   // "388 9TH ST 268" : "Sakura Bistro",
   // "388 9TH ST STE 125A" : "Oakland I-Tea",
-  // "388 9TH ST STE 159" : "Uc Dessert",
+  // "388 9TH ST STE 159" : "UC Dessert",
   // "388 9TH ST STE 181" : "C & M Bistro",
   // "388 9TH ST STE 182" : "Gum Kuo Restaurant",
   // "388 9TH ST STE 288, 289" : "H.L. Restaurant",
@@ -5998,7 +6032,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "5606 SAN PABLO AV" : "Oakland Library - Golden Gate Branch",
   "550 EL EMBARCADERO" : "Oakland Library - Lakeview Branch",
   "125 14TH ST" : "Oakland Library - Main Library",
-  "6833 INTERNATIONAL BLVD" : "Oakland Library - Mlk Jr Branch",
+  "6833 INTERNATIONAL BLVD" : "Oakland Library - MLK Jr Branch",
   "4805 FOOTHILL BLVD" : "Oakland Library - Melrose Branch",
   "1687 MOUNTAIN BLVD" : "Oakland Library - Montclair Branch",
   "80 ECHO AV" : "Oakland Library - Piedmont Av Branch",
@@ -6109,6 +6143,30 @@ var setWhetherEventIsRecent = function(callRow) {
   }
 }
 
+var setWhetherEventIsTodayOrYesterday = function(callRow) {
+  if (callRow == null) {
+    return;
+  }
+  var callDate = new Date(Number(callRow.dataset.callDate));
+  if (callDate == null) {
+    return;
+  }
+  var formattedDate = extractDate(callDate);
+  var testDate = new Date();
+  var todaysDate = extractDate(testDate);
+  var yesterdaysDate = extractDate(new Date(testDate.getTime() - 24*60*60*1000));
+  if (todaysDate == formattedDate) {
+    callRow.classList.add("today");
+  } else {
+    callRow.classList.remove("today");
+  }
+  if (yesterdaysDate == formattedDate) {
+    callRow.classList.add("yesterday");
+  } else {
+    callRow.classList.remove("yesterday");
+  }
+}
+
 var addColumnToRow = function(row, value, className, onclick) {
   var cell = document.createElement("div");
   cell.classList.add("callCell");
@@ -6163,6 +6221,55 @@ var selectPrevLocationFilter = function() {
   }
 }
 
+var clearDateFilter = function() {
+  var dateFilterDiv = document.getElementById("dateFilter");
+  var callList = document.getElementById("callList");
+  var clearDateFilterButton = document.getElementById("clearDateFilterButton");
+  if (dateFilterDiv == null || callList == null || clearDateFilterButton == null) {
+    return;
+  }
+  dateFilterDiv.classList.remove("showYesterdayOnly");
+  dateFilterDiv.classList.remove("showTodayOnly");
+  callList.classList.remove("showYesterdayOnly");
+  callList.classList.remove("showTodayOnly");
+  
+  dateFilterDiv.classList.add("showAllDates");
+  callList.classList.add("showAllDates");
+
+  clearDateFilterButton.classList.add("off");
+  showOrHideCallTitles();
+}
+  
+var rotateDateFilter = function() {
+  var dateFilterDiv = document.getElementById("dateFilter");
+  var callList = document.getElementById("callList");
+  var clearDateFilterButton = document.getElementById("clearDateFilterButton");
+   
+  if (dateFilterDiv == null || callList == null || clearDateFilterButton == null) {
+    return;
+  }
+  if (dateFilterDiv.classList.contains("showAllDates")) {
+    dateFilterDiv.classList.remove("showAllDates");
+    dateFilterDiv.classList.add("showTodayOnly");
+    callList.classList.remove("showAllDates");
+    callList.classList.add("showTodayOnly");
+    clearDateFilterButton.classList.remove("off");
+  } else if (dateFilterDiv.classList.contains("showTodayOnly")) {
+    dateFilterDiv.classList.remove("showTodayOnly");
+    dateFilterDiv.classList.add("showYesterdayOnly");
+    callList.classList.remove("showTodayOnly");
+    callList.classList.add("showYesterdayOnly");
+    clearDateFilterButton.classList.remove("off");
+  } else if (dateFilterDiv.classList.contains("showYesterdayOnly")) {
+    dateFilterDiv.classList.remove("showYesterdayOnly");
+    dateFilterDiv.classList.add("showAllDates");
+    callList.classList.remove("showYesterdayOnly");
+    callList.classList.add("showAllDates");
+    clearDateFilterButton.classList.add("off");
+  }
+
+  showOrHideCallTitles();
+}
 
 var handleLocationFilterChange = function() {
   var callList = document.getElementById("callList");
@@ -6313,6 +6420,7 @@ var outputCall = function(attributes, parent, insertBefore) {
 
 
   setWhetherEventIsRecent(row);
+  setWhetherEventIsTodayOrYesterday(row);
   if (insertBefore != null) {
     parent.insertBefore(row, insertBefore);
   } else {
@@ -6324,6 +6432,7 @@ var updateCallRecency = function() {
   var recentCalls = document.querySelectorAll(".callRow.recentUpdate, .callRow.recentCall");
   for (var i=0; i<recentCalls.length; i++) {
     setWhetherEventIsRecent(recentCalls[i]);
+    setWhetherEventIsTodayOrYesterday(row);
   }
   showOrHideCallTitles();
 }
@@ -6707,6 +6816,8 @@ var updateDataContinuously = function() {
       </div>
     </div>
     <div class="menuTopOptions">
+      <div id="dateFilter" onclick="rotateDateFilter()" class="showAllDates"></div><div id="clearDateFilterButton" onclick="clearDateFilter()" class="off">&#10006;&#65039;</div>
+
       <div id="showRecentOnly" class="off" onclick="toggleShowRecentOnly(this)"><div class="checkSelector off"></div> Recently closed only</div>
       <div id="locationFilterNavigationButtons">
         <div id="prevLocationFilterButton" onclick="selectPrevLocationFilter()" class="off">&#708;</div>
@@ -6859,7 +6970,7 @@ var updateDataContinuously = function() {
   </div>
 </div>
 
-<div id="callList" class="byCallType">
+<div id="callList" class="byCallType showAllDates">
   <div id="noMatchingCallsIndicator">
     No matching calls.<br />&#127849; &#128110;
   </div>
