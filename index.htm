@@ -465,11 +465,11 @@
     .isPointOfInterest .callLocation { }
     .callLocation .pointOfInterest { font-size: 8pt; font-weight: bold;}
     
-    .callDescription { font-size: 8pt; width: 150px; padding-top: 1pt;}
-    .callBeat { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #999;}
-    .callDistrict { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999;}
-    .callSection { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999;}
-    .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #fff;}
+    .callDescription { font-size: 8pt; width: 150px; padding-top: 1pt; overflow: hidden;}
+    .callBeat { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #999; overflow: hidden;}
+    .callDistrict { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999; overflow: hidden;}
+    .callSection { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999; overflow:hidden;}
+    .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #fff; overflow: hidden;}
   </style>
 
 <script>
@@ -887,7 +887,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2531 MACARTHUR BLVD" : "Jade Palace Chinese Kitchen",
   "2534 MANDELA PKWY" : "Horn Barbecue",
   "2551 MACARTHUR BLVD" : "Kaspers Hot Dogs",
-  "2600 TELEGRAPH AV" : "Gogi Time",
   "2608 MARKET ST" : "Twins Halal House, Afghan Cuisine",
   "261 10TH ST" : "Mam Hanoi Restaurant",
   "2610 INTERNATIONAL BLVD" : "Tacos El Grullo",
@@ -1343,8 +1342,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "587 15TH ST" : "State Side",
   "5885 BANCROFT AV" : "Cafe La Fongs",
   "5900 COLLEGE AV" : "Beer Baron",
-  "5901 INTERNATIONAL BLVD" : "El Gallo De Oro",
-  "5901 INTERNATIONAL BLVD" : "Jesus Aguayo",
   "5907 FOOTHILL BLVD" : "Oakland Food To Go",
   "5910 INTERNATIONAL BLVD" : "Lapalma Lounge",
   "5912 COLLEGE AV" : "Millennium",
@@ -1631,7 +1628,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2300 VALDEZ ST" : "Calabash",
   "2300 VALDEZ ST" : "Calabash",
   "2517 TELEGRAPH AV" : "Marwa Market & Grill",
-  "2600 TELEGRAPH AV" : "Blind Tiger",
   "288 11TH ST" : "Oakland Cafe",
   "303 BROADWAY" : "Ginza",
   "308 41ST ST" : "The Lede",
@@ -1695,7 +1691,8 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "5600 COLLEGE AV" : "Crepevine Restaurant",
   "581 5TH ST" : "Brix 581",
   "5815 COLLEGE AV" : "Redfield Cider Bar & Bottle Shop",
-  "59 GRAND AV" : "Oakland Chapter",
+  "59 GRAND AV" : "The Athletic Club Oakland (Sports Bar)",
+  // "59 GRAND AV" : "Oakland Chapter",
   "6100 LA SALLE AV" : "Tgi Onisushi",
   "6111 LA SALLE AV" : "Sodon",
   "615 E 12TH ST" : "Da Nang Quan",
@@ -1858,19 +1855,14 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2235 35TH AV" : "S & S Market Corporation",
   "2267 38TH AV" : "Jalos Market",
   "230 BAY PL" : "Whole Foods Market",
-  "230 BAY PL" : "Whole Foods Market",
   "2314 HIGH ST" : "Island Market",
-  "2314 HIGH ST" : "Island Meat Market",
-  "2350 HARRISON ST" : "7-Eleven Inc Store 20009d",
-  "2350 HARRISON ST" : "7-Eleven Inc Store 20009d",
+  "2350 HARRISON ST" : "7-Eleven",
   "2370 TELEGRAPH AV" : "Koreana Plaza Market Oakland",
   "2400 MARKET ST" : "USA Food Mart",
   "241 10TH ST" : "Hometown Grocery",
   "2411 MACARTHUR BLVD" : "Diamond Vicinity Corp 18216e",
   "2429 TELEGRAPH AV" : "Telegraph Quality Market",
-  "2429 TELEGRAPH AV" : "Telegraph Quality Market",
   "2467 HIGHLAND AV" : "Highland Market",
-  "247 E 18TH ST" : "Lucky",
   "247 E 18TH ST" : "Lucky",
   "2484 PARK BLVD" : "Daves Grocery & Liquor",
   "2520 FOOTHILL BLVD" : "A & A Corner Market",
@@ -2079,17 +2071,15 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "805 WASHINGTON ST" : "Old Oakland Hotel",
   "8100 MACARTHUR BLVD" : "Parklane Motel",
   "82 EUCALYPTUS RD" : "Prime Rick & Wilson Cynthia L Trs",
-  "82 EUCALYPTUS RD" : "Prime Rick & Wilson Cynthia L Trs",
   "829 W MACARTHUR BLVD" : "Palms Motel",
   "831 56TH ST" : "Caplan Leslie",
   "839 ISABELLA ST" : "Isabella Motel",
-  "8400 EDES AV" : "Oakland Hotels",
+  "8400 EDES AV" : "Raddison Hotel (RBG Bar and Grill)",
   "8465 ENTERPRISE WY" : "La Quinta Inn",
   "8471 ENTERPRISE WY" : "Quality Inn",
   "864 W MACARTHUR BLVD" : "Bay View Motel",
   "874 W MACARTHUR BLVD" : "Night Inn Motel",
   "906 BLAIR AV" : "Robert K Johnson & Diane Clark Johnson",
-  "925 40TH AV" : "Mhc Fruitvale",
   "9316 LAWLOR ST" : "Roach Pier M",
   "9610 MACARTHUR BLVD" : "Travis Lodge Motel 16",
   "9899 MACARTHUR BLVD" : "Crown Lodge Motel",
@@ -2100,8 +2090,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "10 WASHINGTON ST" : "Waterfront Hotel (Parking)",
   "100 BAY PL" : "St Paul Towers (Parking)",
   "100 GRAND AV" : "Douglas Parking",
-  "1000 BROADWAY" : "Douglas Parking",
-  "1000 BROADWAY" : "Douglas Parking",
   "1000 OAK ST" : "Oakland Museum Of California",
   "10001 DOOLITTLE DR" : "Park N Travel",
   "101 WASHINGTON ST" : "Jack London Waterfront Parking",
@@ -2582,6 +2570,9 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "5711 TELEGRAPH AV" : "Petros Abera",
   "58 ELYSIAN FIELDS DR" : "Orc A Sports Wear Co",
   "5900 BAGSHOTTE DR" : "Beyond Interiors",
+  "5901 INTERNATIONAL BLVD" : "Los Dos Gallos / La Mejor",
+  // "5901 INTERNATIONAL BLVD" : "El Gallo De Oro",
+  // "5901 INTERNATIONAL BLVD" : "Jesus Aguayo",
   "5901 COLLEGE AV" : "Crossroads Trading Co",
   "5937 COLLEGE AV" : "In Full Swing",
   "600 WILLIAM ST" : "J's Contemporary",
@@ -2630,8 +2621,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1 LAKESIDE DR 1210" : "William R Glass",
   "10 FALLON ST" : "Dean Arbucci",
   "1000 18TH ST" : "Oakland Market",
-  "1000 BROADWAY" : "One Way Lease",
-  "1000 BROADWAY" : "Pearson Professional",
   "1001 LINDEN ST" : "Queen 1001",
   "1002 77TH AV" : "Premier Supply",
   "1002 JEFFERSON ST" : "Bartertown Framing",
@@ -2698,7 +2687,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1333 BROADWAY" : "Urs Corporation Americas",
   "1356 105TH AV" : "Scooter Scrubs",
   "136 98TH AVE" : "Hilti",
-  "1389 JEFFERSON ST" : "Cozy Vibes Designs",
   "140 ALPINE TER" : "Reesa Tansey",
   "1406 SEMINARY AV" : "Women's Social Entrepreneurship Center",
   "1408 21ST AV" : "The Baseery Market",
@@ -2889,7 +2877,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2621 MARTIN LUTHER KING JR WY" : "Zombies Glass & Shop",
   "2648 INTERNATIONAL BLVD" : "Chez Nous",
   "265 VERNON ST" : "Earrings Etc",
-  "2650 BROADWAY" : "Target Store T-3330",
+  "2650 BROADWAY" : "Target",
   "2650 MAGNOLIA" : "Grandiflora Genetics",
   "2651 68TH AV" : "Dg Lashes",
   "2675 68TH AV" : "It's A Vibe Thang",
@@ -3776,7 +3764,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2735 BROADWAY" : "Oakland Chevrolet",
   "2740 BROADWAY" : "Volkswagen Of Oakland",
   "2848 HOPKINS PL" : "Walking Legacy",
-  "288 28TH ST" : "Rks Motors",
+  "288 28TH ST" : "LR'S Auto Repairs Plus",
   "3093 BROADWAY PH83" : "Prestige Bay Auto",
   "3330 BROADWAY" : "Honda Of Oakland",
   "3357 FOOTHILL BLVD" : "Jarmalara Automotive L.L.C.",
@@ -4945,7 +4933,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1809 FILBERT ST" : "Drink2shrink With Monique",
   "1901 WOODHAVEN WY" : "Montclair Swim Club",
   "1910 IRVING AV" : "Namaste Fit Club",
-  "1919 MARKET ST" : "Barefoot Movement",
   "1920 PARK BLVD" : "Brightside Barbell",
   "1922 WEBSTER ST" : "Catch Mma",
   "200 2ND ST" : "Luv Thy Muscles",
@@ -4979,7 +4966,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2850 HANNAH ST" : "Ownit Rx",
   "288 11TH ST" : "38 Association",
   "2919 TELEGRAPH AVE" : "R.E.A.L Life Fitness",
-  "3000 RICHMOND BLVD" : "Osnat Oron",
   "3001 JORDAN RD" : "Self-Care Physio",
   "303 11TH ST" : "Ha Lok Music Club",
   "3033 MACARTHUR BLVD" : "New Vision Fitness",
@@ -5157,7 +5143,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "9801 INTERNATIONAL BLVD" : "Lourdes Carrillo & Severino Gonzales",
   "9801 INTERNATIONAL BLVD" : "Rosas Naturales",
   "9901 SAN LEANDRO ST" : "Lucy Flowers",
-  "1000 BROADWAY" : "Colonial Donuts",
   "10000 SKYLINE BLVD" : "Chabot Space & Science Center",
   "1001 FRUITVALE AV" : "Tacos El Novillo",
   "10220 INTERNATIONAL BLVD" : "Ali Baba Bong And Clothing",
@@ -5580,8 +5565,17 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   /* Apartment Buildings */
   "1200 LAKESHORE AV" : "1200 Lakeshore Apartments",  
   "1428 105TH AV" : "Oakland Station Senior Age 62+",
+  "1919 MARKET ST" : "1919 Market Apartments (Daughter of Samoa)",
+  // "1919 MARKET ST" : "Barefoot Movement",
+  "1389 JEFFERSON ST" : "Domain Oakland (Apartments)",
+  // "1389 JEFFERSON ST" : "Cozy Vibes Designs",
 
   /* Office Buildings */
+  "1000 BROADWAY" : "Transpacific Centre (Cal State, Colonial Donuts, Douglas Parking)",
+  // "1000 BROADWAY" : "Pearson Professional",
+  // "1000 BROADWAY" : "Colonial Donuts",
+  // "1000 BROADWAY" : "Douglas Parking",
+  // "1000 BROADWAY" : "Douglas Parking",
   "333 HEGENBERGER RD" : "Oakland Airport Plaza",
   // "333 HEGENBERGER RD" : "Bay Port Group",
   "610 16TH ST" : "Pacific Building",
@@ -5639,6 +5633,9 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
 
   
   /* Shopping Centers */
+  "2600 TELEGRAPH AV" : "Blind Tiger, Gogi Time, Zoo Mak, Billiards 31",
+  // "2600 TELEGRAPH AV" : "Blind Tiger",
+  // "2600 TELEGRAPH AV" : "Gogi Time",
   "1200 CLAY ST" : "City Center (Popeyes, Starbucks)",
   // "1200 CLAY ST" : "Proper Fashions",
   "5333 ADELINE ST" : "Adeline Food Hall",
