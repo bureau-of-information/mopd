@@ -449,6 +449,7 @@
     #callsContainer.filterByLocation[data-location-filter = 'B31Y'] .callRow:not([data-beat='B31Y']),
     #callsContainer.filterByLocation[data-location-filter = 'B31Z'] .callRow:not([data-beat='B31Z']),
     #callsContainer.filterByLocation[data-location-filter = 'B32X'] .callRow:not([data-beat='B32X']),
+    #callsContainer.filterByLocation[data-location-filter = 'B32Y'] .callRow:not([data-beat='B32Y']),
     #callsContainer.filterByLocation[data-location-filter = 'B33X'] .callRow:not([data-beat='B33X']),
     #callsContainer.filterByLocation[data-location-filter = 'B34X'] .callRow:not([data-beat='B34X']),
     #callsContainer.filterByLocation[data-location-filter = 'B35X'] .callRow:not([data-beat='B35X']),
@@ -737,6 +738,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "459" : "Burglary",
   "A459" : "Attempted Burglary",
   "459AU" : "Auto Burglary",
+  "470" : "Forgery",
   "484" : "Theft",
   "484LP" : "Stolen License Plate",
   "487" : "Grand Theft",
@@ -6381,9 +6383,9 @@ var addColumnToRow = function(row, value, className, onclick) {
 
 var filterByLocation = function(cell, field) {
   var call = cell.parentElement;
-  var locationFilter = document.getElementById("locationFilter");
   var location = call.dataset[field];
-  if (call == null || callList == null || locationFilter == null || location == null) {
+  var locationFilter = document.getElementById("locationFilter");
+  if (call == null || locationFilter == null || location == null) {
     return;
   }
 
@@ -7123,6 +7125,7 @@ var updateDataContinuously = function() {
           <option value="B31Y">Beat 31Y</option>
           <option value="B31Z">Beat 31Z</option>
           <option value="B32X">Beat 32X</option>
+          <option value="B32Y">Beat 32Y</option>
           <option value="B33X">Beat 33X</option>
           <option value="B34X">Beat 34X</option>
           <option value="B35X">Beat 35X</option>
