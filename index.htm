@@ -654,7 +654,7 @@ const CALL_CODE_MAPPING = {
   "BLALRT" : "situations",
   "BTNFO" : "administrative",
   "CARWSH" : "administrative",
-  "CCFILE" : "administrative",
+  "CCFILE" : "misdials",
   "CHASE" : "situations",
   "CKVEH" : "checks",
   "CODE7" : "situations",
@@ -857,6 +857,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "TEC" : "TEC Call",
   "TXT911" : "Text 911",
   "UNSEC" : "Unsecured Premises",
+  "VICTIM" : "Victim at Hospital",
   "VINVER" : "VIN Verification",
   "WELCK" : "Welfare Check"
 }
@@ -1076,7 +1077,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2507 BROADWAY" : "Kiss Ultra Lounge",
   "251 9TH ST" : "Damaoxie Restaurant",
   "2520 E 12TH ST" : "McDonald's",
-  "2520 E 12TH ST" : "McDonalds Of Oakland",
   "2531 MACARTHUR BLVD" : "Jade Palace Chinese Kitchen",
   "2534 MANDELA PKWY" : "Horn Barbecue",
   "2551 MACARTHUR BLVD" : "Kaspers Hot Dogs",
@@ -1592,7 +1592,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "66 FRANKLIN ST" : "Forge Pizza Danville",
   "6601 TELEGRAPH AV" : "Phosho Dough",
   "661 E 12TH ST" : "Victors",
-  "6623 SAN PABLO AV" : "McDonalds",
+  "6623 SAN PABLO AV" : "McDonald's",
   "6637 BANCROFT AV" : "Bruh's Oakland",
   "6672 INTERNATIONAL BLVD" : "Jamaica Sweet Spices Restaurant",
   "677 RAND AV" : "Rico Rico Vegano",
@@ -1901,7 +1901,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "911 WASHINGTON ST" : "Xiao Chi Restaurant",
   "915 45TH AV" : "Vulcan Cafe",
   "942 STANFORD AV" : "Sideshow Kitchen",
-  "98 BROADWAY" : "Plank",
+  "98 BROADWAY" : "Plank / Parking Garage",
   "100 MACARTHUR BLVD" : "100mac 76",
   "10151 INTERNATIONAL BLVD" : "Royal Gas",
   "105 5TH ST" : "105 Oak Street",
@@ -1950,6 +1950,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "731 W MACARTHUR BLVD" : "Westco Gas & Food",
   "800 HARRISON ST" : "Aslmasoom",
   "845 66TH AV" : "Coliseum Gas & Food Mart",
+  "889 W GRAND AV" : "ARCO / ampm",
   "205 BRUSH ST" : "Clean Energy",
   "350 GRAND AV" : "First Element Fuel",
   "6211 SAN PABLO AV" : "Alaska Gasoline",
@@ -4902,7 +4903,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "202 SANTA ROSA AV" : "Le Wine Importer",
   "2020 MACARTHUR BLVD" : "Two Star Market",
   "2141 89TH AVE" : "Shetender's",
-  "2363 SAN PABLO AV" : "San Pablo Market",
+  "2363 SAN PABLO AV" : "San Pablo Market and Liquor",
   "2446 POTOMAC ST" : "Citta Vino",
   "2484 PARK BLVD" : "Dave's Grocery And Liquor",
   "2531 MARTIN LUTHER KING JR WY" : "Captain Liquor",
@@ -6652,9 +6653,14 @@ var outputCall = function(attributes, parent, insertBefore) {
 
 var updateCallRecency = function() {
   var recentCalls = document.querySelectorAll(".callRow.recentUpdate, .callRow.recentCall");
-  for (var i=0; i<recentCalls.length; i++) {
+  var i;
+  for (i=0; i<recentCalls.length; i++) {
     setWhetherEventIsRecent(recentCalls[i]);
-    setWhetherEventIsTodayOrYesterday(recentCalls[i]);
+  }
+
+  var allCalls = document.querySelectorAll(".callRow");
+  for (i=0; i<allCalls.length; i++) {
+    setWhetherEventIsTodayOrYesterday(allCalls[i]);
   }
   updateCallTitles();
 }
@@ -7163,6 +7169,7 @@ var updateDataContinuously = function() {
       <div id="carjacking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Carjacking</div><div class="callCount"></div></div>
       <div id="robbery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Robbery</div><div class="callCount"></div></div>
       <div id="assaultAndBattery" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Assault &amp; Battery</div><div class="callCount"></div></div>
+      <div id="victim" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Victim at Hospital</div><div class="callCount"></div></div>
     </div>
     <div id="shooting" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Shooting</div>
@@ -7202,7 +7209,6 @@ var updateDataContinuously = function() {
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Services</div>
       <div id="distress" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">People in Distress</div><div class="callCount"></div></div>
       <div id="missingPersons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Missing Persons</div><div class="callCount"></div></div>
-      <div id="victim" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Victim</div><div class="callCount"></div></div>
       <div id="mentallyIll" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Mentally Ill</div><div class="callCount"></div></div>
       <div id="hazardous" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Hazardous</div><div class="callCount"></div></div>
       <div id="fire" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Fire</div><div class="callCount"></div></div>
@@ -7232,6 +7238,7 @@ var updateDataContinuously = function() {
     <div id="carjackingBlock" class="callBlock"><div class="callCount"></div><div class="title">Carjacking</div><div class="callList"></div></div>
     <div id="robberyBlock" class="callBlock"><div class="callCount"></div><div class="title">Robbery</div><div class="callList"></div></div>
     <div id="assaultAndBatteryBlock" class="callBlock"><div class="callCount"></div><div class="title">Assault and Battery</div><div class="callList"></div></div>
+    <div id="victimBlock" class="callBlock"><div class="callCount"></div><div class="title">Assault and Battery</div><div class="callList"></div></div>
   </div>
 
   <div id="shootingBlock" class="sectionBlock">
@@ -7274,7 +7281,6 @@ var updateDataContinuously = function() {
   <div id="servicesBlock" class="sectionBlock">
     <div id="distressBlock" class="callBlock"><div class="callCount"></div><div class="title">People in Distress</div><div class="callList"></div></div>
     <div id="missingPersonsBlock" class="callBlock"><div class="callCount"></div><div class="title">Missing Persons</div><div class="callList"></div></div>
-    <div id="victimBlock" class="callBlock"><div class="callCount"></div><div class="title">Crime Victim at Hospital</div><div class="callList"></div></div>
     <div id="mentallyIllBlock" class="callBlock"><div class="callCount"></div><div class="title">Mentally Ill</div><div class="callList"></div></div>
     <div id="hazardousBlock" class="callBlock"><div class="callCount"></div><div class="title">Hazardous Situation</div><div class="callList"></div></div>
     <div id="fireBlock" class="callBlock"><div class="callCount"></div><div class="title">Fire</div><div class="callList"></div></div>
