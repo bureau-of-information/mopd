@@ -335,6 +335,7 @@
 
     .callCount {
       color: #999;
+      font-weight: normal;
     }
     .callBlock .callCount {
       padding-left: 210px;
@@ -594,6 +595,7 @@ const CALL_CODE_MAPPING = {
   "913TH" : "mentallyIll",
   "913A" : "mentallyIll",
   "914" : "administrative",
+  "918" : "distress",
   "921" : "suspicious",
   "922" : "disorderly",
   "922A" : "disorderly",
@@ -614,7 +616,7 @@ const CALL_CODE_MAPPING = {
   "945" : "ambulance",
   "946" : "traffic",
   "949" : "suspicious",
-  "953" : "other",
+  "953" : "distress",
   "955" : "animal",
   "955A" : "animal",
   "955B" : "animal",
@@ -664,6 +666,7 @@ const CALL_CODE_MAPPING = {
   "FNDJUV" : "missingPersons",
   "FNDGUN" : "weapons",
   "FNDSEN" : "missingPersons",
+  "FLOOD" : "hazardous"
   "FUEL" : "administrative",
   "GAS" : "fire",
   "HAZ" : "hazardous",
@@ -677,6 +680,7 @@ const CALL_CODE_MAPPING = {
   "MSDIAL" : "misdials",
   "OD": "drugs",
   "OMC" : "administrative",
+  "PDOA" : "distress",
   "RR" : "administrative",
   "SECCK" : "checks",
   "SENILE" : "mentallyILl",
@@ -692,6 +696,7 @@ const CALL_CODE_MAPPING = {
   "TEC" : "administrative",
   "UNSEC" : "checks",
   "VICTIM" : "victim",
+  "VINVER" : "administrative",
   "WALKTR" : "checks",
   "WELCK" : "checks"
 }
@@ -709,9 +714,10 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "244" : "Assault w/ Caustic Chemicals",
   "245" : "Assault w/ Deadly Weapon",
   "243E" : "Battery on Cohabitant",
-  "246" : "Shooting at Occup Home/Veh",
-  "247" : "Shooting at Unocc Home/Veh",
+  "246" : "Shoot at Occup Home/Veh",
+  "247" : "Shoot at Unocc Home/Veh",
   "273_6" : "Violation of Court Order",
+  "278_5" : "Violoation of Custody",
   "311" : "Non-Police/Law Related",
   "314" : "Indecent Exposure",
   "374" : "Illegal Dumping of Waste",
@@ -747,13 +753,14 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "597" : "Cruelty to Animal",
   "601R" : "Runaway",
   "602L" : "Trespassing",
+  "647" : "Disorderly Conduct",
   "647B" : "Prostitution",
   "647C" : "Panhandling",
   "647F" : "Drunk in Public",
   "900" : "Miscellaneous/Unknown",
   "901" : "Collision (No injuries)",
   "901A" : "Collision (Injuries)",
-  "901B" : "Collision (Unknown if Injuries)",
+  "901B" : "Collision (Injuries Unknown)",
   "901CP" : "Collision (City Property)",
   "905" : "Abandoned Auto",
   "906" : "Forced Entry in Progress", 
@@ -776,6 +783,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "933S" : "Alarm - Silent",
   "933AU" : "Auto Alarm",
   "940A" : "Cover the Officer",
+  "941" : "Person Detained by Citizen",
   "943" : "Fight",
   "945" : "Ambulance Follow Up",
   "945A" : "Ambulance Requested",
@@ -799,11 +807,11 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "10851" : "Stolen Vehicle",
   "10852" : "Vehicle Tampering",
   "11500" : "Drug Dealing",
-  "11550" : "Use/Under Influence Of Drugs",
+  "11550" : "Use/Under Inf Of Drugs",
   "A10851" : "Attempted Auto Theft",
   "R10851" : "Recovered Stolen Vehicle",
   "20001" : "Hit & Run w/ Injury",
-  "20002" : "Hit & Run w/ Property Damage",
+  "20002" : "Hit & Run w/ Prop Damage",
   "23103" : "Reckless Driving",
   "23152" : "DUI Alcohol or Drugs",
   "5150B" : "Violent Mentally Ill",
@@ -845,9 +853,11 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "SPEC" : "Special Assignment",
   "STALL" : "Stalled Vehicle",
   "SUPPL" : "Supplement",
+  "SUSP" : "Suspect",
   "TEC" : "TEC Call",
   "TXT911" : "Text 911",
   "UNSEC" : "Unsecured Premises",
+  "VINVER" : "VIN Verification",
   "WELCK" : "Welfare Check"
 }
   
@@ -7190,12 +7200,13 @@ var updateDataContinuously = function() {
       <div id="parking" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Parking</div><div class="callCount"></div></div>
     </div><div id="services" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Services</div>
+      <div id="distress" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">People in Distress</div><div class="callCount"></div></div>
       <div id="missingPersons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Missing Persons</div><div class="callCount"></div></div>
       <div id="victim" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Victim</div><div class="callCount"></div></div>
       <div id="mentallyIll" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Mentally Ill</div><div class="callCount"></div></div>
       <div id="hazardous" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Hazardous</div><div class="callCount"></div></div>
-      <div id="ambulance" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Ambulance</div><div class="callCount"></div></div>
       <div id="fire" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Fire</div><div class="callCount"></div></div>
+      <div id="ambulance" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Ambulance</div><div class="callCount"></div></div>
       <div id="animal" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Animal</div><div class="callCount"></div></div>
       <div id="macro" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">MACRO</div><div class="callCount"></div></div>
     </div>
@@ -7261,12 +7272,13 @@ var updateDataContinuously = function() {
   </div>
 
   <div id="servicesBlock" class="sectionBlock">
+    <div id="distressBlock" class="callBlock"><div class="callCount"></div><div class="title">People in Distress</div><div class="callList"></div></div>
     <div id="missingPersonsBlock" class="callBlock"><div class="callCount"></div><div class="title">Missing Persons</div><div class="callList"></div></div>
     <div id="victimBlock" class="callBlock"><div class="callCount"></div><div class="title">Crime Victim at Hospital</div><div class="callList"></div></div>
     <div id="mentallyIllBlock" class="callBlock"><div class="callCount"></div><div class="title">Mentally Ill</div><div class="callList"></div></div>
     <div id="hazardousBlock" class="callBlock"><div class="callCount"></div><div class="title">Hazardous Situation</div><div class="callList"></div></div>
-    <div id="ambulanceBlock" class="callBlock"><div class="callCount"></div><div class="title">Ambulance</div><div class="callList"></div></div>
     <div id="fireBlock" class="callBlock"><div class="callCount"></div><div class="title">Fire</div><div class="callList"></div></div>
+    <div id="ambulanceBlock" class="callBlock"><div class="callCount"></div><div class="title">Ambulance</div><div class="callList"></div></div>
     <div id="animalBlock" class="callBlock"><div class="callCount"></div><div class="title">Animal</div><div class="callList"></div></div>
     <div id="macroBlock" class="callBlock"><div class="callCount"></div><div class="title">MACRO</div><div class="callList"></div></div>
   </div>
@@ -7275,7 +7287,7 @@ var updateDataContinuously = function() {
     <div id="otherBlock" class="callBlock"><div class="callCount"></div><div class="title">Other</div><div class="callList"></div></div>
     <div id="checksBlock" class="callBlock"><div class="callCount"></div><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
     <div id="administrativeBlock" class="callBlock"><div class="callCount"></div><div class="title">Administrative</div><div class="callList"></div></div>
-    <div id="misdialsBlock" class="callBlock"><div class="callCount"></div><div class="title">Misdials</div><div class="callList"></div></div>
+    <div id="misdialsBlock" class="callBlock"><div class="callCount"></div><div class="title">Misdials and Hang Ups</div><div class="callList"></div></div>
   </div>
   </div>
 </body>
