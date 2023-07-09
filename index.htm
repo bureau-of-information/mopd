@@ -170,7 +170,24 @@
       width: 30px;
     }
 
-
+    #totalShowingCallsRow {
+      color: #999;
+    }
+    #totalShowingCallsLabel {
+      display: inline-block;
+      text-align: right;
+      font-size: 9pt;
+      width: 125px;
+      margin-left: 20px;
+      padding-right: 5px;
+    }
+    #totalShowingCallsMenu {
+      display: inline-block;
+      width: 30px;
+      text-align: right;
+      font-size: 9pt;
+      border-top: 1px solid #999;
+    }
     #showRecentOnly,
     #showCallUpdateTime { 
       font-weight: bold;
@@ -337,11 +354,17 @@
       color: #999;
       font-weight: normal;
     }
-    .callBlock .callCount {
-      padding-left: 210px;
+    .callBlock .callCount, #totalBlock .callCount {
+      padding-left: 225px;
       width: 30px;
       text-align: right;
       display: inline-block;
+    }
+    .totalTitle {
+      font-size: 11pt;
+      margin-left: 5pt;
+      display: inline-block;
+      color: #999;
     }
 
     .callRow {
@@ -480,7 +503,7 @@
       vertical-align: top;
     }
  
-    .callSpacer { width: 240px; }
+    .callSpacer { width: 255px; }
     .callDuration { width: 33px; font-size: 8pt; text-align:right; padding-top: 1pt; margin-right: 7px; color: #999;}
     .callDate { width: 27px; text-align: right; margin-right:3px; cursor: pointer;}
     .callTime { width: 55px; text-align: right; margin-right:10px; cursor: pointer;}
@@ -488,12 +511,12 @@
     .callUpdateTime { width: 55px; text-align: right; margin-right:10px; display: none; cursor: pointer;}
 
     .callID { width: 60px; }
-    .callLocation { width: 260px; margin-right: 5px; }
+    .callLocation { width: 250px; margin-right: 5px; }
     .callLocation .addressOfPointOfInterest { }
     .isPointOfInterest .callLocation { }
     .callLocation .pointOfInterest { font-size: 8pt; font-weight: bold;}
     
-    .callDescription { font-size: 8pt; width: 150px; padding-top: 1pt; overflow: hidden;}
+    .callDescription { font-size: 8pt; width: 145px; padding-top: 1pt; overflow: hidden;}
     .callBeat { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #999; overflow: hidden;}
     .callDistrict { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999; overflow: hidden;}
     .callSection { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999; overflow:hidden;}
@@ -538,7 +561,7 @@ const CALL_CODE_MAPPING = {
   "311" : "administrative",
   "314" : "disorderly",
   "415GS" : "gunshots",
-  "415SS" : "shotSpotter",
+  "415SS" : "gunshots",
   "415" : "disturbingThePeace",
   "415A" : "disturbingThePeace",
   "415BF" : "disturbingThePeace",
@@ -575,6 +598,7 @@ const CALL_CODE_MAPPING = {
   "530" : "theft",
   "594" : "vandalism",
   "597" : "animal",
+  "601I" : "disorderly",
   "601R" : "missingPersons",
   "601PU" : "missingPersons",
   "602L" : "trespassing",
@@ -643,7 +667,7 @@ const CALL_CODE_MAPPING = {
   "11350" : "drugs",
   "11500" : "drugs",
   "11550" : "drugs",
-  "20001" : "hitAndRunWithInjury",
+  "20001" : "hitAndRun",
   "20002" : "hitAndRun",
   "23110" : "assaultAndBattery",
   "23103" : "traffic",
@@ -756,6 +780,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "530" : "Identity Theft",
   "594" : "Vandalism",
   "597" : "Cruelty to Animal",
+  "601I" : "Incorrigible Juvenile",
   "601R" : "Runaway",
   "601PU" : "Missing Person Pick Up",
   "602L" : "Trespassing",
@@ -838,6 +863,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "BCAST" : "Broadcast",
   "BOARD" : "Boardup",
   "BTNFO" : "Beat Information",
+  "CARWSH" : "Car Wash",
   "CCFILE" : "Chronic Caller",
   "CHASE" : "Pursuit",
   "CKVEH" : "Check Vehicle",
@@ -858,6 +884,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "GAS" : "Gas Leak",
   "HAZ" : "Hazardous Situation",
   "INFO" : "Beat Information",
+  "LPROP" : "Lost Property",
   "MACRO" : "MACRO Team Response",
   "MFF" : "Mobile Field Force",
   "MJ" : "Missing Juvenile",
@@ -876,6 +903,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "SIGNAL" : "Signals Malfunctioning",
   "SLEEP" : "Sleeper",
   "SMOKE" : "Smoke",
+  "SPCENF" : "Special Enforcement",
   "SPEC" : "Special Assignment",
   "STALL" : "Stalled Vehicle",
   "SUPPL" : "Supplement",
@@ -891,15 +919,6 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   
 const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   /* Uncategorized */
-  "1 HEGENBERGER RD" : "Oakland Hilton (Parking Income)",
-  "10 HEGENBERGER RD" : "Econo Lodge Inn & Suites",
-  "10 WASHINGTON ST" : "Waterfront Hotel (Parking)",
-  "100 BAY PL" : "St Paul Towers (Parking)",
-  "100 GRAND AV" : "Douglas Parking",
-  "1000 OAK ST" : "Oakland Museum Of California",
-  "10001 DOOLITTLE DR" : "Park N Travel",
-  "101 WASHINGTON ST" : "Jack London Waterfront Parking",
-  "101 WEBSTER ST" : "Douglas Parking",
   "1087 56TH ST" : "Wags & Walkabout Pet Services",
   "111 98TH AV" : "Douglas Parking",
   "1195 MIDDLE HARBOR RD" : "Abm Parking Services (Seaport Truck Lot)",
@@ -982,7 +1001,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "386 7TH ST" : "Aki Parking",
   "3939 DELMONT AV" : "Cats Cradle Dogs Too",
   "400 THOMAS L BERKLEY WY" : "Douglas Parking",
-  "401 GRAND AV" : "Fwl Grand",
+  "401 GRAND AV" : "Alameda Pediatric Dentistry",
   "409 8TH ST" : "Phoenix Plaza Parking",
   "41 TUNNEL RD" : "Claremont Hotel Club & Spa",
   "41 TUNNEL RD" : "Imperial Parking (U.S)",
@@ -1083,46 +1102,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "826 46TH ST" : "Suzane Beaubrun",
   "826 FRANKLIN ST" : "Kim Lien Jewelry",
   "844 NORTHVALE RD" : "Dangling Whimsy",
-  "10321 INTERNATIONAL BLVD" : "Young's Coin Laundry",
-  "151 10TH ST" : "Reliable Laundromat",
-  "1607 14TH ST" : "Sunrise Laundry",
-  "1619 MACARTHUR BLVD" : "Spring Water Coin Laundry",
-  "1760 HIGH ST" : "High St Coin Laundry",
-  "1801 13TH AV" : "Wash Time Coin Laundry",
-  "1849 98TH AV" : "The Wash House",
-  "1900 FOOTHILL BLVD" : "Jsb Bubbles Laundromat",
-  "2021 FRUITVALE AV" : "East Bay Laundry",
-  "211 FOOTHILL BLVD" : "We Do Services",
-  "2272 E 23RD ST" : "Milton Laundry",
-  "2550 SAN PABLO AV" : "The Laundry Room-Oakland",
-  "2609 FOOTHILL BLVD" : "Young & Foolish",
-  "2704 FRUITVALE AV" : "Country Clean Coin Laundromat",
-  "3004 E 9TH ST" : "B&Y Enterprises",
-  "3006 38TH AV" : "Allendale Wash & Dry",
-  "3401 HIGH ST" : "High St Laundromat",
-  "3526 FOOTHILL BLVD" : "Wash Cycles",
-  "3711 MACARTHUR BLVD" : "Clean Scene Ii",
-  "3796 GRAND AV" : "Grand Avenue Launderette",
-  "4082 PIEDMONT AV" : "W S A Laundromat",
-  "4500 MARKET ST" : "Northside Lundy",
-  "4844 TELEGRAPH AV" : "Soap Suds",
-  "4860 TELEGRAPH AV" : "Temescal Laundry",
-  "500 WESLEY AV" : "Lake Merritt Laundromat",
-  "5040 INTERNATIONAL BLVD" : "Birdies Coin Laundry",
-  "539 8TH ST" : "Oakland Coin Op",
-  "5412 SAN PABLO AV" : "Super Wash & Fold",
-  "5702 ADELINE ST" : "Adeline Wash & Fold",
-  "5817 BANCROFT AV" : "Clean Scene",
-  "600 98TH AV" : "Oak Laundromat",
-  "6201 INTERNATIONAL BLVD" : "Kwik Way Laundry Mat",
-  "6401 SHATTUCK AV" : "E Z Laundry",
-  "6447 INTERNATIONAL BLVD" : "Bay Coin Laundry",
-  "7103 INTERNATIONAL BLVD" : "H&M Laundromat",
-  "7851 MACARTHUR BLVD" : "Poppys Bubble Wash",
-  "8900 INTERNATIONAL BLVD" : "Wash Zone",
-  "8900 INTERNATIONAL BLVD" : "Wash Zone Express",
-  "933 W GRAND AV" : "West Grand Coin Laundry",
-  "9822 INTERNATIONAL BLVD" : "98th Laundromat",
   "10 MOSS AV" : "Ade + Ayo",
   "1002 SANTA INES CT" : "Harry You Loe",
   "1005 102ND AV" : "Latisha Baker",
@@ -2125,7 +2104,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "599 CRESTMONT DR" : "Rejigger Cocktails",
   "5998 TELEGRAPH AV" : "Reclamation Furnishings",
   "60 SPY GLASS HL" : "Cecil B",
-  "600 WILLIAM ST" : "Sticky Rice Sisters",
   "6004 COLLEGE AV" : "White Rose Skin Care",
   "6009 INTERNATIONAL BLVD" : "Oromex",
   "601 BRUSH ST" : "Bosk",
@@ -3040,27 +3018,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "5817 COLLEGE AV" : "Rare Tea",
   "6101 SHATTUCK AV" : "Shewhat",
   "6255 COLLEGE AV" : "Cole Coffee",
-  "10621 MACARTHUR BLVD" : "Fantastic Cleaners",
-  "1311 FRUITVALE AV" : "Fruitvale Dry Cleaner",
-  "1924 PARK BLVD" : "May Cleaners",
-  "2220 MOUNTAIN BLVD" : "Swiss Valley",
-  "2301 FOOTHILL BLVD" : "Foothill Point Laundromat",
-  "2550 MARTIN LUTHER KING JR WY" : "Bayside Washland",
-  "322 14TH ST" : "J & S Lee Associates",
-  "3419 INTERNATIONAL BLVD" : "International Laundry",
-  "3875 PIEDMONT AV" : "A Z Alteration & Cleaners",
-  "4015 INTERNATIONAL BLVD" : "Kwan Hing",
-  "4032 E 15TH ST" : "A Touch Of Class",
-  "447 PERKINS ST" : "Perkins Cleaners",
-  "5108 BROADWAY" : "Christina Chansham",
-  "5455 COLLEGE AV" : "David Kim",
-  "5912 SAN PABLO AV" : "New Style Cleaners",
-  "6103 SHATTUCK AV" : "Shattuck Cleaners",
-  "6223 SHATTUCK AV" : "Oxford Way Tailoring",
-  "6410 MORAGA AV" : "Crown Cleaners",
-  "7442 HILLMONT DR" : "Stanford Cleaners",
-  "8021 MACARTHUR BLVD" : "Al Shaja Laundry",
-  "867 ISABELLA ST" : "Daniels Garment Cutting Service",
   "121 98TH AV" : "Budget Rent A Car System",
   "145 98TH AV" : "Enterprise Rent A Car",
   "1711 INTERNATIONAL BLVD" : "Cash Out Smash Out",
@@ -3292,7 +3249,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "821 JEFFERSON ST" : "Oakland Flower Market",
   // "821 JEFFERSON ST" : "Piazza Wholesale",
   "8265 SKYLINE CIR" : "Ada Wong Design",
-  "9133 INTERNATIONAL BLVD" : "Rosys Flowers & Gifts",
   "9302 CHERRY ST" : "The Love Stop Flowers",
   "980 77TH AV" : "Everbest Technology",
   "9801 INTERNATIONAL BLVD" : "Lourdes Carrillo & Severino Gonzales",
@@ -3305,7 +3261,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1500 23RD AV" : "Hilux Smoke & Vibe",
   "17 GLEN AV" : "Sebastian's Piedmont Tobacconist",
   "1854 INTERNATIONAL BLVD" : "Tip Top Smoke Shop",
-  "2117 E 15TH ST" : "Drop Shop",
   "2400 HIGH ST" : "High Street Smoke Shop",
   "2401 FOOTHILL BLVD" : "Foothill Smoke Shop",
   "2956 TELEGRAPH AV" : "Rafike Aldahmi",
@@ -3344,7 +3299,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1811 PARK BLVD" : "Aloba SF Inc.",
   "1811 PARK BLVD" : "High Speed Wireless",
   "1854 INTERNATIONAL BLVD" : "Duong's Electronics Repair",
-  "1900 26TH AV" : "Dptek Services",
   "1901 BROADWAY" : "Bandcamp",
   "1918 16TH AV" : "Dot Vonn",
   "1918 LAKESHORE AV" : "Zeedvault",
@@ -3445,31 +3399,18 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "8460 EDGEWATER DR" : "T-Mobile",
   "1741 MARKET ST" : "Millenium Market",
   "1250 7TH AV" : "Canton Chinese Drug Store",
-  "1333 BROADWAY" : "Walgreens",
   "1400 14TH AV" : "Mai Pharmacy",
-  "174 41ST ST" : "CVS Pharmacy",
-  "1991 MOUNTAIN BLVD" : "Rite Aid",
-  "2000 MOUNTAIN BLVD" : "CVS Pharmacy",
   "2447 TELEGRAPH AV" : "Selam Pharmacy",
-  "2650 BROADWAY" : "CVS/Pharmacy",
   "2693 FRUITVALE AV" : "Access Pharmacy",
-  "2964 BROADWAY" : "CVS Pharmacy",
-  "3009 BROADWAY" : "Walgreens",
-  "301 E 18TH ST" : "Walgreens",
   "3100 SUMMIT ST" : "East Bay Aids Center Outpatient Pharmacy",
-  "3232 FOOTHILL BLVD" : "Walgreens",
   "324 10TH ST" : "Simon Tang",
-  "3320 FRUITVALE AV" : "CVS Pharmacy",
   "333 9TH ST" : "New Oakland Pharmacy No 1",
-  "3400 TELEGRAPH AV" : "Walgreens",
-  "3434 HIGH ST" : "Walgreens",
   "3600 BROADWAY" : "Kaiser Foundation",
   "3701 BROADWAY" : "Kaiser Foundation",
   "3801 HOWE ST" : "Kaiser Permanente Pharmacy",
   "400 MARKET ST" : "Kentucky Avenue",
   "4248 MACARTHUR BLVD" : "H S Pharmacy",
   "445 8TH ST" : "Bradford Pharmacy",
-  "5055 TELEGRAPH AV" : "Walgreens",
   "5220 CLAREMONT AV" : "Oakland Clinic Pharmacy",
   "5729 COLLEGE AV" : "Pharmaca Integrative Pharmacy",
   "650 INTERNATIONAL BLVD" : "Pacific Pharmacy",
@@ -3500,6 +3441,83 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "598 7TH ST" : "The Shoe Spot",
   "7508 HILLSIDE ST" : "Eli&Collc",
   "400 HIGH ST" : "Restaurant Depot", 
+
+  /* Laundry, Cleaners, Tailors */
+  "10321 INTERNATIONAL BLVD" : "Young's Coin Laundry",
+  "151 10TH ST" : "Reliable Laundromat",
+  "1607 14TH ST" : "Sunrise Laundry",
+  "1619 MACARTHUR BLVD" : "Spring Water Coin Laundry",
+  "1760 HIGH ST" : "High St Coin Laundry",
+  "1801 13TH AV" : "Wash Time Coin Laundry",
+  "1849 98TH AV" : "The Wash House",
+  "1900 FOOTHILL BLVD" : "Jsb Bubbles Laundromat",
+  "2021 FRUITVALE AV" : "East Bay Laundry",
+  "211 FOOTHILL BLVD" : "Rockin Crawfish, Foothill Wash House",
+  "2272 E 23RD ST" : "Milton Laundry",
+  "2550 SAN PABLO AV" : "The Laundry Room-Oakland",
+  "2609 FOOTHILL BLVD" : "Family Laundry",
+  "2704 FRUITVALE AV" : "Country Clean Coin Laundromat",
+  "3004 E 9TH ST" : "BC Laundrymat",
+  "3006 38TH AV" : "Allendale Wash & Dry",
+  "3401 HIGH ST" : "High St Laundromat",
+  "3526 FOOTHILL BLVD" : "Wash Cycles",
+  "3711 MACARTHUR BLVD" : "Clean Scene II",
+  "3796 GRAND AV" : "Grand Avenue Launderette",
+  "4082 PIEDMONT AV" : "A Laundromat",
+  "4500 MARKET ST" : "Northside Coin Laundry",
+  "4844 TELEGRAPH AV" : "Soap Suds",
+  "4860 TELEGRAPH AV" : "Temescal Laundry",
+  "500 WESLEY AV" : "Lake Merritt Laundromat",
+  "5040 INTERNATIONAL BLVD" : "Birdies Coin Laundry",
+  "539 8TH ST" : "Oakland Coin Op",
+  "5412 SAN PABLO AV" : "Super Wash & Fold",
+  "5702 ADELINE ST" : "Adeline Wash & Fold",
+  "5817 BANCROFT AV" : "Clean Scene",
+  "600 98TH AV" : "Oak Laundromat",
+  "6201 INTERNATIONAL BLVD" : "Kwik Way Laundry Mat",
+  "6401 SHATTUCK AV" : "E Z Laundry",
+  "6447 INTERNATIONAL BLVD" : "Bay Coin Laundry",
+  "7103 INTERNATIONAL BLVD" : "H&M Laundromat",
+  "7851 MACARTHUR BLVD" : "Poppys Bubble Wash",
+  "8900 INTERNATIONAL BLVD" : "Wash Zone Express",
+  "933 W GRAND AV" : "West Grand Coin Laundry",
+  "9822 INTERNATIONAL BLVD" : "98th Laundromat",
+
+  "10621 MACARTHUR BLVD" : "Fantastic Cleaners",
+  "1311 FRUITVALE AV" : "Fruitvale Dry Cleaner",
+  "1924 PARK BLVD" : "May Cleaners",
+  "2220 MOUNTAIN BLVD" : "Swiss Valley",
+  "2301 FOOTHILL BLVD" : "Foothill Point Laundromat",
+  "2550 MARTIN LUTHER KING JR WY" : "Bayside Washland",
+  "322 14TH ST" : "Ideal Cleaners",
+  "3419 INTERNATIONAL BLVD" : "International Laundry",
+  "3875 PIEDMONT AV" : "A Z Alteration & Cleaners",
+  "4015 INTERNATIONAL BLVD" : "Grand Opening Lavanderia",
+  "4032 E 15TH ST" : "Brite Cleaners",
+  "447 PERKINS ST" : "Perkins Cleaners",
+  "5455 COLLEGE AV" : "Rockridge Royal Cleaners",
+  "5912 SAN PABLO AV" : "New Style Cleaners",
+  "6103 SHATTUCK AV" : "Shattuck Cleaners",
+  "6223 SHATTUCK AV" : "Oxford Way Tailoring",
+  "6410 MORAGA AV" : "Crown Cleaners",
+  "7442 HILLMONT DR" : "Stanford Cleaners",
+  "8021 MACARTHUR BLVD" : "Alshuja Laundromat",
+  "867 ISABELLA ST" : "Daniels Garment Cutting Service, Kitanica",
+
+  /* Drug Stores, Pharmacies */
+  "174 41ST ST" : "CVS Pharmacy",
+  "3232 FOOTHILL BLVD" : "Walgreens",
+  "2000 MOUNTAIN BLVD" : "CVS Pharmacy",
+  "2650 BROADWAY" : "CVS/Pharmacy",
+  "2964 BROADWAY" : "CVS Pharmacy",
+  "3009 BROADWAY" : "Walgreens",
+  "301 E 18TH ST" : "Walgreens",
+  "3320 FRUITVALE AV" : "CVS Pharmacy",
+  "1333 BROADWAY" : "Walgreens",
+  "3400 TELEGRAPH AV" : "Walgreens",
+  "3434 HIGH ST" : "Walgreens",
+  "5055 TELEGRAPH AV" : "Walgreens",
+  "1991 MOUNTAIN BLVD" : "Rite Aid",
 
   /* Restaurants */
   "10 HEGENBERGER RD" : "Diamond Banquet Hall & Catering",
@@ -3857,7 +3875,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "351 12TH ST" : "Bare Knuckle Pizza",
   "351 17TH ST" : "Take It Easy",
   "351 19TH ST" : "Harlow",
-  "3535 35TH AV" : "Golden Gate Bell Llc Taco Bell",
+  "3535 35TH AV" : "Taco Bell",
   "3535 PIERSON ST" : "Sushi Go Go",
   "3537 FRUITVALE AV" : "Ly Luck Chinese Restaurant",
   "354 17TH ST" : "Beef Noodle Soup 84",
@@ -4407,7 +4425,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "940 WEBSTER ST" : "Ming's Tasty Restaurant",
   "941 W GRAND AV" : "JJ Fish & Chicken",
   "10 HEGENBERGER RD" : "New Lazeeza",
-  "100 GRAND AV" : "Alamar",
   "1015 CLAY ST" : "Pacha Afghan Kabob House",
   "1060 E 12TH ST" : "Lemon Pepper",
   "1218 15TH ST" : "Mien Tay Restaurant",
@@ -4521,6 +4538,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "4150 PIEDMONT AV" : "Ebiko Sushi",
 
   /* Markets, Convenience, Liquor, Grocery */
+  "9133 INTERNATIONAL BLVD" : "La Nopalera, Produce Market Carniceria",
   "4193 PIEDMONT AV" : "7 Eleven",
   "506 INTERNATIONAL BLVD" : "7 Eleven",
   "5650 MARKET ST" : "Almaida Hot Food & Market",
@@ -4666,7 +4684,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "5040 INTERNATIONAL BLVD" : "La Raza Market",
   "505 40TH ST" : "Telegraph Produce & Market",
   "5110 TELEGRAPH AV" : "Whole Foods Market",
-  "5130 BROADWAY" : "Safeway Stores",
+  "5130 BROADWAY" : "Safeway",
   "5415 INTERNATIONAL BLVD" : "Chapala Market",
   "547 8TH ST" : "African Caribbean Food Market",
   "5485 FOOTHILL BLVD" : "Foothill And 55th Market",
@@ -4678,7 +4696,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "5911 MACARTHUR BLVD" : "Mills Food Center",
   "595 15TH ST" : "Friendly, 7 Market & Cigarette Tobacco",
   "6218 LA SALLE AV" : "Farmstead Cheeses & Wines",
-  "6310 COLLEGE AV" : "Safeway Stores",
+  "6310 COLLEGE AV" : "Safeway",
   "6310 MARKET ST" : "M & B Market",
   "6349 MACARTHUR BLVD" : "4m Foods",
   "6444 SAN PABLO AV" : "65th Street Market",
@@ -4898,7 +4916,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1 HEGENBERGER RD" : "Hilton Oakland Airport",
   "10 HEGENBERGER RD" : "Econo Lodge Inn & Suites/Gateway Hotel",
   "10 WASHINGTON ST" : "Waterfront Plaza Hotel",
-  "100 GRAND AV" : "National Corporate Housing",
   "10000 MACARTHUR BLVD" : "Starlite Motel",
   "1001 BROADWAY" : "Oakland Marriott City Center (UPS, Hertz)",
   // "1001 BROADWAY" : "The UPS Store",
@@ -5665,6 +5682,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3401 E 12TH ST" : "Fruitvale BART Station",
 
   /* Major Facilities */
+  "1000 OAK ST" : "Oakland Museum Of California",
   "10000 SKYLINE BLVD" : "Chabot Space & Science Center",
   "5295 BROADWAY TER" : "Claremont Country Club",
   "7000 COLISEUM WY" : "Oakland Coliseum",
@@ -5677,6 +5695,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   // "699 BELLEVUE AV" : "Nakia Vaughn",
 
   /* Parking */
+  "10001 DOOLITTLE DR" : "Park N Travel",
   "274 12TH ST" : "Harrison Street Parking Garage",
   "1523 HARRISON ST" : "Douglas Parking (Harrison)",
   "1434 HARRISON ST" : "Laz/Douglas Parking",
@@ -5684,6 +5703,8 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "165 13TH ST" : "Alcopark Garage",
   "1811 HARRISON ST" : "Douglas Parking",
   "1901 FRANKLIN ST" : "Parking Garage",
+  "101 WASHINGTON ST" : "Jack London Waterfront Parking",
+  "101 WEBSTER ST" : "Douglas Parking",
   
 
   /* Government Buildings */
@@ -5716,7 +5737,13 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   /* Storage */
   "2227 SAN PABLO AV" : "StorQuest Self Storage",
 
+  /* Hotels and Motels */
+  "1 HEGENBERGER RD" : "Oakland Hilton",
+  "10 HEGENBERGER RD" : "Econo Lodge",
+  "10 WASHINGTON ST" : "Waterfront Hotel",
+
   /* Apartment Buildings, Condos, etc */
+  "100 GRAND AV" : "The Grand Apartments (alaMar, Douglas Parking)",
   "2633 TELEGRAPH AV" : "Telegraph Lofts (Minuteman Press, First Fridays, Juni Salon, Old Sears Roebuck Building)",
   // "2633 TELEGRAPH AV" : "Miracle Wax",
   // "2633 TELEGRAPH AV" : "Juni Salon",
@@ -6761,8 +6788,28 @@ var updateCallCount = function(callBlock, count) {
   }
 }
 
+var setTotalShowingCalls = function(totalShowingCalls) {
+  var totalShowingCallsMenuDiv = document.getElementById("totalShowingCallsMenu");
+  var totalShowingCallsMainDiv = document.getElementById("totalShowingCallsMain");
+  var totalBlockContainer = document.getElementById("totalBlockContainer");
+  if (totalShowingCallsMainDiv == null || totalShowingCallsMenuDiv == null || totalBlockContainer == null) {
+    return;
+  }
+  if (totalShowingCalls == 0) {
+    totalShowingCallsMenuDiv.innerHTML = "&nbsp;";
+    totalShowingCallsMainDiv.innerHTML = "&nbsp;";
+    totalBlockContainer.style.display = "none";
+  } else {
+    totalShowingCallsMenuDiv.innerHTML = totalShowingCalls;
+    totalShowingCallsMainDiv.innerHTML = totalShowingCalls;
+    totalBlockContainer.style.display = "block";
+  }
+}
+
 var updateCallTitles = function() {
   var blocks = document.getElementsByClassName("callBlock");
+
+  var totalCalls = 0;
 
   var atLeastOneTitleShowing = false;
   var atLeastOneCallLoaded = false;
@@ -6781,7 +6828,10 @@ var updateCallTitles = function() {
       }
     }
     updateCallCount(blocks[i], displayedCallsCount);
+    totalCalls += displayedCallsCount;
   }
+
+  setTotalShowingCalls(totalCalls);
 
   var noMatchingCallsIndicator = document.getElementById("noMatchingCallsIndicator");
   if (noMatchingCallsIndicator == null) {
@@ -7187,7 +7237,6 @@ var updateDataContinuously = function() {
     <div id="shooting" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Shooting</div>
       <div id="gunshots" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Gunshots</div><div class="callCount"></div></div>
-      <div id="shotSpotter" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">ShotSpotter</div><div class="callCount"></div></div>
       <div id="weapons" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Weapons</div><div class="callCount"></div></div>
     </div>
     <div id="stealing" class="menuBlock">
@@ -7212,7 +7261,6 @@ var updateDataContinuously = function() {
     <div id="motorVehicles" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Motor Vehicles</div>
       <div id="stops" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Stops</div><div class="callCount"></div></div>
-      <div id="hitAndRunWithInjury" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Injury Hit and Run</div><div class="callCount"></div></div>
       <div id="hitAndRun" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Hit and Run</div><div class="callCount"></div></div>
       <div id="traffic" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Traffic</div><div class="callCount"></div></div>
       <div id="sideshow" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Sideshow</div><div class="callCount"></div></div>
@@ -7236,12 +7284,17 @@ var updateDataContinuously = function() {
       <div id="administrative" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Administrative</div><div class="callCount"></div></div>
       <div id="misdials" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Misdials</div><div class="callCount"></div></div>
     </div>
+
+    <div id="totalShowingCallsRow"><div id="totalShowingCallsLabel">Total</div><div id="totalShowingCallsMenu"></div></div>
   </div>
 </div>
 
 <div id="callsContainer" class="callsContainer showAllDates">
   <div id="noMatchingCallsIndicator">
     No matching calls.<br />&#127849; &#128110;
+  </div>
+  <div id="totalBlockContainer">
+    <div id="totalBlock"><div id="totalShowingCallsMain" class="callCount"></div><div class="totalTitle">Total</div></div>
   </div>
   <div id="violenceBlock" class="sectionBlock">
     <div id="situationsBlock" class="callBlock"><div class="callCount"></div><div class="title">Situations</div><div class="callList"></div></div>
@@ -7256,7 +7309,6 @@ var updateDataContinuously = function() {
 
   <div id="shootingBlock" class="sectionBlock">
     <div id="gunshotsBlock" class="callBlock"><div class="callCount"></div><div class="title">Gunshots</div><div class="callList"></div></div>
-    <div id="shotSpotterBlock" class="callBlock"><div class="callCount"></div><div class="title">ShotSpotter (Gunshots)</div><div class="callList"></div></div>
     <div id="weaponsBlock" class="callBlock"><div class="callCount"></div><div class="title">Weapons</div><div class="callList"></div></div>
   </div>
 
@@ -7283,7 +7335,6 @@ var updateDataContinuously = function() {
 
   <div id="motorVehiclesBlock" class="sectionBlock">
     <div id="stopsBlock" class="callBlock"><div class="callCount"></div><div class="title">Stops</div><div class="callList"></div></div>
-    <div id="hitAndRunWithInjuryBlock" class="callBlock"><div class="callCount"></div><div class="title">Hit and Run with Injury</div><div class="callList"></div></div>
     <div id="hitAndRunBlock" class="callBlock"><div class="callCount"></div><div class="title">Hit and Run</div><div class="callList"></div></div>
     <div id="trafficBlock" class="callBlock"><div class="callCount"></div><div class="title">Traffic</div><div class="callList"></div></div>
     <div id="sideshowBlock" class="callBlock"><div class="callCount"></div><div class="title">Sideshow</div><div class="callList"></div></div>
