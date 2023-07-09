@@ -387,6 +387,15 @@
     {
       color: #a00;
     }
+
+    .callRow.today + .callRow.yesterday,
+    .callRow.today + .callRow:not(.today):not(.yesterday),
+    .callRow.yesterday + .callRow:not(.yesterday)
+    {
+      padding-top: 3px;
+      border-top: 1px #ddd dashed;
+    }
+
     .callRow[data-ccd='CCD1'] .callCityCouncilDistrict { background-color: #9b5fe0; }
     .callRow[data-ccd='CCD2'] .callCityCouncilDistrict { background-color: #60dbe8; }
     .callRow[data-ccd='CCD3'] .callCityCouncilDistrict { background-color: #8bd346; }
@@ -550,6 +559,7 @@ const CALL_CODE_MAPPING = {
   "236" : "kidnapping",
   "240" : "assaultAndBattery",
   "242" : "assaultAndBattery",
+  "243D" : "assaultAndBattery",
   "243E" : "assaultAndBattery",
   "244" : "assaultAndBattery",
   "245" : "deadlyWeapon",
@@ -740,6 +750,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "242" : "Battery",
   "244" : "Assault w/ Caustic Chemicals",
   "245" : "Assault w/ Deadly Weapon",
+  "243D" : "Aggravated Assault",
   "243E" : "Battery on Cohabitant",
   "246" : "Shoot at Occup Home/Veh",
   "247" : "Shoot at Unocc Home/Veh",
@@ -763,6 +774,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "415J" : "Disturbance - Juveniles",
   "415LT" : "Disturbance - Landlord/Tenant",
   "415N" : "Disturbance - Neighbor",
+  "415P" : "Picketers/Protesters",
   "415RM" : "Disturbance - Roommates",
   "415SS" : "Shot Spotter Gunshots",
   "415TH" : "Disturbance - Threats",
@@ -827,7 +839,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "945A" : "Ambulance Requested",
   "946" : "Tow Requested",
   "949" : "Suspicious Vehicle",
-  "950" : "Investigate Report from Citizen",
+  "950" : "Investigate Rpt from Citizen",
   "953" : "Person Down on Street",
   "955" : "Stray Animal",
   "955A" : "Vicious Animal",
@@ -925,7 +937,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "1225 WEBSTER ST" : "Douglas Parking",
   "1233 PRESERVATION PARK WY" : "Preservation Park Center",
   "1239 5TH ST" : "Zdevco",
-  "1300 CLAY ST" : "1300 Clay Street",
   "1322 WEBSTER ST" : "1322 Webster St Llc (Parking Income)",
   "1331 HARRISON ST" : "Douglas Parking",
   "1395 7TH ST" : "Park Parking",
@@ -968,7 +979,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2455 BROADWAY" : "Kissel Uptown Oakland",
   "2545 BROADWAY" : "Just Pet Me Country Club",
   "255 2ND ST" : "Imperial Parking (Us)",
-  "255 9TH AV" : "Brooklyn Basin",
   "255 9TH AV" : "Brooklyn Basin",
   "255 9TH AV" : "Orion Apartments",
   "260 23RD ST" : "Sp Plus Corporation",
@@ -2487,7 +2497,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "11 EMBARCADERO W" : "Vead Industries",
   "1118 E 12TH ST" : "Supreme Auto",
   "1240 E 12TH ST" : "Classic Cars West",
-  "1301 62ND AV" : "Navcihoque Express",
   "1341 E 34TH ST" : "Traveling Keys Auto",
   "1689 12TH ST" : "Faj Automobile",
   "175 CHADBOURNE WY" : "Mccoys Autos Llc.",
@@ -3275,7 +3284,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "9925 MACARTHUR BLVD" : "Macarthur Smoke Shop",
   "10226 INTERNATIONAL BLVD" : "Sayfees Hardware",
   "1029 MACARTHUR BLVD" : "Verizon Wireless",
-  "8800 FONTAINE ST" : "Verizon Wireless By Cellco Partnership",
   "1037 HUBERT RD" : "Salmonid Warrior Adventures",
   "10532 EAST CT" : "Good Eye Collectibles",
   "10601 SHELDON ST" : "Rogue Fabric",
@@ -5546,6 +5554,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "999 JACKSON ST" : "K2 Salon & Spa",
 
   /* Churches */
+  "8800 FONTAINE ST" : "United Lutheran Church of Oakland",
   "3300 SCHOOL ST" : "Shiloh Mercy Ministries",
   "1034 66TH AV" : "Acts Full Gospel Church",
   "528 33RD ST" : "Abyssinian Missionary Baptist",
@@ -5708,6 +5717,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   
 
   /* Government Buildings */
+  "2221 MARTIN LUTHER KING JR WY" : "Veterans Administration (VA)",
   "750 50TH AV" : "City of Oakland Municipal Service Yard",
   "1301 CLAY ST" : "Ronald V Dellums Federal Building",
   "1 FRANK H OGAWA PLZ" : "Oakland City Hall",
