@@ -285,7 +285,7 @@
       margin-bottom: 2px;
       display: inline-block;
       vertical-align: middle;
-      width: 155px;
+      width: 150px;
       color: #a00;
     }
 
@@ -382,10 +382,28 @@
     .callRow {
       margin-top: 3px;
       width: 960px;
+      vertical-align: bottom;
     }
+
     .callRow.superRecentUpdate {
       animation: recentColorFade 60s;
       animation-iteration-count: 1;
+    }
+
+  /*.callRow.newDate .callID,
+    .callRow.newDate .callLocation,
+    .callRow.newDate .callDescription,
+    .callRow.newDate .callBeat,
+    .callRow.newDate .callDistrict,
+    .callRow.newDate .callSection,
+    .callRow.newDate .callCCD,
+    .callRow.newDate .callUpdateTime,
+    .callRow.newDate .callTime, */
+    .callRow.newDate .callUpdateDate,
+    .callRow.newDate .callDate
+    {
+      padding-top: 3px;
+      border-top: 1px #000 solid;
     }
 
     .callRow.recentUpdate .callUpdateDate,
@@ -399,16 +417,6 @@
     {
       color: #a00;
     }
-
-/* Nice but doesn't work when calls are hidden
-    .callRow.today + .callRow.yesterday,
-    .callRow.today + .callRow:not(.today):not(.yesterday),
-    .callRow.yesterday + .callRow:not(.yesterday)
-    {
-      padding-top: 3px;
-      border-top: 1px #ddd dashed;
-    }
-*/
 
     .callRow[data-ccd='CCD1'] .callCityCouncilDistrict { background-color: #9b5fe0; }
     .callRow[data-ccd='CCD2'] .callCityCouncilDistrict { background-color: #60dbe8; }
@@ -523,11 +531,11 @@
 
     .callCell {
       display: inline-block;
-      vertical-align: top;
+      vertical-align: bottom;
     }
  
     .callSpacer { width: 255px; }
-    .callDuration { width: 33px; font-size: 8pt; text-align:right; padding-top: 1pt; margin-right: 7px; color: #999;}
+    .callDuration { width: 33px; font-size: 8pt; text-align:right; margin-right: 7px; color: #999;}
     .callDate { width: 27px; text-align: right; margin-right:3px; cursor: pointer;}
     .callTime { width: 55px; text-align: right; margin-right:10px; cursor: pointer;}
     .callUpdateDate { width: 27px; text-align: right; margin-right:3px; display: none; cursor: pointer;}
@@ -539,11 +547,11 @@
     .isPointOfInterest .callLocation { }
     .callLocation .pointOfInterest { font-size: 8pt; font-weight: bold;}
     
-    .callDescription { font-size: 8pt; width: 145px; padding-top: 1pt; overflow: hidden;}
-    .callBeat { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #999; overflow: hidden;}
-    .callDistrict { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999; overflow: hidden;}
-    .callSection { font-size: 8pt; width: 20px; padding-top: 1pt; cursor: pointer; color: #999; overflow:hidden;}
-    .callCityCouncilDistrict { font-size: 8pt; width: 30px; padding-top: 1pt; cursor: pointer; color: #fff; overflow: hidden;}
+    .callDescription { font-size: 8pt; width: 145px; overflow: hidden;}
+    .callBeat { font-size: 8pt; width: 30px; cursor: pointer; color: #999; overflow: hidden;}
+    .callDistrict { font-size: 8pt; width: 20px; cursor: pointer; color: #999; overflow: hidden;}
+    .callSection { font-size: 8pt; width: 20px; cursor: pointer; color: #999; overflow:hidden;}
+    .callCityCouncilDistrict { font-size: 8pt; width: 30px; cursor: pointer; color: #fff; overflow: hidden;}
   </style>
 
 <script>
@@ -1237,7 +1245,6 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "3234 GRAND AV" : "Wes Garcia",
   "3237 GRAND AV" : "Urban University/Urban Furniture & Boutique",
   "3240 INTERNATIONAL BLVD" : "Princess & Queen",
-  "3250 HOLLIS ST" : "Bgirly",
   "3251 LAKESHORE AV" : "Maribel",
   "3273 BLANDON RD" : "Ade Dehye",
   "3277 LAKESHORE AV" : "The Gap",
@@ -3697,7 +3704,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2059 MOUNTAIN BLVD" : "Starbucks Coffee",
   "2060 MOUNTAIN BLVD" : "Kakui",
   "2062 MOUNTAIN BLVD" : "Flippers Gourmet Burger",
-  "2066 ANTIOCH CT" : "Peets Coffee.",
+  "2066 ANTIOCH CT" : "Peets Coffee",
   "2068 35TH AV" : "Jin Sing Restaurant",
   "2069 ANTIOCH CT" : "Grinders",
   "207 E 18TH ST" : "Pho King Restaurant",
@@ -5767,6 +5774,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "10 WASHINGTON ST" : "Waterfront Hotel",
 
   /* Apartment Buildings, Condos, etc */
+  "3250 HOLLIS ST" : "Hollis Oaks Apartments (Ayurveda, Salon Mer)",
   "100 GRAND AV" : "The Grand Apartments (alaMar, Douglas Parking)",
   "2633 TELEGRAPH AV" : "Telegraph Lofts (Minuteman Press, First Fridays, Juni Salon, Old Sears Roebuck Building)",
   // "2633 TELEGRAPH AV" : "Miracle Wax",
@@ -6515,7 +6523,7 @@ var clearDateFilter = function() {
   callList.classList.add("showAllDates");
 
   clearDateFilterButton.classList.add("off");
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
   
 var rotateDateFilter = function() {
@@ -6546,7 +6554,7 @@ var rotateDateFilter = function() {
     clearDateFilterButton.classList.add("off");
   }
 
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
 
 var handleLocationFilterChange = function() {
@@ -6586,7 +6594,7 @@ var handleLocationFilterChange = function() {
     clearLocationFilterButton.classList.remove("off");
   }
 
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
 
 var formatDate = function(date) {
@@ -6726,7 +6734,7 @@ var updateCallRecency = function() {
   for (i=0; i<allCalls.length; i++) {
     setWhetherEventIsTodayOrYesterday(allCalls[i]);
   }
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
 
 var findFirstRowEarlierThan = function(outputDiv, callDate) {
@@ -6830,7 +6838,18 @@ var setTotalShowingCalls = function(totalShowingCalls) {
   }
 }
 
-var updateCallTitles = function() {
+var extractDateFromCallRow = function(callRow) {
+  if (callRow == null) {
+    return null;
+  }
+  var numericDate = Number(callRow.dataset.callDate);
+  if (isNaN(numericDate)) {
+    return null;
+  }
+  return extractDate(new Date(numericDate));
+}
+
+var updateCallTitlesAndDateSeparators = function() {
   var blocks = document.getElementsByClassName("callBlock");
 
   var totalCalls = 0;
@@ -6844,12 +6863,24 @@ var updateCallTitles = function() {
     if (calls.length > 0) {
       atLeastOneCallLoaded = true;
     }
+    var currentCallDate = null;
     for (var j=0; j<calls.length; j++) {
       var callDisplayStyle = window.getComputedStyle(calls[j]).display; 
       if (callDisplayStyle != 'none') {
         atLeastOneTitleShowing = true;
         displayedCallsCount++;
+
+        var thisCallDate = extractDateFromCallRow(calls[j]);
+        if (currentCallDate != null && thisCallDate != null && thisCallDate != currentCallDate) {
+          calls[j].classList.add("newDate");
+        } else {
+          calls[j].classList.remove("newDate");
+        }
+        currentCallDate = thisCallDate;
+      } else {
+        calls[j].classList.remove("newDate");
       }
+
     }
     updateCallCount(blocks[i], displayedCallsCount);
     totalCalls += displayedCallsCount;
@@ -6892,7 +6923,7 @@ var toggleMenuBlock = function(menuBlock) {
   } else {
     showMenuBlock(menuBlock,false);
   }
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
 
 var showMenuItem = function(menuItem, show) {
@@ -6917,7 +6948,7 @@ var toggleMenuItem = function(menuItem) {
   }
   var turnOn = menuItem.classList.contains("off");
   showMenuItem(menuItem, turnOn);
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
 
 var updateContainingMenuBlock = function(menuItem) {
@@ -6966,7 +6997,7 @@ var setVisibilityOfAllCrimeTypes = function(show) {
     var menuItem = menuItems[i];
     showMenuItem(menuItem, show);
   }
-  updateCallTitles();  
+  updateCallTitlesAndDateSeparators();  
 }
 
 var toggleShowRecentOnly = function(showRecentOnlyControl) {
@@ -6981,7 +7012,7 @@ var toggleShowRecentOnly = function(showRecentOnlyControl) {
     showRecentOnlyControl.classList.add("off");
     callList.classList.remove("showRecentOnly");
   }
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
 
 var toggleShowCallUpdateTime = function() {
@@ -7109,7 +7140,7 @@ var handleDataArrival = function(status, response) {
   setStatus(false);
   
   setTimerToRequestData(NORMAL_DATA_REQUEST_INTERVAL);
-  updateCallTitles();
+  updateCallTitlesAndDateSeparators();
 }
 
 var setTimerToRequestCallCounts = function() {
