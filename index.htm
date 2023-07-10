@@ -1,5 +1,15 @@
 <html>
 <head>
+  <!-- Google Analytics tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQ1CRX55X6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-YQ1CRX55X6');
+  </script>
+
   <meta name="viewport" content="width=980" />
   <title>mOPD &#128757; - Oakland Calls for Service</title>
   <style>
@@ -593,6 +603,7 @@ const CALL_CODE_MAPPING = {
   "278" : "kidnapping",
   "311" : "administrative",
   "314" : "disorderly",
+  "330" : "disorderly",
   "415GS" : "gunshots",
   "415SS" : "gunshots",
   "415" : "disturbingThePeace",
@@ -783,6 +794,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "278_5" : "Violation of Custody",
   "311" : "Non-Police/Law Related",
   "314" : "Indecent Exposure",
+  "330" : "Gambling",
   "374" : "Illegal Dumping of Waste",
   "415" : "Disturbing the Peace",
   "415A" : "Disturbance - Auto",
