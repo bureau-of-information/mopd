@@ -58,6 +58,18 @@
 
     .callCountsContainer {
     }
+    .appDescription {
+      width: 158px;
+      font-size: 9pt;
+      font-weight: bold;
+      text-align: justify;
+    }
+    .appDescription:after { /* Justify single line of text */
+      content: '';
+      display: inline-block;
+      width: 100%;
+    }
+
     .logoBlock {
       display: inline-block;
       width: 50px;
@@ -7132,6 +7144,7 @@ var updateDataContinuously = function() {
 <div class="menuContainer">
   <div id="crimeTypeMenu" class="menu">
     <div class="callCountsContainer">
+      <div class="appDescription">Oakland Calls for Service</div>
       <div class="logoBlock">
         <div class="appLogo">&#128757</div>
         <div class="appTitle">mOPD</div>
