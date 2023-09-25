@@ -574,7 +574,7 @@ const RECENCY_INTERVAL_IN_MINUTES = 60;
 const SUPER_RECENT_UPDATE_INTERVAL_IN_MINUTES = 10;
 const NORMAL_DATA_REQUEST_INTERVAL = 2 * 60 * 1000;
 const FAST_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
-const CALL_COUNTS_DATA_REQUEST_INTERVAL = 1 * 60 * 1000;
+const CALL_COUNTS_DATA_REQUEST_INTERVAL = 0.5 * 60 * 1000;
 const GOOGLE_MAPS_ZOOM_LEVEL = 17;
 
 const CALL_CODE_MAPPING = {
@@ -5758,7 +5758,7 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "750 50TH AV" : "City of Oakland Municipal Service Yard",
   "1301 CLAY ST" : "Ronald V Dellums Federal Building",
   "1 FRANK H OGAWA PLZ" : "Oakland City Hall",
-  "455 7TH ST" : "Police Administration Building",
+  "455 7TH ST" : "(reported at) Police Administration Building",
   "300 FRANK H OGAWA PLZ" : "Rotunda Building",
   // "300 FRANK H OGAWA PLZ 155" : "Spoiled Boutique",
   "540 17TH ST" : "Oakland Ice Center",
@@ -7172,12 +7172,20 @@ var handleDataArrival = function(status, response) {
   updateCallTitlesAndDateSeparators();
 }
 
+var callCountsRequestTimer = null;
 var setTimerToRequestCallCounts = function() {
-  setTimeout(updateCountsContinuously, CALL_COUNTS_DATA_REQUEST_INTERVAL);
+  if (callCountsRequestTimer != null) {
+    clearTimeout(callCountsRequestTimer);
+  }
+  callCountsRequestTimer = setTimeout(updateCountsContinuously, CALL_COUNTS_DATA_REQUEST_INTERVAL);
 }
 
+var callListsRequestTimer = null;
 var setTimerToRequestData = function(interval) {
-  setTimeout(updateCallListsContinuously, interval);
+  if (callListsRequestTimer != null) {
+   clearTimeout(callListsRequestTimer);
+  }
+  callListsRequestTimer = setTimeout(updateCallListsContinuously, interval);
 }
 
 var updateCallListsContinuously = function() {
@@ -7195,6 +7203,11 @@ var updateDataContinuously = function() {
   updateCallListsContinuously();
   updateCountsContinuously();
 }
+
+window.addEventListener("focus", function(event) {
+  updateDataContinuously(); // immediately request data
+});
+
 </script>
 
 </head>
