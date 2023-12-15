@@ -722,6 +722,7 @@ const CALL_CODE_MAPPING = {
   "23103" : "traffic",
   "261KIT" : "administrative",
   "ACU" : "animal", 
+  "ADMIN" : "administrative",
   "AOA" : "administrative",
   "ASSIST" : "administrative",
   "BCAST" : "administrative",
@@ -765,6 +766,7 @@ const CALL_CODE_MAPPING = {
   "SIGNAL" : "traffic",
   "SMOKE" : "fire",
   "SPCENF" : "administrative",
+  "SPEC" : "special",
   "STALL" : "traffic",
   "SUPPL" : "administrative",
   "SUSP" : "offenders",
@@ -777,6 +779,7 @@ const CALL_CODE_MAPPING = {
 }
 
 const CALL_CODE_TO_DESCRIPTION_MAPPING = {
+  "148_5A" : "False Report of Crime",
   "160B" : "Vehicle Parked in Signed",
   "207" : "Kidnapping",
   "A211" : "Attempted Robbery",
@@ -832,6 +835,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "484LP" : "Stolen License Plate",
   "487" : "Grand Theft",
   "496" : "Receive Known Stolen Property",
+  "518" : "Extortion",
   "530" : "Identity Theft",
   "537" : "Defraud Innkeep/Dine&Dash",
   "594" : "Vandalism",
@@ -919,6 +923,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "23152" : "DUI Alcohol or Drugs",
   "5150B" : "Violent Mentally Ill",
   "ACU" : "Animal Control Unit",
+  "ADMIN" : "Administrative Work",
   "AOA" : "Assist Outside Agency",
   "ASSIST" : "Assist",
   "BCAST" : "Broadcast",
@@ -5778,8 +5783,8 @@ const ADDRESS_TO_POINT_OF_INTEREST_MAPPING = {
   "2425 E 12TH ST" : "Alameda County Sheriff's Office",
   "1401 LAKESIDE DR" : "Alameda County Sheriff's Office",
   "550 6TH ST" : "Alameda County Jail",
-  "5300 CLAREMONT AV" : "Oakland Dmv",
-  "501 85TH AV" : "Oakland Coliseum Dmv",
+  "5300 CLAREMONT AV" : "Oakland DMV",
+  "501 85TH AV" : "Oakland Coliseum DMV",
 
   /* Storage */
   "2227 SAN PABLO AV" : "StorQuest Self Storage",
@@ -7377,6 +7382,7 @@ window.addEventListener("focus", function(event) {
     </div>
     <div id="miscellaneous" class="menuBlock">
       <div class="menuBlockTitle" onclick="scrollToMenuBlock(this.parentElement)"><div class="checkSelector" onclick="toggleMenuBlock(this.parentElement.parentElement)"></div> Miscellaneous</div>
+      <div id="special" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Special</div><div class="callCount"></div></div>
       <div id="other" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Other</div><div class="callCount"></div></div>
       <div id="checks" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Checks</div><div class="callCount"></div></div>
       <div id="administrative" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Administrative</div><div class="callCount"></div></div>
@@ -7452,8 +7458,9 @@ window.addEventListener("focus", function(event) {
   </div>
 
   <div id="miscellaneousBlock" class="sectionBlock">
-    <div id="otherBlock" class="callBlock"><div class="callCount"></div><div class="title">Other</div><div class="callList"></div></div>
-    <div id="checksBlock" class="callBlock"><div class="callCount"></div><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
+     <div id="specialBlock" class="callBlock"><div class="callCount"></div><div class="title">Special Assignment</div><div class="callList"></div></div>
+     <div id="otherBlock" class="callBlock"><div class="callCount"></div><div class="title">Other</div><div class="callList"></div></div>
+     <div id="checksBlock" class="callBlock"><div class="callCount"></div><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
     <div id="administrativeBlock" class="callBlock"><div class="callCount"></div><div class="title">Administrative</div><div class="callList"></div></div>
     <div id="misdialsBlock" class="callBlock"><div class="callCount"></div><div class="title">Misdials and Hang Ups</div><div class="callList"></div></div>
   </div>
