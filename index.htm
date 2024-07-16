@@ -583,6 +583,7 @@ const CALL_CODE_MAPPING = {
   "166" : "offenders",
   "187" : "homicide",
   "207" : "kidnapping",
+  "209" : "kidnapping",
   "277" : "kidnapping",
   "278" : "kidnapping",
   "211" : "robbery",
@@ -661,8 +662,8 @@ const CALL_CODE_MAPPING = {
   "906" : "trespassing",
   "907" : "trespassing",
   "910" : "suspicious",
-  "911C" : "misdials",
-  "911H" : "misdials",
+  "911C" : "hangups",
+  "911H" : "hangups",
   "911N" : "administrative",
   "912" : "suspicious",
   "913TH" : "mentallyIll",
@@ -749,6 +750,7 @@ const CALL_CODE_MAPPING = {
   "HAZ" : "hazardous",
   "HYDRNT" : "fire",
   "INFO" : "administrative",
+  "LOST" : "missingPersons",
   "MACRO" : "macro",
   "MFF" : "administrative",
   "MJ" : "missingPersons",
@@ -783,6 +785,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "148_5A" : "False Report of Crime",
   "160B" : "Vehicle Parked in Signed",
   "207" : "Kidnapping",
+  "209" : "Kidnapping for Ransom",
   "A211" : "Attempted Robbery",
   "211" : "Robbery",
   "211S" : "Silent Robbery Alarm",
@@ -952,6 +955,7 @@ const CALL_CODE_TO_DESCRIPTION_MAPPING = {
   "GAS" : "Gas Leak",
   "HAZ" : "Hazardous Situation",
   "INFO" : "Beat Information",
+  "LOST" : "Lost Person",
   "LPROP" : "Lost Property",
   "MACRO" : "MACRO Team Response",
   "MEET" : "Community Meeting",
@@ -7387,6 +7391,7 @@ window.addEventListener("focus", function(event) {
       <div id="special" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Special</div><div class="callCount"></div></div>
       <div id="other" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Other</div><div class="callCount"></div></div>
       <div id="checks" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Checks</div><div class="callCount"></div></div>
+      <div id="hangups" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Hangups</div><div class="callCount"></div></div>
       <div id="administrative" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Administrative</div><div class="callCount"></div></div>
       <div id="misdials" class="menuItem" onclick="scrollToMenuItem(this)"><div class="checkSelector" onclick="toggleMenuItem(this.parentElement)"></div><div class="title">Misdials</div><div class="callCount"></div></div>
     </div>
@@ -7463,8 +7468,9 @@ window.addEventListener("focus", function(event) {
      <div id="specialBlock" class="callBlock"><div class="callCount"></div><div class="title">Special Assignment</div><div class="callList"></div></div>
      <div id="otherBlock" class="callBlock"><div class="callCount"></div><div class="title">Other</div><div class="callList"></div></div>
      <div id="checksBlock" class="callBlock"><div class="callCount"></div><div class="title">Welfare/Security Checks and Alarms</div><div class="callList"></div></div>
+    <div id="hangupsBlock" class="callBlock"><div class="callCount"></div><div class="title">Hang Ups</div><div class="callList"></div></div>
     <div id="administrativeBlock" class="callBlock"><div class="callCount"></div><div class="title">Administrative</div><div class="callList"></div></div>
-    <div id="misdialsBlock" class="callBlock"><div class="callCount"></div><div class="title">Misdials and Hang Ups</div><div class="callList"></div></div>
+    <div id="misdialsBlock" class="callBlock"><div class="callCount"></div><div class="title">Misdials</div><div class="callList"></div></div>
   </div>
   </div>
 </body>
